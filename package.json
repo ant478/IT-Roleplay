@@ -1,0 +1,35 @@
+{
+  "name": "it-roleplay",
+  "version": "0.1.0",
+  "engines": {
+    "node": "10.15.1"
+  },
+  "description": "Application to create your IT alter ego character.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ant478/IT-Roleplay.git"
+  },
+  "keywords": [
+    "IT",
+    "roleplay"
+  ],
+  "author": "ant478",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ant478/IT-Roleplay/issues"
+  },
+  "homepage": "https://github.com/ant478/IT-Roleplay#readme",
+  "_moduleAliases": {
+    "config": "./config",
+    "routes": "./routes",
+    "controllers": "./src/controllers"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "module-alias": "^2.2.0"
+  }
+}
