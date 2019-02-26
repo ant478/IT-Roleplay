@@ -1,0 +1,9 @@
+{
+  "mysql": {
+    "host": "localhost",
+    "dialect": "mysql",
+    "database": "it_roleplay",
+    "username": "root",
+    "password": "root"
+  }
+}
