@@ -1,6 +1,7 @@
 const express = require('express');
+const helloWorldController = require('../src/controllers/helloWorldController');
+
 const router = express.Router();
-const helloWorldController = require('controllers/helloWorldController');
 
 router.get('/', helloWorldController.index);
 
