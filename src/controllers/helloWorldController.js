@@ -1,3 +1,3 @@
-module.exports.index = function (req, res) {
+module.exports.index = function index(req, res) {
   res.status(200).send({ message: 'Hello World!' });
-}
+};

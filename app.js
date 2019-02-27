@@ -1,12 +1,13 @@
-require('module-alias/register');
-
 const express = require('express');
+const apiConfig = require('./config/api').v1;
+const routes = require('./routes/routes');
+
 const app = express();
-const apiConfig = require('config/api').v1;
-const routes = require('routes/routes');
 
 app.use(apiConfig.path, routes.router);
 
-app.listen(apiConfig.port, function () {
+app.listen(apiConfig.port, () => {
+  /* eslint-disable no-console */
   console.log(`Example app listening on port ${apiConfig.port}!`);
+  /* eslint-enable no-console */
 });
