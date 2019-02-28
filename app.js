@@ -5,6 +5,7 @@ const routes = require('./routes/routes');
 const app = express();
 
 app.use(apiConfig.path, routes.router);
+app.use('/', express.static('./frontend/build'));
 
 app.listen(apiConfig.port, () => {
   /* eslint-disable no-console */
