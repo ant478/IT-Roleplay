@@ -3,12 +3,10 @@ const webpackConfig = require('./config/webpack.config.js');
 module.exports = function init(grunt) {
   grunt.initConfig({
     eslint: {
-      options: {
-        configFile: 'config/eslint.json',
-      },
       target: [
-        '*.js', 'src/**/*.js', 'routes/**/*.js', 'migrations/**/*.js',
-        '*.json', 'config/**/*.json',
+        '**/*.js', '**/*.json', '**/*.jsx',
+        '!frontend/**/build/**/*',
+        '!node_modules/**/*',
       ],
     },
 

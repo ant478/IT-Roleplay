@@ -1,11 +1,9 @@
-import _ from 'lodash';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import HelloWorld from './components/HelloWorld';
+import * as helloWorldService from './services/helloWorldService';
 
-function component() {
-  let element = document.createElement('div');
-
-  element.innerHTML = _.join(['Hello', 'webpack'], ' ');
-
-  return element;
-}
-
-document.body.appendChild(component());
+ReactDOM.render(
+  React.createElement(HelloWorld, { message: helloWorldService.getMessage() }),
+  document.getElementById('content'),
+);

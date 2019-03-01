@@ -1,0 +1,16 @@
+{
+  "extends": ["airbnb"],
+  "root": true,
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "plugins": ["json"],
+  "env": {
+    "browser": true
+  },
+  "rules": {
+    "import/prefer-default-export": "off",
+    "react/prefer-stateless-function": "off"
+  }
+}
