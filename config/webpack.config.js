@@ -1,7 +1,10 @@
 const path = require('path');
+const WebpackShellPlugin = require('webpack-shell-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './frontend/app.js',
+  mode: 'development',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, '../frontend/build'),
@@ -30,4 +33,16 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.json', '.jsx'],
   },
+  watchOptions: {
+    ignored: /node_modules/,
+  },
+  plugins: [
+    new WebpackShellPlugin({
+      onBuildExit: ['grunt eslint:frontend'],
+    }),
+    new CopyPlugin([
+      { from: 'frontend/index.html', to: 'index.html' },
+    ]),
+  ],
+  stats: 'errors-only',
 };
