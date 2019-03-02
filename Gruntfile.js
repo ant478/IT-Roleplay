@@ -3,34 +3,57 @@ const webpackConfig = require('./config/webpack.config.js');
 module.exports = function init(grunt) {
   grunt.initConfig({
     eslint: {
-      target: [
-        '**/*.js', '**/*.json', '**/*.jsx',
-        '!frontend/**/build/**/*',
-        '!node_modules/**/*',
-      ],
+      backend: {
+        options: {
+          configFile: '.eslintrc',
+          failOnError: false,
+        },
+        src: [
+          '**/*.js', '**/*.json',
+          '!node_modules/**/*', '!frontend/**/*',
+        ],
+      },
+      frontend: {
+        options: {
+          configFile: 'frontend/.eslintrc',
+          failOnError: false,
+        },
+        src: [
+          'frontend/**/*.js', 'frontend/**/*.json', 'frontend/**/*.jsx',
+          '!frontend/**/build/**/*',
+        ],
+      },
     },
 
     webpack: {
-      myConfig: webpackConfig,
+      myConfig: Object.assign(webpackConfig, {
+        watch: !!grunt.option('watch'),
+      }),
     },
 
-    copy: {
-      index: {
-        files: [{
-          expand: true,
-          flatten: true,
-          src: 'frontend/index.html',
-          dest: 'frontend/build/',
-          filter: 'isFile',
-        }],
+    nodemon: {
+      dev: {
+        script: 'app.js',
+        options: {
+          env: {
+            NODE_ENV: 'development',
+          },
+          watch: [
+            'app.js',
+            'src/**/*',
+            'config/**/*',
+          ],
+          delay: 1000,
+          exec: './node_modules/.bin/grunt eslint:backend && node',
+        },
       },
     },
   });
 
   grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-webpack');
-  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-nodemon');
 
-  grunt.registerTask('lint', ['eslint']);
-  grunt.registerTask('build', ['copy:index', 'webpack']);
+  grunt.registerTask('lint', ['eslint:backend', 'eslint:frontend']);
+  grunt.registerTask('build', ['webpack']);
 };
