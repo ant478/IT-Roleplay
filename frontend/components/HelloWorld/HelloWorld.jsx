@@ -5,7 +5,7 @@ export default class HelloWorld extends React.Component {
   render() {
     const { message } = this.props;
 
-    return <div>{ message }</div>;
+    return <div className="hello-world">{ message }</div>;
   }
 }
 

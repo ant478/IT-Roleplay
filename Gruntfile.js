@@ -1,28 +1,17 @@
 const webpackConfig = require('./config/webpack.config.js');
 
+const devMode = process.env.NODE_ENV !== 'production';
+
 module.exports = function init(grunt) {
   grunt.initConfig({
     eslint: {
-      backend: {
-        options: {
-          configFile: '.eslintrc',
-          failOnError: false,
-        },
-        src: [
-          '**/*.js', '**/*.json',
-          '!node_modules/**/*', '!frontend/**/*',
-        ],
+      options: {
+        failOnError: false,
       },
-      frontend: {
-        options: {
-          configFile: 'frontend/.eslintrc',
-          failOnError: false,
-        },
-        src: [
-          'frontend/**/*.js', 'frontend/**/*.json', 'frontend/**/*.jsx',
-          '!frontend/**/build/**/*',
-        ],
-      },
+      src: [
+        '**/*.js', '**/*.json', '**/*.jsx',
+        '!frontend/**/build/**/*', '!node_modules/**/*',
+      ],
     },
 
     webpack: {
@@ -36,15 +25,16 @@ module.exports = function init(grunt) {
         script: 'app.js',
         options: {
           env: {
-            NODE_ENV: 'development',
+            NODE_ENV: process.env.NODE_ENV,
           },
           watch: [
-            'app.js',
-            'src/**/*',
-            'config/**/*',
+            './app.js',
+            './src/**/*',
+            './config/**/*',
+            './frontend/**/build/**/*',
           ],
           delay: 1000,
-          exec: './node_modules/.bin/grunt eslint:backend && node',
+          exec: devMode ? 'grunt eslint && node' : undefined,
         },
       },
     },
@@ -54,6 +44,6 @@ module.exports = function init(grunt) {
   grunt.loadNpmTasks('grunt-webpack');
   grunt.loadNpmTasks('grunt-nodemon');
 
-  grunt.registerTask('lint', ['eslint:backend', 'eslint:frontend']);
+  grunt.registerTask('lint', ['eslint']);
   grunt.registerTask('build', ['webpack']);
 };
