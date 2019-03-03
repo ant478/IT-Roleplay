@@ -1,1 +1,4 @@
-export { default as HelloWorld } from './HelloWorld';
+import './HelloWorld.scss';
+import HelloWorld from './HelloWorld';
+
+export default HelloWorld;
