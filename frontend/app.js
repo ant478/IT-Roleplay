@@ -1,10 +1,9 @@
-import './components/HelloWorld/HelloWorld.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import HelloWorld from './components/HelloWorld/HelloWorld';
-import * as helloWorldService from './services/helloWorldService';
+import { BrowserRouter } from 'react-router-dom';
+import App from './components/App';
 
 ReactDOM.render(
-  React.createElement(HelloWorld, { message: helloWorldService.getMessage() }),
-  document.getElementById('content'),
+  React.createElement(BrowserRouter, null, React.createElement(App)),
+  document.getElementsByTagName('body')[0],
 );
