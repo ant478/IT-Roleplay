@@ -25,7 +25,7 @@ module.exports = function init(grunt) {
         script: 'app.js',
         options: {
           env: {
-            NODE_ENV: process.env.NODE_ENV,
+            NODE_ENV: process.env.NODE_ENV || 'development',
           },
           watch: [
             './app.js',

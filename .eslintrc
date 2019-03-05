@@ -12,6 +12,8 @@
   },
   "rules": {
     "import/prefer-default-export": "off",
-    "node/no-unpublished-require": "off"
+    "node/no-unpublished-require": "off",
+    "implicit-arrow-linebreak": "off",
+    "function-paren-newline": "off"
   }
 }
