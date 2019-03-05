@@ -1,9 +1,26 @@
 {
-  "mysql": {
-    "host": "localhost",
+  "development": {
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "database": "it_roleplay_development",
+    "username": "root",
+    "password": "",
+    "operatorsAliases": false
+  },
+  "test": {
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "database": "it_roleplay_test",
+    "username": "root",
+    "password": "",
+    "operatorsAliases": false
+  },
+  "production": {
+    "host": "127.0.0.1",
     "dialect": "mysql",
     "database": "it_roleplay",
     "username": "root",
-    "password": "root"
+    "password": "",
+    "operatorsAliases": false
   }
 }
