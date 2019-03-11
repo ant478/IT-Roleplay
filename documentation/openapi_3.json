@@ -1,0 +1,858 @@
+{
+  "openapi": "3.0.0",
+  "servers": [{
+    "description": "",
+    "url": "/api/v1"
+  }],
+  "info": {
+    "version": "0.1.0",
+    "title": "IT Roleplay",
+    "contact": {
+      "email": "ant478@gmail.com"
+    }
+  },
+  "paths": {
+    "/user/register": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Registration of a new user.",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/RegisterNewUser"
+        },
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/NewUserCreated"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Logging user in.",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/LoginUser"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/SuccessfulLogin"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/user/logout": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Logging user out.",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/LoginUser"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/OK"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/characters": {
+      "get": {
+        "tags": ["Characters"],
+        "summary": "Gets list of character short descriptions.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/CharactersList"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Characters"],
+        "summary": "Creates new character.",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/CreateNewCharacter"
+        },
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/NewCharacterCreated"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/characters/{characterId}": {
+      "get": {
+        "tags": ["Characters"],
+        "summary": "Gets full profile of a character.",
+        "parameters": [{
+          "$ref": "#/components/parameters/CharacterId"
+        }],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Character"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Characters"],
+        "summary": "Modifies character.",
+        "parameters": [{
+          "$ref": "#/components/parameters/CharacterId"
+        }],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/UpdateCharacter"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Character"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Characters"],
+        "summary": "Deletes character.",
+        "parameters": [{
+          "$ref": "#/components/parameters/CharacterId"
+        }],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ID": {
+        "type": "integer",
+        "format": "int32",
+        "minimum": 1,
+        "description": "Objects identifier in the system.",
+        "example": 1
+      },
+      "User": {
+        "type": "object",
+        "description": "An instance of a user.",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "login": {
+            "type": "string",
+            "example": "ant478"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "ant478@gmail.com"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime",
+            "example": "2019-02-21T14:54:42.779Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "datetime",
+            "example": "2019-02-21T14:54:42.779Z"
+          }
+        },
+        "required": ["id", "login", "email", "createdAt", "updatedAt"]
+      },
+      "UpdateCharacterData": {
+        "type": "object",
+        "description": "Data to update a character.",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of a character.",
+            "example": "Thomas Anderson"
+          },
+          "avatarUrl": {
+            "type": "string",
+            "format": "url",
+            "description": "URL of an image that will be displayed as characters avatar.",
+            "example": "https://upload.wikimedia.org/wikipedia/ru/4/4c/Neo2.jpg"
+          },
+          "data": {
+            "$ref": "#/components/schemas/UpdateCharactersDataFull"
+          }
+        }
+      },
+      "NewCharacterData": {
+        "type": "object",
+        "description": "Data to update a character.",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of a character.",
+            "example": "Thomas Anderson"
+          },
+          "avatarUrl": {
+            "type": "string",
+            "format": "url",
+            "description": "URL of an image that will be displayed as characters avatar.",
+            "example": "https://upload.wikimedia.org/wikipedia/ru/4/4c/Neo2.jpg"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CharactersDataFull"
+          }
+        },
+        "required": ["name", "data"]
+      },
+      "CharactersDataShort": {
+        "type": "object",
+        "properties": {
+          "attributes": {
+            "$ref": "#/components/schemas/CharacterIntegerPropertiesData"
+          },
+          "classes": {
+            "$ref": "#/components/schemas/CharacterIntegerPropertiesData"
+          }
+        },
+        "required": ["attributes", "classes"]
+      },
+      "CharactersDataFull": {
+        "type": "object",
+        "properties": {
+          "attributes": {
+            "$ref": "#/components/schemas/CharacterIntegerPropertiesData"
+          },
+          "classes": {
+            "$ref": "#/components/schemas/CharacterIntegerPropertiesData"
+          },
+          "skills": {
+            "$ref": "#/components/schemas/CharacterIntegerPropertiesData"
+          },
+          "technologies": {
+            "$ref": "#/components/schemas/CharacterBooleanPropertiesData"
+          },
+          "perks": {
+            "$ref": "#/components/schemas/CharacterBooleanPropertiesData"
+          }
+        },
+        "required": ["attributes", "classes", "skills", "technologies", "perks"]
+      },
+      "UpdateCharactersDataFull": {
+        "type": "object",
+        "properties": {
+          "attributes": {
+            "$ref": "#/components/schemas/CharacterIntegerPropertiesData"
+          },
+          "classes": {
+            "$ref": "#/components/schemas/CharacterIntegerPropertiesData"
+          },
+          "skills": {
+            "$ref": "#/components/schemas/CharacterIntegerPropertiesData"
+          },
+          "technologies": {
+            "$ref": "#/components/schemas/CharacterBooleanPropertiesData"
+          },
+          "perks": {
+            "$ref": "#/components/schemas/CharacterBooleanPropertiesData"
+          }
+        }
+      },
+      "CharacterIntegerPropertiesData": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/IntegerPropertyValue"
+        },
+        "uniqueItems": true,
+        "minLength": 1,
+        "example": [{
+          "id": 1,
+          "value": 10
+        }, {
+          "id": 2,
+          "value": 14
+        }, {
+          "id": 3,
+          "value": 14
+        }, {
+          "id": 4,
+          "value": 12
+        }, {
+          "id": 5,
+          "value": 16
+        }, {
+          "id": 6,
+          "value": 8
+        }]
+      },
+      "CharacterBooleanPropertiesData": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/BooleanPropertyValue"
+        },
+        "uniqueItems": true,
+        "minLength": 1,
+        "example": [1, 3, 7, 5, 12]
+      },
+      "IntegerPropertyValue": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "value": {
+            "type": "integer"
+          }
+        },
+        "required": ["id", "value"]
+      },
+      "BooleanPropertyValue": {
+        "type": "integer",
+        "format": "int32",
+        "minimum": 1,
+        "example": 1,
+        "description": "ID of a characters property. If passed then character has that property and vice versa."
+      },
+      "UserRegistrationData": {
+        "type": "object",
+        "properties": {
+          "login": {
+            "type": "string",
+            "example": "ant478"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "ant478@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "example": "123456"
+          }
+        },
+        "required": ["login", "email", "password"]
+      },
+      "UserLoginData": {
+        "type": "object",
+        "properties": {
+          "login": {
+            "type": "string",
+            "example": "ant478"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "example": "123456"
+          }
+        },
+        "required": ["login", "password"]
+      }
+    },
+    "parameters": {
+      "CharacterId": {
+        "in": "path",
+        "name": "characterId",
+        "schema": {
+          "$ref": "#/components/schemas/ID"
+        },
+        "example": 1,
+        "required": true
+      }
+    },
+    "requestBodies": {
+      "RegisterNewUser": {
+        "required": true,
+        "content": {
+          "application/json; charset=utf-8": {
+            "schema": {
+              "$ref": "#/components/schemas/UserRegistrationData"
+            }
+          }
+        }
+      },
+      "CreateNewCharacter": {
+        "required": true,
+        "content": {
+          "application/json; charset=utf-8": {
+            "schema": {
+              "$ref": "#/components/schemas/NewCharacterData"
+            }
+          }
+        }
+      },
+      "UpdateCharacter": {
+        "required": true,
+        "content": {
+          "application/json; charset=utf-8": {
+            "schema": {
+              "$ref": "#/components/schemas/UpdateCharacterData"
+            }
+          }
+        }
+      },
+      "LoginUser": {
+        "required": true,
+        "content": {
+          "application/json; charset=utf-8": {
+            "schema": {
+              "$ref": "#/components/schemas/UserLoginData"
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "NewUserCreated": {
+        "description": "New user was created successfully. Returns instance of a new user.",
+        "content": {
+          "application/json; charset=utf-8": {
+            "schema": {
+              "type": "object",
+              "description": "An instance of a user.",
+              "properties": {
+                "id": {
+                  "$ref": "#/components/schemas/ID"
+                },
+                "login": {
+                  "type": "string",
+                  "example": "ant478"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email",
+                  "example": "ant478@gmail.com"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "datetime",
+                  "example": "2019-02-21T14:54:42.779Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "datetime",
+                  "example": "2019-02-21T14:54:42.779Z"
+                }
+              },
+              "required": ["id", "login", "email", "createdAt", "updatedAt"]
+            }
+          }
+        }
+      },
+      "SuccessfulLogin": {
+        "description": "User successfully logged in.",
+        "content": {
+          "application/json; charset=utf-8": {
+            "schema": {
+              "type": "object",
+              "description": "An instance of a user.",
+              "properties": {
+                "id": {
+                  "$ref": "#/components/schemas/ID"
+                },
+                "login": {
+                  "type": "string",
+                  "example": "ant478"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email",
+                  "example": "ant478@gmail.com"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "datetime",
+                  "example": "2019-02-21T14:54:42.779Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "datetime",
+                  "example": "2019-02-21T14:54:42.779Z"
+                }
+              },
+              "required": ["id", "login", "email", "createdAt", "updatedAt"]
+            }
+          }
+        }
+      },
+      "CharactersList": {
+        "description": "Characters list.",
+        "content": {
+          "application/json; charset=utf-8": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "description": "Short description of a character.",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/ID"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Name of a character.",
+                    "example": "Thomas Anderson"
+                  },
+                  "avatarUrl": {
+                    "type": "string",
+                    "format": "url",
+                    "description": "URL of an image that will be displayed as characters avatar.",
+                    "example": "https://upload.wikimedia.org/wikipedia/ru/4/4c/Neo2.jpg"
+                  },
+                  "author": {
+                    "$ref": "#/components/schemas/User"
+                  },
+                  "data": {
+                    "$ref": "#/components/schemas/CharactersDataShort"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": "datetime",
+                    "example": "2019-02-21T14:54:42.779Z"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "format": "datetime",
+                    "example": "2019-02-21T14:54:42.779Z"
+                  }
+                },
+                "required": ["id", "name", "author", "data", "createdAt", "updatedAt"]
+              },
+              "uniqueItems": true
+            }
+          }
+        }
+      },
+      "Character": {
+        "description": "Instance of a character.",
+        "content": {
+          "application/json; charset=utf-8": {
+            "schema": {
+              "type": "object",
+              "description": "Short description of a character.",
+              "properties": {
+                "id": {
+                  "$ref": "#/components/schemas/ID"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Name of a character.",
+                  "example": "Thomas Anderson"
+                },
+                "avatarUrl": {
+                  "type": "string",
+                  "format": "url",
+                  "description": "URL of an image that will be displayed as characters avatar.",
+                  "example": "https://upload.wikimedia.org/wikipedia/ru/4/4c/Neo2.jpg"
+                },
+                "author": {
+                  "$ref": "#/components/schemas/User"
+                },
+                "data": {
+                  "$ref": "#/components/schemas/CharactersDataFull"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "datetime",
+                  "example": "2019-02-21T14:54:42.779Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "datetime",
+                  "example": "2019-02-21T14:54:42.779Z"
+                }
+              },
+              "required": ["id", "name", "author", "data", "createdAt", "updatedAt"]
+            }
+          }
+        }
+      },
+      "NewCharacterCreated": {
+        "description": "New character was created successfully. Returns instance of a new character.",
+        "content": {
+          "application/json; charset=utf-8": {
+            "schema": {
+              "type": "object",
+              "description": "Short description of a character.",
+              "properties": {
+                "id": {
+                  "$ref": "#/components/schemas/ID"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Name of a character.",
+                  "example": "Thomas Anderson"
+                },
+                "avatarUrl": {
+                  "type": "string",
+                  "format": "url",
+                  "description": "URL of an image that will be displayed as characters avatar.",
+                  "example": "https://upload.wikimedia.org/wikipedia/ru/4/4c/Neo2.jpg"
+                },
+                "author": {
+                  "$ref": "#/components/schemas/User"
+                },
+                "data": {
+                  "$ref": "#/components/schemas/CharactersDataFull"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "datetime",
+                  "example": "2019-02-21T14:54:42.779Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "datetime",
+                  "example": "2019-02-21T14:54:42.779Z"
+                }
+              },
+              "required": ["id", "name", "author", "data", "createdAt", "updatedAt"]
+            }
+          }
+        }
+      },
+      "OK": {
+        "description": "Success.",
+        "content": {
+          "application/json; charset=utf-8": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": "OK"
+                }
+              },
+              "required": ["code", "message"]
+            }
+          }
+        }
+      },
+      "BadRequest": {
+        "description": "Passed arguments are not valid.",
+        "content": {
+          "application/json; charset=utf-8": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Passed arguments are not valid."
+                },
+                "stacktrace": {
+                  "type": "string",
+                  "example": "/.../.../.../"
+                }
+              },
+              "required": ["code", "message"]
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized.",
+        "content": {
+          "application/json; charset=utf-8": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "example": 401
+                },
+                "message": {
+                  "type": "string",
+                  "example": "You are not authorized in the system."
+                },
+                "stacktrace": {
+                  "type": "string",
+                  "example": "/.../.../.../"
+                }
+              },
+              "required": ["code", "message"]
+            }
+          }
+        }
+      },
+      "Forbidden": {
+        "description": "Forbidden.",
+        "content": {
+          "application/json; charset=utf-8": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "example": 403
+                },
+                "message": {
+                  "type": "string",
+                  "example": "You do not have permission for this operation."
+                },
+                "stacktrace": {
+                  "type": "string",
+                  "example": "/.../.../.../"
+                }
+              },
+              "required": ["code", "message"]
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "The specified resource was not found.",
+        "content": {
+          "application/json; charset=utf-8": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "example": 404
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Not found."
+                },
+                "stacktrace": {
+                  "type": "string",
+                  "example": "/.../.../.../"
+                }
+              },
+              "required": ["code", "message"]
+            }
+          }
+        }
+      },
+      "Conflict": {
+        "description": "Can't create instance with passed data.",
+        "content": {
+          "application/json; charset=utf-8": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "example": 409
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Can't create instance with passed data."
+                },
+                "stacktrace": {
+                  "type": "string",
+                  "example": "/.../.../.../"
+                }
+              },
+              "required": ["code", "message"]
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Internal server error.",
+        "content": {
+          "application/json; charset=utf-8": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Internal server error."
+                },
+                "stacktrace": {
+                  "type": "string",
+                  "example": "/.../.../.../"
+                }
+              },
+              "required": ["code", "message"]
+            }
+          }
+        }
+      }
+    }
+  }
+}

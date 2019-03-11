@@ -11,7 +11,7 @@ function json(response) {
 }
 
 export function getMessage() {
-  return fetch('/api/v1')
+  return fetch('/api')
     .then(status)
     .then(json);
 }

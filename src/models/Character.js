@@ -49,10 +49,22 @@ module.exports = (sequelize, Sequelize) => {
 
   Character.associate = function associate(models) {
     models.Character.belongsTo(models.User, {
-      as: 'Author',
-      foreignKey: 'author_id',
+      as: 'author',
+      foreignKey: 'authorId',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE',
+    });
+  };
+
+  Character.loadScopes = function loadScopes(models) {
+    Character.addScope('withAuthor', {
+      include: [{
+        model: models.User,
+        as: 'author',
+      }],
+      attributes: {
+        exclude: ['authorId'],
+      },
     });
   };
 
