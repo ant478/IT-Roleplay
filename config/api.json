@@ -1,6 +1,4 @@
 {
-  "v1": {
-    "path": "/api/v1",
-    "port": 80
-  }
+  "path": "/api",
+  "port": 80
 }

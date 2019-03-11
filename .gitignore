@@ -3,3 +3,4 @@ npm-debug.log
 package-lock.json
 frontend/build
 .idea
+tmp_swagger_2.json

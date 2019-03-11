@@ -18,6 +18,9 @@ fs.readdirSync(__dirname)
 Object.keys(models).forEach((modelName) => {
   if (models[modelName].associate) {
     models[modelName].associate(models);
+    if (models[modelName].loadScopes) {
+      models[modelName].loadScopes(models);
+    }
   }
 });
 

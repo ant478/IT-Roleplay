@@ -42,12 +42,17 @@ module.exports = (sequelize, Sequelize) => {
     },
   }, {
     tableName: 'users',
+    defaultScope: {
+      attributes: {
+        exclude: ['passwordHash', 'salt'],
+      },
+    },
   });
 
   User.associate = function associate(models) {
     models.User.hasMany(models.Character, {
-      as: 'Characters',
-      foreignKey: 'author_id',
+      as: 'characters',
+      foreignKey: 'authorId',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE',
     });
