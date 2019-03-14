@@ -29,7 +29,10 @@
   },
   "homepage": "https://github.com/ant478/IT-Roleplay#readme",
   "dependencies": {
+    "body-parser": "^1.18.3",
+    "email-validator": "^2.0.4",
     "express": "^4.16.4",
+    "express-async-handler": "^1.1.4",
     "lodash": "^4.17.11",
     "mysql2": "^1.6.5",
     "prop-types": "^15.7.2",

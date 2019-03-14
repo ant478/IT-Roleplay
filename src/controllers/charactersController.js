@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const models = require('../models');
+const responses = require('../responses');
 
 const characterFull = {
   id: 1,
@@ -120,7 +121,7 @@ module.exports.index = async function index(req, res) {
     });
   });
 
-  res.status(200).json(json);
+  return res.status(200).json(json);
 };
 
 module.exports.view = async function view(req, res) {
@@ -128,10 +129,10 @@ module.exports.view = async function view(req, res) {
   const character = await models.Character.scope('withAuthor').findByPk(characterId);
 
   if (!character) {
-    res.status(404).json({ code: 404, message: 'Not Found.' });
+    return res.status(404).json(new responses.NotFound());
   }
 
-  res.status(200).json(character.toJSON());
+  return res.status(200).json(character.toJSON());
 };
 
 module.exports.new = function newCharacter(req, res) {
@@ -143,5 +144,5 @@ module.exports.update = function update(req, res) {
 };
 
 module.exports.delete = function deleteCharacter(req, res) {
-  res.json({ message: 'OK', code: 200 });
+  return res.json(new responses.OK());
 };
