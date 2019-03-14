@@ -1,4 +1,14 @@
-module.exports = (sequelize, Sequelize) => {
+const crypto = require('crypto');
+
+const GLOBAL_SALT = '7E3D616848B3';
+const PRIVATE_PROPERTIES = ['passwordHash', 'salt'];
+
+const getPasswordHash = (password, salt) =>
+  crypto.pbkdf2Sync(`${GLOBAL_SALT}${password}`, salt, 1000, 32, 'sha256').toString('hex');
+
+module.exports.PRIVATE_PROPERTIES = PRIVATE_PROPERTIES;
+
+module.exports.User = (sequelize, Sequelize) => {
   const User = sequelize.define('User', {
     id: {
       type: Sequelize.INTEGER.UNSIGNED,
@@ -56,6 +66,18 @@ module.exports = (sequelize, Sequelize) => {
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE',
     });
+  };
+
+  User.prototype.setPassword = function setPassword(password) {
+    const salt = crypto.randomBytes(5).toString('hex');
+    const passwordHash = getPasswordHash(password, salt);
+
+    this.set('salt', salt);
+    this.set('passwordHash', passwordHash);
+  };
+
+  User.prototype.verifyPassword = function verifyPassword(password) {
+    return getPasswordHash(password, this.salt) === this.passwordHash;
   };
 
   return User;

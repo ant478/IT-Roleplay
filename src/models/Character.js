@@ -1,4 +1,4 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports.Character = (sequelize, Sequelize) => {
   const Character = sequelize.define('Character', {
     id: {
       type: Sequelize.INTEGER.UNSIGNED,
