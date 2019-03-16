@@ -7,7 +7,7 @@ const devMode = process.env.NODE_ENV !== 'production';
 
 module.exports = {
   entry: './frontend/app.js',
-  mode: process.env.NODE_ENV,
+  mode: devMode ? 'development' : 'production',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, '../frontend/build'),

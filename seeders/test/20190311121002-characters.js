@@ -37,7 +37,5 @@ module.exports = {
     }),
   }]),
 
-  down: (queryInterface, Sequelize) => queryInterface.bulkDelete('characters', {
-    [Sequelize.Op.or]: [{ id: 1 }, { id: 2 }],
-  }),
+  down: queryInterface => queryInterface.bulkDelete('characters'),
 };

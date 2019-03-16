@@ -54,7 +54,7 @@ module.exports.User = (sequelize, Sequelize) => {
     tableName: 'users',
     defaultScope: {
       attributes: {
-        exclude: ['passwordHash', 'salt'],
+        exclude: PRIVATE_PROPERTIES,
       },
     },
   });

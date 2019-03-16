@@ -83,9 +83,6 @@
           "200": {
             "$ref": "#/components/responses/CharactersList"
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
           "500": {
             "$ref": "#/components/responses/InternalServerError"
           }
@@ -123,12 +120,6 @@
         "responses": {
           "200": {
             "$ref": "#/components/responses/Character"
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
@@ -177,9 +168,6 @@
         "responses": {
           "200": {
             "$ref": "#/components/responses/OK"
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
           },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
@@ -389,12 +377,12 @@
         "properties": {
           "login": {
             "type": "string",
-            "example": "ant478"
+            "example": "myNigga"
           },
           "email": {
             "type": "string",
             "format": "email",
-            "example": "ant478@gmail.com"
+            "example": "myNigga@gmail.com"
           },
           "password": {
             "type": "string",
@@ -719,8 +707,8 @@
                   "example": "Passed arguments are not valid."
                 },
                 "stacktrace": {
-                  "type": "string",
-                  "example": "/.../.../.../"
+                  "type": "array",
+                  "items": { "type": "string" }
                 }
               },
               "required": ["code", "message"]
@@ -744,8 +732,8 @@
                   "example": "You are not authorized in the system."
                 },
                 "stacktrace": {
-                  "type": "string",
-                  "example": "/.../.../.../"
+                  "type": "array",
+                  "items": { "type": "string" }
                 }
               },
               "required": ["code", "message"]
@@ -769,8 +757,8 @@
                   "example": "You do not have permission for this operation."
                 },
                 "stacktrace": {
-                  "type": "string",
-                  "example": "/.../.../.../"
+                  "type": "array",
+                  "items": { "type": "string" }
                 }
               },
               "required": ["code", "message"]
@@ -794,8 +782,8 @@
                   "example": "Not found."
                 },
                 "stacktrace": {
-                  "type": "string",
-                  "example": "/.../.../.../"
+                  "type": "array",
+                  "items": { "type": "string" }
                 }
               },
               "required": ["code", "message"]
@@ -819,8 +807,8 @@
                   "example": "Can't create instance with passed data."
                 },
                 "stacktrace": {
-                  "type": "string",
-                  "example": "/.../.../.../"
+                  "type": "array",
+                  "items": { "type": "string" }
                 }
               },
               "required": ["code", "message"]
@@ -844,8 +832,8 @@
                   "example": "Internal server error."
                 },
                 "stacktrace": {
-                  "type": "string",
-                  "example": "/.../.../.../"
+                  "type": "array",
+                  "items": { "type": "string" }
                 }
               },
               "required": ["code", "message"]

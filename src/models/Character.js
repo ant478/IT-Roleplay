@@ -1,3 +1,7 @@
+const DATA_PROPERTIES = ['attributes', 'classes', 'skills', 'technologies', 'perks'];
+
+module.exports.DATA_PROPERTIES = DATA_PROPERTIES;
+
 module.exports.Character = (sequelize, Sequelize) => {
   const Character = sequelize.define('Character', {
     id: {
@@ -35,15 +39,14 @@ module.exports.Character = (sequelize, Sequelize) => {
       field: 'created_at',
       type: Sequelize.DATE,
       allowNull: false,
-      defaultValue: sequelize.literal('NOW()'),
     },
     updatedAt: {
       field: 'updated_at',
       type: Sequelize.DATE,
       allowNull: false,
-      defaultValue: sequelize.literal('NOW()'),
     },
   }, {
+    timestamps: true,
     tableName: 'characters',
   });
 
