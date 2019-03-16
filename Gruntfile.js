@@ -52,8 +52,9 @@ module.exports = function init(grunt) {
           const apiLocation = `http://127.0.0.1:${apiConfig.port}${apiConfig.path}`;
           const names = grunt.option('names') ? '--names=true' : '';
           const only = grunt.option('only') ? `--only="${grunt.option('only')}"` : '';
+          const hooks = '--hookfiles="test/api/dreddHooks.js"';
 
-          return `dredd ${tmpApiDocPath} ${apiLocation} ${names} ${only}`;
+          return `dredd ${tmpApiDocPath} ${apiLocation} ${names} ${only} ${hooks}`;
         },
       },
 
@@ -67,6 +68,11 @@ module.exports = function init(grunt) {
             --config=config/db.json
             --seeders-path=${seedersPath}`;
         },
+      },
+
+      populateTestDb: {
+        cmd: () => `cross-env NODE_ENV=test grunt db --cmd=seed:undo:all
+          && cross-env NODE_ENV=test grunt db --cmd=seed:all`,
       },
     },
 
@@ -86,6 +92,7 @@ module.exports = function init(grunt) {
   grunt.registerTask('build', ['webpack']);
   grunt.registerTask('db', ['exec:db']);
   grunt.registerTask('test-api', [
+    'exec:populateTestDb',
     'exec:convertApi',
     'continue:on',
     'exec:testApi',

@@ -1,9 +1,10 @@
 const _ = require('lodash');
+const passport = require('passport');
 const Sequelize = require('sequelize');
 const models = require('../models');
 const USER_PRIVATE_PROPERTIES = require('../models/User').PRIVATE_PROPERTIES;
 const responses = require('../responses');
-const validationHelper = require('../helpers/userDataValidationHelper');
+const validationHelper = require('../helpers/userInputValidationHelper');
 
 module.exports.register = async function register(req, res) {
   const { login, email, password } = req.body;
@@ -36,20 +37,34 @@ module.exports.register = async function register(req, res) {
   return res.status(201).json(userInstance.toJSON());
 };
 
-module.exports.login = async function loginUser(req, res) {
+module.exports.login = function loginUser(req, res, next) {
   const { login, password } = req.body;
 
-  const user = await models.User.unscoped().findOne({ where: { login } });
+  const isUserInputValid = validationHelper.isLoginValid(login)
+    && validationHelper.isPasswordValid(password);
 
-  if (!user || !user.verifyPassword(password)) {
+  if (!isUserInputValid) {
     return res.status(400).json(new responses.BadRequest());
   }
 
-  const json = _.omit(user.toJSON(), USER_PRIVATE_PROPERTIES);
+  return passport.authenticate('local', (error, user, strategyError) => {
+    if (error || strategyError) {
+      return next(error || strategyError);
+    }
 
-  return res.status(200).json(json);
+    return req.logIn(user, (err) => {
+      if (err) {
+        return next(err);
+      }
+
+      const json = _.omit(user.toJSON(), USER_PRIVATE_PROPERTIES);
+
+      return res.status(200).json(json);
+    });
+  })(req, res, next);
 };
 
 module.exports.logout = function logout(req, res) {
-  res.status(200).json({ message: 'OK', code: 200 });
+  req.logout();
+  return res.status(200).json(new responses.OK());
 };

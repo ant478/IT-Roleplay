@@ -3,17 +3,15 @@ module.exports = {
     id: 1,
     login: 'ant478',
     email: 'ant478@gmail.com',
-    salt: '1234567890',
-    password_hash: '1234567812345678123456781234567812345678123456781234567812345678',
+    salt: '55df896cb0',
+    password_hash: '3f9966addc73cd34bc9ebec92877ea513b173765eb081c054bd587216a0b23aa', // 123456
   }, {
     id: 2,
     login: 'genaschur',
     email: 'genaschur@mail.ru',
-    salt: '1234567890',
-    password_hash: '1234567812345678123456781234567812345678123456781234567812345678',
+    salt: '55df896cb0',
+    password_hash: '3f9966addc73cd34bc9ebec92877ea513b173765eb081c054bd587216a0b23aa', // 123456
   }]),
 
-  down: (queryInterface, Sequelize) => queryInterface.bulkDelete('users', {
-    [Sequelize.Op.or]: [{ id: 1 }, { id: 2 }],
-  }),
+  down: queryInterface => queryInterface.bulkDelete('users'),
 };
