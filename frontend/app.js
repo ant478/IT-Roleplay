@@ -5,5 +5,5 @@ import App from './components/App';
 
 ReactDOM.render(
   React.createElement(BrowserRouter, null, React.createElement(App)),
-  document.getElementsByTagName('body')[0],
+  document.getElementById('content'),
 );

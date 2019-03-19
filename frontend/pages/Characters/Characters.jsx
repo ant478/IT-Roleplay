@@ -1,26 +1,31 @@
 import React from 'react';
-import HelloWorld from '../../components/HelloWorld/HelloWorld';
-import * as helloWorldService from '../../services/helloWorldService';
+import CharactersList from '../../components/CharactersList';
 
 export default class Characters extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      message: null,
+      // isLoading: true,
+      characters: [],
+      // errors: [],
     };
   }
 
   componentDidMount() {
-    helloWorldService.getMessage().then((data) => {
-      this.setState({ message: data.message });
-    });
+    fetch('/api/characters') // TODO: move to CharactersService
+      .then(response => response.json())
+      .then(characters => this.setState({ characters }));
   }
 
   render() {
-    const { message } = this.state;
-    const greeting = message ? `Characters: ${message}` : 'No characters :(';
+    const { characters } = this.state;
 
-    return <HelloWorld message={greeting} />;
+    return (
+      <div>
+        <h1>Characters list page</h1>
+        <CharactersList characters={characters} />
+      </div>
+    );
   }
 }
