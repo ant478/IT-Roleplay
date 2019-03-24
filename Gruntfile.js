@@ -7,11 +7,21 @@ module.exports = function init(grunt) {
   grunt.initConfig({
     eslint: {
       options: {
-        failOnError: false,
         fix: !!grunt.option('fix'),
       },
       src: [
         '**/*.js', '**/*.json', '**/*.jsx',
+        '!frontend/**/build/**/*', '!node_modules/**/*',
+      ],
+    },
+
+    tslint: {
+      options: {
+        fix: !!grunt.option('fix'),
+        project: './config/tsconfig.json',
+      },
+      src: [
+        '**/*.ts', '**/*.tsx',
         '!frontend/**/build/**/*', '!node_modules/**/*',
       ],
     },
@@ -85,10 +95,16 @@ module.exports = function init(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-continue');
   grunt.loadNpmTasks('grunt-eslint');
+  grunt.loadNpmTasks('grunt-tslint');
   grunt.loadNpmTasks('grunt-webpack');
   grunt.loadNpmTasks('grunt-nodemon');
 
-  grunt.registerTask('lint', ['eslint']);
+  grunt.registerTask('lint', [
+    'continue:on',
+    'tslint',
+    'eslint',
+    'continue:off',
+  ]);
   grunt.registerTask('build', ['webpack']);
   grunt.registerTask('db', ['exec:db']);
   grunt.registerTask('test-api', [
