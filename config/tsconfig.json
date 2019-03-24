@@ -1,0 +1,21 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "target": "ESNext",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "preserveConstEnums": true,
+    "sourceMap": true
+  },
+  "include": [
+    "../frontend/**/*.ts",
+    "../frontend/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "extends": ["tslint:latest", "tslint-react", "tslint-config-airbnb"],
+  "rules": {
+    "typedef": [true, "call-signature", "property-declaration"],
+    "interface-name" : [true, "never-prefix"],
+    "max-line-length": false,
+    "import-name": false
+  }
+}
