@@ -20,10 +20,13 @@ export default class Characters extends React.Component<{}, CharactersState> {
   }
 
   public async componentDidMount(): Promise<void> {
+    document.title = 'IT Roleplay';
+
     try {
       const characters = await charactersService.getCharacters();
 
       this.setState({ characters });
+      document.title = 'IT Roleplay: Список персонажей';
     } catch (error) {
       this.setState({ errors: [error] });
     }
@@ -35,7 +38,7 @@ export default class Characters extends React.Component<{}, CharactersState> {
     const { characters } = this.state;
 
     return (
-      <div>
+      <div className="page characters-page">
         <h1>Characters list page</h1>
         <CharactersList characters={characters} />
       </div>

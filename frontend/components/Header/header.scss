@@ -1,0 +1,52 @@
+.header {
+  height: 50px;
+  background: #B100FE;
+}
+
+.header__logo {
+  height: 100%;
+  margin: 0 10px;
+  width: 190px;
+  padding: 1px 0;
+}
+
+.header__logo-link {
+  display: block;
+  height: 100%;
+  width: 190px;
+  text-align: center;
+  border: 2px solid #329400;
+}
+
+.header__logo-img {
+  display: inline-block;
+  height: 100%;
+}
+
+.header__navigation {
+  display: block;
+  height: 100%;
+  float: right;
+  width: calc(100% - 210px);
+}
+
+.header__navigation-list {
+  height: 100%;
+  text-align: right;
+  padding-right: 20px;
+}
+
+.header__navigation-element {
+  display: inline-block;
+  height: 100%;
+  margin: 0 15px;
+}
+
+.header__navigation-link {
+  color: #fff;
+  line-height: 50px;
+  height: 100%;
+  display: block;
+  text-decoration: none;
+  font-size: 20px;
+}

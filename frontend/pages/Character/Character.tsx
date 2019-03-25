@@ -28,11 +28,14 @@ export default class Character extends React.Component<CharacterProps, Character
   }
 
   public async componentDidMount(): Promise<void> {
+    document.title = 'IT Roleplay';
+
     try {
       const { match: { params: { characterId } } } = this.props;
       const character = await charactersService.getCharacter(characterId);
 
       this.setState({ character });
+      document.title = `IT Roleplay: ${character.name}`;
     } catch (error) {
       this.setState({ errors: [error] });
     }
@@ -52,7 +55,7 @@ export default class Character extends React.Component<CharacterProps, Character
 
   public render(): React.ReactNode {
     return (
-      <div>
+      <div className="page character-page">
         <h1>Character page</h1>
         {this.renderCharacterProfile()}
       </div>
