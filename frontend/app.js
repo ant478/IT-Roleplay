@@ -5,5 +5,5 @@ import App from './components/App'; // eslint-disable-line import/no-unresolved
 
 ReactDOM.render(
   React.createElement(BrowserRouter, null, React.createElement(App)),
-  document.getElementById('content'),
+  document.getElementsByClassName('content')[0],
 );

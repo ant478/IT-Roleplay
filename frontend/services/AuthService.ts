@@ -24,6 +24,10 @@ export interface UserLoginData {
 export class AuthService extends BaseAPIService {
   private currentUser: User | null = null;
 
+  public isAuthenticated(): boolean {
+    return !!this.currentUser;
+  }
+
   public getCurrentUser(): User | null {
     return this.currentUser;
   }
