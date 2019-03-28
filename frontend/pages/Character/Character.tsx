@@ -1,6 +1,7 @@
 import * as React from 'react';
 import CharacterProfile from '../../components/CharacterProfile';
 import charactersService, { Character as CharacterData } from '../../services/CharactersService';
+import locale from '../../services/LocalisationService';
 
 interface CharacterProps {
   match: {
@@ -28,14 +29,14 @@ export default class Character extends React.Component<CharacterProps, Character
   }
 
   public async componentDidMount(): Promise<void> {
-    document.title = 'IT Roleplay';
+    document.title = locale.getMessage('pageTitle.home');
 
     try {
       const { match: { params: { characterId } } } = this.props;
       const character = await charactersService.getCharacter(characterId);
 
       this.setState({ character });
-      document.title = `IT Roleplay: ${character.name}`;
+      document.title = locale.getMessage('pageTitle.character', { characterName: character.name });
     } catch (error) {
       this.setState({ errors: [error] });
     }

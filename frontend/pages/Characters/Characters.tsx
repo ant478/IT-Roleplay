@@ -1,6 +1,7 @@
 import * as React from 'react';
 import CharactersList from '../../components/CharactersList';
 import charactersService, { CharacterShort } from '../../services/CharactersService';
+import locale from '../../services/LocalisationService';
 
 interface CharactersState {
   characters: CharacterShort[];
@@ -20,13 +21,13 @@ export default class Characters extends React.Component<{}, CharactersState> {
   }
 
   public async componentDidMount(): Promise<void> {
-    document.title = 'IT Roleplay';
+    document.title = locale.getMessage('pageTitle.home');
 
     try {
       const characters = await charactersService.getCharacters();
 
       this.setState({ characters });
-      document.title = 'IT Roleplay: Список персонажей';
+      document.title = locale.getMessage('pageTitle.characters');
     } catch (error) {
       this.setState({ errors: [error] });
     }

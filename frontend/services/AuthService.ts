@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import BaseAPIService from './BaseAPIService';
 
 const USERS_API_LOCATION = '/api/user';
@@ -22,7 +23,17 @@ export interface UserLoginData {
 }
 
 export class AuthService extends BaseAPIService {
-  private currentUser: User | null = null;
+  private currentUser: User | null;
+
+  constructor() {
+    super();
+
+    const storedUser = localStorage.getItem('currentUser');
+
+    this.currentUser = storedUser ?
+      JSON.parse(storedUser) as User :
+      null;
+  }
 
   public isAuthenticated(): boolean {
     return !!this.currentUser;
@@ -44,7 +55,10 @@ export class AuthService extends BaseAPIService {
     const options = { method: 'POST', body: JSON.stringify(userLoginData) };
 
     return this.makeRequest<User>(location, options).then((user) => {
-      return this.currentUser = user;
+      this.currentUser = user;
+      localStorage.setItem('currentUser', JSON.stringify(user));
+
+      return user;
     });
   }
 
@@ -52,9 +66,10 @@ export class AuthService extends BaseAPIService {
     const location = `${USERS_API_LOCATION}/logout`;
     const options = { method: 'POST' };
 
-    return this.makeRequest<void>(location, options).then(() => {
+    return this.makeRequest<void>(location, options).finally(() => {
       this.currentUser = null;
-    });
+      localStorage.removeItem('currentUser');
+    }).catch(_.noop);
   }
 }
 
