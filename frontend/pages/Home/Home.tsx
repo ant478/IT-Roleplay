@@ -1,8 +1,9 @@
 import * as React from 'react';
+import locale from '../../services/LocalisationService';
 
 export default class Home extends React.Component {
-  public async componentDidMount(): Promise<void> {
-    document.title = 'IT Roleplay';
+  public componentDidMount(): void {
+    document.title = locale.getMessage('pageTitle.home');
   }
 
   public render(): React.ReactNode {

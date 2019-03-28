@@ -1,0 +1,55 @@
+.common-form {
+  text-align: left;
+}
+
+.common-form__label {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 20px;
+
+  &_single-checkbox {
+    position: relative;
+    padding-left: 28px;
+  }
+}
+
+.common-form__error {
+  display: block;
+  background: #ff7676;
+  padding: 15px;
+  border: 2px solid #ff0000;
+  margin-bottom: 15px;
+}
+
+.common-form__imput {
+  display: block;
+  width: 100%;
+  border-radius: 8px;
+  height: 37px;
+  border: 2px solid #777;
+  padding: 0 10px;
+  font-size: 18px;
+  margin-top: 8px;
+}
+
+.common-form__single-checkbox {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  height: 20px;
+  width: 20px;
+}
+
+.common-form__submit-button {
+  display: block;
+  height: 40px;
+  background-color: #004fc5;
+  border: 2px solid #0c00c5;
+  color: #fff;
+  font-size: 17px;
+  padding: 0 12px;
+  margin: 0 0 0 auto;
+  cursor: pointer;
+}

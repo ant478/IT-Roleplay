@@ -4,6 +4,14 @@
     "typedef": [true, "call-signature", "property-declaration"],
     "interface-name" : [true, "never-prefix"],
     "max-line-length": false,
-    "import-name": false
+    "import-name": false,
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore"
+    ],
+    "semicolon": [true, "always"],
+    "object-literal-sort-keys": false
   }
 }

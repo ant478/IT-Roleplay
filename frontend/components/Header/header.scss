@@ -1,12 +1,15 @@
+$header-logo-width: 190px;
+$header-logo-side-margin: 10px;
+
 .header {
-  height: 50px;
+  height: $header-height;
   background: #B100FE;
 }
 
 .header__logo {
   height: 100%;
-  margin: 0 10px;
-  width: 190px;
+  margin: 0 $header-logo-side-margin;
+  width: $header-logo-width;
   padding: 1px 0;
 }
 
@@ -27,7 +30,7 @@
   display: block;
   height: 100%;
   float: right;
-  width: calc(100% - 210px);
+  width: calc(100% - #{$header-logo-width} - #{$header-logo-side-margin * 2});
 }
 
 .header__navigation-list {
@@ -40,11 +43,29 @@
   display: inline-block;
   height: 100%;
   margin: 0 15px;
+
+  &_login {
+    position: relative;
+  }
+}
+
+.header__login-form-container {
+  display: none;
+  position: absolute;
+  right: 0;
+  width: 350px;
+  background: #c5c5c5;
+  padding: 20px;
+  border-radius: 10px;
+
+  &_expanded {
+    display: block;
+  }
 }
 
 .header__navigation-link {
-  color: #fff;
-  line-height: 50px;
+  color: $white;
+  line-height: $header-height;
   height: 100%;
   display: block;
   text-decoration: none;
