@@ -1,4 +1,4 @@
-const DATA_PROPERTIES = ['attributes', 'classes', 'skills', 'technologies', 'perks'];
+const DATA_PROPERTIES = ['attributes', 'roles', 'skills', 'technologies', 'perks', 'availablePoints'];
 
 module.exports.DATA_PROPERTIES = DATA_PROPERTIES;
 

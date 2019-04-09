@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Character } from '../../services/CharactersService';
+import { CharacterData } from '../../services/Api/CharacterService';
 
 interface CharactersProfileProps {
-  character: Character;
+  character: CharacterData;
 }
 
 export default class CharacterProfile extends React.Component<CharactersProfileProps, {}> {

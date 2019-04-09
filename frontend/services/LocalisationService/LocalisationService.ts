@@ -1,29 +1,29 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
 import russian from './locales/russian';
 
 enum localeKey {
   russian = 'ru',
 }
 
-type locale = object;
+type LocaleConfig = object;
 
-const locales: Record<localeKey, locale> = {
-  ru: russian,
+const locales: Record<localeKey, LocaleConfig> = {
+  [localeKey.russian]: russian,
 };
 
 export class LocalisationService {
-  public locale: locale;
+  private readonly localeConfig: LocaleConfig;
 
   constructor(key: localeKey) {
     if (!locales[key]) {
       throw new Error(`Locale ${key} does not exist.`);
     }
 
-    this.locale = locales[key];
+    this.localeConfig = locales[key];
   }
 
   public getMessage(path: string, args: Record<string, any> = {}): string {
-    const rawMessage = _.get(this.locale, path);
+    const rawMessage = _.get(this.localeConfig, path);
 
     if (!_.isString(rawMessage)) {
       throw new Error('Message does not exist.');

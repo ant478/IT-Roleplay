@@ -22,7 +22,7 @@ module.exports.index = async function index(req, res) {
     const characterJSON = formatCharacterInstanceForOutput(character);
 
     return Object.assign(characterJSON, {
-      data: _.pick(characterJSON.data, ['attributes', 'classes']),
+      data: _.pick(characterJSON.data, ['attributes', 'roles']),
     });
   });
 
