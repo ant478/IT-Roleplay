@@ -2,14 +2,13 @@ import * as React from 'react';
 import CharacterProfile from '../../components/CharacterProfile';
 import characterService, { CharacterData } from '../../services/Api/CharacterService';
 import locale from '../../services/LocalisationService';
+import { RouteComponentProps } from 'react-router-dom';
 
-interface CharacterProps {
-  match: {
-    params: {
-      characterId: number;
-    };
-  };
+interface MatchParams {
+  characterId: string;
 }
+
+interface CharacterProps extends RouteComponentProps<MatchParams> {}
 
 interface CharacterState {
   character: CharacterData | null;
@@ -33,7 +32,7 @@ export default class CharacterPage extends React.Component<CharacterProps, Chara
 
     try {
       const { match: { params: { characterId } } } = this.props;
-      const character = await characterService.getCharacter(characterId);
+      const character = await characterService.getCharacter(Number(characterId));
 
       this.setState({ character });
       document.title = locale.getMessage('pageTitle.character', { characterName: character.name });

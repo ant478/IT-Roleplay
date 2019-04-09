@@ -2,6 +2,7 @@ import * as React from 'react';
 import CharactersList from '../../components/CharactersList';
 import characterService, { ShortCharacterData } from '../../services/Api/CharacterService';
 import locale from '../../services/LocalisationService';
+import { RouteComponentProps } from 'react-router-dom';
 
 interface CharactersState {
   characters: ShortCharacterData[];
@@ -9,8 +10,8 @@ interface CharactersState {
   isLoading: boolean;
 }
 
-export default class CharactersPage extends React.Component<{}, CharactersState> {
-  constructor(props: {}) {
+export default class CharactersPage extends React.Component<RouteComponentProps, CharactersState> {
+  constructor(props: RouteComponentProps) {
     super(props);
 
     this.state = {
@@ -18,6 +19,12 @@ export default class CharactersPage extends React.Component<{}, CharactersState>
       errors: [],
       isLoading: true,
     };
+
+    this.handleClickOnCharacter = this.handleClickOnCharacter.bind(this);
+  }
+
+  public handleClickOnCharacter(characterId: number): void {
+    this.props.history.push(`/characters/${characterId}`);
   }
 
   public async componentDidMount(): Promise<void> {
@@ -40,8 +47,10 @@ export default class CharactersPage extends React.Component<{}, CharactersState>
 
     return (
       <div className="page characters-page">
-        <h1>Characters list page</h1>
-        <CharactersList characters={characters} />
+        <h1 className="characters-page__header">{locale.getMessage('charactersPage.header')}</h1>
+        <div className="characters-page__content-wrapper">
+          <CharactersList characters={characters} onCharacterClick={this.handleClickOnCharacter}/>
+        </div>
       </div>
     );
   }
