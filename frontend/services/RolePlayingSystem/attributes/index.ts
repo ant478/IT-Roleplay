@@ -12,12 +12,12 @@ const attributeClasses = [Strength, Dexterity, Endurance, Intelligence, Wisdom, 
 type AttributeKeyName = 'strength' | 'dexterity' | 'endurance' | 'intelligence' | 'wisdom' | 'charisma';
 
 export const attributeKeys: Record<AttributeKeyName, AttributeKey> = {
-  strength: 'STR',
-  dexterity: 'DEX',
-  endurance: 'END',
-  intelligence: 'INT',
-  wisdom: 'WIS',
-  charisma: 'CHA',
+  strength: 'Strength',
+  dexterity: 'Dexterity',
+  endurance: 'Endurance',
+  intelligence: 'Intelligence',
+  wisdom: 'Wisdom',
+  charisma: 'Charisma',
 };
 
 export const attributeClassesWithKeys = attributeClasses.reduce(
@@ -25,7 +25,7 @@ export const attributeClassesWithKeys = attributeClasses.reduce(
   {} as Record<AttributeKey, AttributeClass>,
 );
 
-export type AttributeKey = 'STR' | 'DEX' | 'END' | 'INT' | 'WIS' | 'CHA';
+export type AttributeKey = 'Strength' | 'Dexterity' | 'Endurance' | 'Intelligence' | 'Wisdom' | 'Charisma';
 export type Attribute = Strength | Dexterity | Endurance | Intelligence | Wisdom | Charisma;
 export type Attributes = Record<AttributeKey, Attribute>;
 export type AttributeClass = typeof attributeClasses[0];

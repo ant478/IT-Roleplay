@@ -32,6 +32,47 @@ export default {
       submit: 'Войти',
     },
   },
+  charactersPage: {
+    header: 'Список персонажей',
+  },
+  rolePlayingSystem: {
+    roles: {
+      name: 'Классы',
+      Developer: {
+        name: 'Программист',
+      },
+      Teamlead: {
+        name: 'Тимлид',
+      },
+      Reviewer: {
+        name: 'Ревьюер',
+      },
+      SupportEngineer: {
+        name: 'Инженер поддержки',
+      },
+    },
+    attributes: {
+      name: 'Аттрибуты',
+      Strength: {
+        name: 'Сила',
+      },
+      Dexterity: {
+        name: 'Ловкость',
+      },
+      Endurance: {
+        name: 'Выносливость',
+      },
+      Intelligence: {
+        name: 'Интеллект',
+      },
+      Wisdom: {
+        name: 'Мудрость',
+      },
+      Charisma: {
+        name: 'Харизма',
+      },
+    },
+  },
   error: {
     incorrectInput: 'Введенные данные некорректны.',
   },

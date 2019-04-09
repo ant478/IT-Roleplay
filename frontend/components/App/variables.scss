@@ -7,3 +7,18 @@ $white: #fff;
 $grey: #777;
 $black: #000;
 
+@mixin absoluteCenterTransform {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 100%;
+  transform: translate(-50%,-50%);
+}
+
+@mixin absoluteCenterPositioning {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
