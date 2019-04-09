@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import * as React from 'react';
-import authService from '../../services/AuthService';
+import authService from '../../services/Api/AuthService';
 import locale from '../../services/LocalisationService';
 import { LoginForm, LoginFormData } from '../CommonForms';
 

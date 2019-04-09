@@ -3,6 +3,7 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "isolatedModules": true,
+    "moduleResolution": "Node",
     "jsx": "preserve",
     "target": "ESNext",
     "strict": true,

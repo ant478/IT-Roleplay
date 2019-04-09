@@ -270,11 +270,11 @@
           "attributes": {
             "$ref": "#/components/schemas/CharacterIntegerPropertiesData"
           },
-          "classes": {
+          "roles": {
             "$ref": "#/components/schemas/CharacterIntegerPropertiesData"
           }
         },
-        "required": ["attributes", "classes"]
+        "required": ["attributes", "roles"]
       },
       "CharactersDataFull": {
         "type": "object",
@@ -282,7 +282,7 @@
           "attributes": {
             "$ref": "#/components/schemas/CharacterIntegerPropertiesData"
           },
-          "classes": {
+          "roles": {
             "$ref": "#/components/schemas/CharacterIntegerPropertiesData"
           },
           "skills": {
@@ -293,9 +293,12 @@
           },
           "perks": {
             "$ref": "#/components/schemas/CharacterBooleanPropertiesData"
+          },
+          "availablePoints": {
+            "$ref": "#/components/schemas/AvailablePoints"
           }
         },
-        "required": ["attributes", "classes", "skills", "technologies", "perks"]
+        "required": ["attributes", "roles", "skills", "technologies", "perks", "availablePoints"]
       },
       "UpdateCharactersDataFull": {
         "type": "object",
@@ -303,7 +306,7 @@
           "attributes": {
             "$ref": "#/components/schemas/CharacterIntegerPropertiesData"
           },
-          "classes": {
+          "roles": {
             "$ref": "#/components/schemas/CharacterIntegerPropertiesData"
           },
           "skills": {
@@ -314,6 +317,9 @@
           },
           "perks": {
             "$ref": "#/components/schemas/CharacterBooleanPropertiesData"
+          },
+          "availablePoints": {
+            "$ref": "#/components/schemas/AvailablePoints"
           }
         }
       },
@@ -343,6 +349,17 @@
           "id": 6,
           "value": 8
         }]
+      },
+      "AvailablePoints": {
+        "type": "object",
+        "properties": {
+          "role": { "type": "number", "example": 1 },
+          "attributes": { "type": "number", "example": 0.25 },
+          "skills": { "type": "number", "example": 1 },
+          "technologies": { "type": "number", "example": 3 },
+          "perks": { "type": "number", "example": 0 }
+        },
+        "required": ["role", "attributes", "skills", "technologies", "perks"]
       },
       "CharacterBooleanPropertiesData": {
         "type": "array",

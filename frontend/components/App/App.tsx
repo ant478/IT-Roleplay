@@ -2,10 +2,10 @@ import * as React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
-import Character from '../../pages/Character';
-import Characters from '../../pages/Characters';
-import Home from '../../pages/Home';
-import Registration from '../../pages/Registration';
+import CharacterPage from '../../pages/CharacterPage';
+import CharactersPage from '../../pages/CharactersPage';
+import HomePage from '../../pages/HomePage';
+import RegistrationPage from '../../pages/RegistrationPage';
 
 const redirectHome = () => <Redirect to="/" />;
 
@@ -14,10 +14,10 @@ export default class App extends React.Component {
     return (
       <main className="main">
         <Switch>
-          <Route exact={true} path="/" component={Home} />
-          <Route path="/register" component={Registration} />
-          <Route exact={true} path="/characters" component={Characters} />
-          <Route path="/characters/:characterId" component={Character} />
+          <Route exact={true} path="/" component={HomePage} />
+          <Route path="/register" component={RegistrationPage} />
+          <Route exact={true} path="/characters" component={CharactersPage} />
+          <Route path="/characters/:characterId" component={CharacterPage} />
           <Route component={redirectHome} />
         </Switch>
       </main>

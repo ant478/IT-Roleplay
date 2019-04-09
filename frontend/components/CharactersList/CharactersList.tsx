@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { CharacterShort } from '../../services/CharactersService';
+import { ShortCharacterData } from '../../services/Api/CharacterService';
 
 interface CharactersListProps {
-  characters: CharacterShort[];
+  characters: ShortCharacterData[];
 }
 
 export default class CharactersList extends React.Component<CharactersListProps, {}> {
