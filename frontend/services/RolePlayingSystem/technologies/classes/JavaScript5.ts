@@ -9,7 +9,7 @@ export default class JavaScript5 extends Technology {
   public static key = 'JavaScript5' as TechnologyKey;
   public static tags = ['JavaScript', 'Frontend'] as TechnologyTag[];
   public static basePrice = 5;
-  public static complexityLevel = 5;
+  public static complexityLevel = 4;
   public static group = 'Frontend' as TechnologyGroup;
   public static parent = JavaScript4;
 

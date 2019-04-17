@@ -1,6 +1,7 @@
 .characters-list__character {
   border: 5px solid #6f63f4;
   font-size: 20px;
+  cursor: pointer;
 
   &:not(:last-child) {
     margin-bottom: 15px;
@@ -8,7 +9,6 @@
 
   &:hover {
     border-color: #7f0000;
-    cursor: pointer;
   }
 }
 
@@ -34,11 +34,8 @@
 }
 
 .characters-list__character-avatar {
-  position: absolute;
-  top: 50%;
-  left: 50%;
   height: 100%;
-  transform: translate(-50%,-50%);
+  @include absoluteCenterTransform;
 }
 
 .characters-list__character-name {

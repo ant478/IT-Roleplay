@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import * as _ from 'lodash';
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import authService from '../../services/Api/AuthService';
 import locale from '../../services/LocalisationService';
 import { LoginForm, LoginFormData } from '../CommonForms';
@@ -52,19 +53,19 @@ export default class Header extends React.Component<{}, HeaderState> {
   public renderLogo(): React.ReactNode {
     return (
       <div className="header__logo">
-        <a className="header__logo-link" href="/">
+        <Link className="header__logo-link" to="/">
           <img className="header__logo-img" src="https://www.designfreelogoonline.com/wp-content/uploads/2015/05/00496-cat-logo-design-free-logomaker-01.png" />
-        </a>
+        </Link>
       </div>
     );
   }
 
-  public renderNavigationElement(href: string, text: string): React.ReactNode {
-    const key = href.replace(/\//g, '_');
+  public renderNavigationElement(location: string, text: string): React.ReactNode {
+    const key = location.replace(/\//g, '_');
 
     return (
       <li key={key} className="header__navigation-element">
-        <a className="header__navigation-link" href={href}>{text}</a>
+        <Link className="header__navigation-link" to={location}>{text}</Link>
       </li>
     );
   }

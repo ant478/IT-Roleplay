@@ -9,5 +9,6 @@ module.exports = asyncHandler(async (req, res, next) => {
   const userId = Number(req.headers['stub-auth-user-id']);
 
   req.user = await models.User.findByPk(userId);
+
   return next();
 });

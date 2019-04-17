@@ -7,6 +7,7 @@ const isAuthenticated = require('../middleware/isAuthenticated');
 const router = express.Router();
 
 // Users
+router.get('/user/isLoggedIn', usersController.isLoggenIn);
 router.post('/user/register', asyncHandler(usersController.register));
 router.post('/user/login', asyncHandler(usersController.login));
 router.post('/user/logout', isAuthenticated, asyncHandler(usersController.logout));

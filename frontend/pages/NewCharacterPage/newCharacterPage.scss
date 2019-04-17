@@ -1,0 +1,15 @@
+.new-character-page {
+  height: calc(100vh - 130px);
+}
+
+.new-character-page__header {
+  font-size: 26px;
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 15px;
+  margin-top: 5px;
+}
+
+.new-character-page__content-wrapper {
+  height: calc(100% - 46px);
+}

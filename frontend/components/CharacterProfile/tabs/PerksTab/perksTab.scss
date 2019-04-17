@@ -1,0 +1,236 @@
+$infoSectionHeight: 64px;
+
+.perks-tab {
+  height: 100%;
+}
+
+.perks-tab__info {
+  height: $infoSectionHeight;
+  text-align: center;
+}
+
+.perks-tab__price-and-name-wrapper {
+  display: inline-block;
+  width: 50%;
+  height: 100%;
+  vertical-align: top;
+  line-height: $infoSectionHeight / 2 - 2px;
+}
+
+.perks-tab__available-points {
+  display: inline-block;
+  width: 50%;
+  height: 100%;
+  vertical-align: top;
+  line-height: $infoSectionHeight;
+  border-right: 4px solid #d8000b;
+}
+
+.perks-tab__available-points-label {
+  display: inline-block;
+  width: 80%;
+  height: 100%;
+  vertical-align: top;
+  border-right: 4px solid #d8000b;
+}
+
+.perks-tab__available-points-value {
+  display: inline-block;
+  width: 20%;
+  height: 100%;
+  vertical-align: top;
+}
+
+.perks-tab__price {
+  display: block;
+  height: 50%;
+  border-bottom: 2px solid #d8000b;
+}
+
+.perks-tab__price-value {
+  display: inline-block;
+  width: 20%;
+  height: 100%;
+  vertical-align: top;
+  border-right: 4px solid #d8000b;
+}
+
+.perks-tab__price-label {
+  display: inline-block;
+  width: 80%;
+  height: 100%;
+  vertical-align: top;
+  text-align: left;
+  padding-left: 25px;
+}
+
+.technologies-tab__name {
+  border-top: 2px solid #d8000b;
+  text-align: left;
+  padding-left: 25px;
+}
+
+.perks-tab__description {
+  width: 50%;
+  height: calc(100% - #{$infoSectionHeight});
+  display: inline-block;
+  border-top: 4px solid #d8000b;
+  vertical-align: top;
+}
+
+.perks-tab__description-text-container {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.perks-tab__description-text {
+  padding: 20px;
+  text-align: justify;
+}
+
+.perks-tab__perks-rows {
+  padding: 20px;
+  width: 50%;
+  height: calc(100% - #{$infoSectionHeight});
+  display: inline-block;
+  border-top: 4px solid #d8000b;
+  border-right: 4px solid #d8000b;
+}
+
+.perks-tab__perks-rows {
+  height: calc(100% - #{$infoSectionHeight});
+  border-top: 4px solid #d8000b;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+$rowBaseColor: #ffffff;
+
+.perks-tab__perk-row {
+  position: relative;
+
+  &:not(:last-child) {
+    margin-bottom: 20px;
+  }
+
+  $usageTypeColorsMap: (
+    passive: #0027b5,
+    active: #aa2e25,
+  );
+
+  @each $usageType, $usageTypeColor in $usageTypeColorsMap {
+    &_#{$usageType} {
+      $rowBaseColor: $usageTypeColor;
+
+      .perk-tab__perk {
+        border-color: $rowBaseColor;
+
+        &:before {
+          color: $rowBaseColor;
+        }
+
+        &_selected {
+          background-color: #{$rowBaseColor}21;
+        }
+
+        &_can-be-removed {
+          background-color: #{$rowBaseColor}38;
+        }
+      }
+
+      .perk-tab__perk-arrow {
+        &:before {
+          color: $rowBaseColor;
+        }
+      }
+    }
+  }
+}
+
+$iconSize: 70px;
+$complexityLevels: (0, 1, 2);
+$complexityLevelsCount: length($complexityLevels);
+
+.perk-tab__perk-wrapper {
+  width: calc(100% / #{$complexityLevelsCount});
+  display: inline-block;
+  height: $iconSize;
+}
+
+@mixin dummyPerkIcon() {
+  height: $iconSize;
+  width: $iconSize;
+
+  &:before {
+    @include absoluteCenterPositioning;
+    content: '☢';
+    display: block;
+    text-align: center;
+    line-height: $iconSize - 8px;
+    font-size: 45px;
+    color: $rowBaseColor;
+  }
+}
+
+.perk-tab__perk {
+  position: relative;
+  cursor: pointer;
+  border: 4px solid $rowBaseColor;
+  border-radius: 10px;
+  @include dummyPerkIcon;
+
+  @each $complexityLevel in $complexityLevels {
+    &_complexity-#{$complexityLevel} {
+      display: inline-block;
+      left: calc(100% / #{$complexityLevelsCount - 1} * #{$complexityLevel} - #{$iconSize} / #{$complexityLevelsCount - 1} * #{$complexityLevel});
+    }
+  }
+
+  &_selected {
+    background: #{$rowBaseColor}21;
+  }
+
+  &_can-be-removed {
+    background: #{$rowBaseColor}38;
+  }
+
+  &_can-be-added {
+    opacity: 0.5;
+    border-style: dashed;
+  }
+
+  &_not-available {
+    opacity: 0.2;
+    border-style: dotted;
+    filter: grayscale(100%);
+  }
+}
+
+.perk-tab__perk-arrow {
+  display: block;
+  position: absolute;
+  width: $iconSize;
+  height: $iconSize;
+
+  &:before {
+    @include absoluteCenterPositioning;
+    content: '⇨';
+    display: block;
+    text-align: center;
+    line-height: $iconSize - 8px;
+    font-size: 45px;
+    color: $rowBaseColor;
+  }
+
+  &_filled {
+    // TODO
+  }
+
+  @each $complexityLevel in 0, 1, 2, 3, 4 {
+    &_complexity-#{$complexityLevel} {
+      display: inline-block;
+      left: calc(#{$complexityLevel + 1} * #{$iconSize} + ((#{$complexityLevel} + 0.5) * (100% - #{$iconSize} * #{$complexityLevelsCount}) / #{$complexityLevelsCount - 1}) - 0.5 * #{$iconSize});
+    }
+  }
+}

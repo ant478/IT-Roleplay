@@ -6,10 +6,10 @@ import { getSkills, getDefaultSkills, getSkillsData, Skills } from './skills';
 import { getRoles, getRolesData, Roles, RoleClass } from './roles';
 import { getTechnologies, getTechnologiesData, Technologies } from './technologies';
 import { getPerks, getPerksData, Perks } from './perks';
-import CharacterBackupManager from './CharacterBackupManager';
+import CharacterBackupManager, { CharacterBackupManagerFilled } from './CharacterBackupManager';
 
 export interface AvailablePoints {
-  role: number;
+  roles: number;
   attributes: number;
   skills: number;
   technologies: number;
@@ -17,15 +17,32 @@ export interface AvailablePoints {
 }
 
 const defaultAvailablePoints: AvailablePoints = {
-  role: 0,
+  roles: 0,
   attributes: 0,
   skills: 0,
   technologies: 0,
   perks: 0,
 };
 
+export interface NewCharacter extends Character {
+  id: null;
+  author: null;
+  oldCharacterData: null;
+}
+
+export interface ExistingCharacter extends Character {
+  id: number;
+  author: User;
+  oldCharacterData: CharacterData;
+}
+
+export interface CharacterWithLevelUpInProgress extends Character {
+  backup: CharacterBackupManagerFilled;
+  currentLevelUpRole: RoleClass;
+}
+
 export default class Character {
-  public static createNew(name: string, avatarUrl: string | null = null): Character {
+  public static createNew(name: string, avatarUrl: string | null = null): NewCharacter {
     const newCharacter = new Character(null, name, avatarUrl, null);
 
     newCharacter.attributes = getDefaultAttributes(newCharacter);
@@ -35,10 +52,10 @@ export default class Character {
     newCharacter.perks = {} as any as Perks;
     newCharacter.availablePoints = { ...defaultAvailablePoints };
 
-    return newCharacter;
+    return newCharacter as NewCharacter;
   }
 
-  public static fromExisting(characterData: CharacterData): Character {
+  public static fromExisting(characterData: CharacterData): ExistingCharacter {
     const character = new Character(
       characterData.id,
       characterData.name,
@@ -58,7 +75,7 @@ export default class Character {
     character.availablePoints = { ...characterData.data.availablePoints };
     character.oldCharacterData = characterData;
 
-    return character;
+    return character as ExistingCharacter;
   }
 
   /* base properties */
@@ -80,7 +97,7 @@ export default class Character {
 
   /* internal technical properties */
   public backup: CharacterBackupManager;
-  private _currentLevelUpRole: RoleClass | null = null;
+  public currentLevelUpRole: RoleClass | null = null;
 
   constructor(
     id: number | null,
@@ -103,16 +120,20 @@ export default class Character {
     }
   }
 
-  public isLevelUpInProgress(): boolean {
-    return !!this._currentLevelUpRole;
+  public isLevelUpAvailable(): boolean {
+    return this.availablePoints.roles >= 1;
   }
 
-  public getCurrentLevelUpRole(): RoleClass | null {
-    return this._currentLevelUpRole;
+  public isLevelUpInProgress(): this is CharacterWithLevelUpInProgress {
+    return !!this.currentLevelUpRole;
   }
 
-  public isNew(): boolean {
+  public isNew(): this is NewCharacter {
     return !this.oldCharacterData;
+  }
+
+  public isExisting(): this is ExistingCharacter {
+    return !!this.oldCharacterData;
   }
 
   public getLevel(): number {
@@ -123,15 +144,30 @@ export default class Character {
     return 1;
   }
 
-  public startLevelUp(Role: RoleClass): void {
+  public startLevelUp(): void {
+    if (this.isLevelUpAvailable()) {
+      throw new Error('Level up is already available.');
+    }
+
+    if (this.isLevelUpInProgress()) {
+      throw new Error('Level up is already in progress.');
+    }
+
+    this.backup.make();
+    this.availablePoints.roles = 1;
+  }
+
+  public levelUpInRole(Role: RoleClass): void {
+    if (!this.isLevelUpAvailable()) {
+      throw new Error('Level up is not available.');
+    }
+
     if (this.isLevelUpInProgress()) {
       throw new Error('Level up is already in progress.');
     }
 
     try {
-      this.backup.make();
-      this._currentLevelUpRole = Role;
-      this.availablePoints.role = 1;
+      this.currentLevelUpRole = Role;
 
       if (!this.roles[Role.key]) {
         Role.addRoleToCharacter(this);
@@ -139,7 +175,7 @@ export default class Character {
 
       this.roles[Role.key]!.up();
     } catch (e) {
-      this._currentLevelUpRole = null;
+      this.currentLevelUpRole = null;
       this.backup.restore();
 
       throw e;
@@ -155,21 +191,21 @@ export default class Character {
       throw new Error('Some available points need to be spent.');
     }
 
-    this._currentLevelUpRole = null;
+    this.currentLevelUpRole = null!;
     this.backup.reset();
   }
 
   public cancelLevelUp(): void {
-    if (!this.isLevelUpInProgress()) {
+    if (!this.isLevelUpInProgress() && !this.isLevelUpAvailable()) {
       throw new Error('No level up in progress.');
     }
 
-    this._currentLevelUpRole = null;
+    this.currentLevelUpRole = null;
     this.backup.restore();
   }
 
   public areAllPointsSpent(): boolean {
-    const areRolePointsSpent = this.availablePoints.role === 0;
+    const areRolePointsSpent = this.availablePoints.roles === 0;
     const areAttributesPointsSpent = Math.floor(this.availablePoints.attributes) === 0;
     const arePerksPointsSpent = Math.floor(this.availablePoints.perks) === 0;
 
@@ -189,7 +225,7 @@ export default class Character {
   }
 
   public toUpdateCharacterData(): UpdateCharacterData {
-    if (this.isNew()) {
+    if (!this.isExisting()) {
       throw new Error('New character can not be presented as UpdateCharacterData');
     }
 
@@ -199,11 +235,11 @@ export default class Character {
 
     const updateData = {} as any as UpdateCharacterData;
 
-    if (this.name !== this.oldCharacterData!.name) {
+    if (this.name !== this.oldCharacterData.name) {
       updateData.name = this.name;
     }
 
-    if (this.avatarUrl !== this.oldCharacterData!.avatarUrl) {
+    if (this.avatarUrl !== this.oldCharacterData.avatarUrl) {
       updateData.avatarUrl = this.avatarUrl;
     }
 
@@ -231,7 +267,7 @@ export default class Character {
   }
 
   public toCharacterData(): CharacterData {
-    if (this.isNew()) {
+    if (!this.isExisting()) {
       throw new Error('New character can not be presented as CharacterData');
     }
 
@@ -240,10 +276,10 @@ export default class Character {
     }
 
     return {
-      id: this.id as number,
+      id: this.id,
       name: this.name,
       avatarUrl: this.avatarUrl,
-      author: this.author as User,
+      author: this.author,
       data: this.getRoleplayData(),
       createdAt: this.createdAt.toISOString(),
       updatedAt: this.updatedAt.toISOString(),

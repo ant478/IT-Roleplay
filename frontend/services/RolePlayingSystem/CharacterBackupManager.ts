@@ -7,6 +7,28 @@ import { getRoles, getRolesData } from './roles';
 import { getTechnologies, getTechnologiesData } from './technologies';
 import { getPerks, getPerksData } from './perks';
 
+export interface CharacterBackupManagerEmpty extends CharacterBackupManager {
+  attributes: null;
+  roles: null;
+  skills: null;
+  technologies: null;
+  perks: null;
+  availablePoints: null;
+  isFilled(): false;
+  isEmpty(): true;
+}
+
+export interface CharacterBackupManagerFilled extends CharacterBackupManager {
+  attributes: IntegerDataProperty[];
+  roles: IntegerDataProperty[];
+  skills: IntegerDataProperty[];
+  technologies: BooleanDataProperty[];
+  perks: BooleanDataProperty[];
+  availablePoints: AvailablePoints;
+  isFilled(): true;
+  isEmpty(): false;
+}
+
 export default class CharacterBackupManager {
   public _isEmpty = true;
 
@@ -19,8 +41,12 @@ export default class CharacterBackupManager {
 
   constructor(private readonly owner: Character) {}
 
-  public isEmpty(): boolean {
+  public isEmpty(): this is CharacterBackupManagerEmpty {
     return this._isEmpty;
+  }
+
+  public isFilled(): this is CharacterBackupManagerFilled {
+    return !this._isEmpty;
   }
 
   public make(): void {
@@ -35,7 +61,7 @@ export default class CharacterBackupManager {
   }
 
   public restore(): void {
-    if (this.isEmpty()) {
+    if (this._isEmpty) {
       throw new Error('Backup is empty.');
     }
 

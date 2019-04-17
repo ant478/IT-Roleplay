@@ -6,7 +6,6 @@ import { RouteComponentProps } from 'react-router-dom';
 
 interface CharactersState {
   characters: ShortCharacterData[];
-  errors: any[];
   isLoading: boolean;
 }
 
@@ -16,7 +15,6 @@ export default class CharactersPage extends React.Component<RouteComponentProps,
 
     this.state = {
       characters: [],
-      errors: [],
       isLoading: true,
     };
 
@@ -28,28 +26,26 @@ export default class CharactersPage extends React.Component<RouteComponentProps,
   }
 
   public async componentDidMount(): Promise<void> {
-    document.title = locale.getMessage('pageTitle.home');
+    document.title = locale.getMessage('pageTitle.charactersList');
 
     try {
       const characters = await characterService.getCharacters();
 
-      this.setState({ characters });
-      document.title = locale.getMessage('pageTitle.characters');
+      this.setState({
+        characters,
+        isLoading: false,
+      });
     } catch (error) {
-      this.setState({ errors: [error] });
+      throw error;
     }
-
-    this.setState({ isLoading: false });
   }
 
   public render(): React.ReactNode {
-    const { characters } = this.state;
-
     return (
       <div className="page characters-page">
         <h1 className="characters-page__header">{locale.getMessage('charactersPage.header')}</h1>
         <div className="characters-page__content-wrapper">
-          <CharactersList characters={characters} onCharacterClick={this.handleClickOnCharacter}/>
+          <CharactersList characters={this.state.characters} onCharacterClick={this.handleClickOnCharacter}/>
         </div>
       </div>
     );

@@ -9,7 +9,7 @@ export default class CSS3 extends Technology {
   public static key = 'CSS3' as TechnologyKey;
   public static tags = ['CSS', 'Frontend'] as TechnologyTag[];
   public static basePrice = 3;
-  public static complexityLevel = 3;
+  public static complexityLevel = 2;
   public static group = 'Frontend' as TechnologyGroup;
   public static parent = CSS2;
 

@@ -65,7 +65,7 @@ export default abstract class Technology {
       return false;
     }
 
-    if (character.backup.technologies!.includes(this.id)) {
+    if (character.backup.technologies.includes(this.id)) {
       return false;
     }
 
@@ -77,9 +77,27 @@ export default abstract class Technology {
       throw new Error('Technology cannot be removed from character.');
     }
 
+    const Child = Object.values(character.technologies)
+      .map(technology => technology.constructor as TechnologyClass)
+      .find((Class) => {
+        if (!Class.parent) {
+          return false;
+        }
+
+        return Class.parent.key === this.key;
+      });
+
+    if (Child) {
+      Child.removeFromCharacter(character);
+    }
+
     character.availablePoints.technologies += this.getReversePrice(character);
     delete character.technologies[this.key];
   }
 
   constructor(protected readonly owner: Character) {}
+
+  public getKey(): TechnologyKey {
+    return (this.constructor as TechnologyClass).key;
+  }
 }

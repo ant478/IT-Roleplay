@@ -17,12 +17,16 @@ export default abstract class Skill {
     this.value = value || 0;
   }
 
+  public getKey(): SkillKey {
+    return (this.constructor as SkillClass).key;
+  }
+
   public canBeUpped(): boolean {
     if (!this.owner.isLevelUpInProgress()) {
       return false;
     }
 
-    if (this.value === this.getMaxValue()) {
+    if (this.value >= this.getMaxValue()) {
       return false;
     }
 
@@ -69,10 +73,10 @@ export default abstract class Skill {
     }
 
     const baseRoles = (this.constructor as SkillClass).baseRoles;
-    const currentLevelUpRole = this.owner.getCurrentLevelUpRole()!;
+    const currentLevelUpRole = this.owner.currentLevelUpRole;
     const isRoleSkill = baseRoles.some(({ key }) => currentLevelUpRole.key === key);
 
-    return isRoleSkill ? this.owner.getLevel() + 2 : Math.floor(this.owner.getLevel() / 2 + 1);
+    return isRoleSkill ? this.owner.getLevel() + 1 : Math.floor((this.owner.getLevel() + 1) / 2);
   }
 
   public getPrice(): number {
@@ -81,20 +85,20 @@ export default abstract class Skill {
     }
 
     const baseRoles = (this.constructor as SkillClass).baseRoles;
-    const currentLevelUpRole = this.owner.getCurrentLevelUpRole()!;
+    const currentLevelUpRole = this.owner.currentLevelUpRole;
     const isRoleSkill = baseRoles.some(({ key }) => currentLevelUpRole.key === key);
 
     return isRoleSkill ? 1 : 2;
   }
 
   public getBackupValue(): number {
-    if (this.owner.backup.isEmpty()) {
+    if (!this.owner.backup.isFilled()) {
       throw new Error('Backup is empty');
     }
 
     const currentSkillId = (this.constructor as AttributeClass).id;
 
-    return this.owner.backup.skills!.find(({ id }) => id === currentSkillId)!.value;
+    return this.owner.backup.skills.find(({ id }) => id === currentSkillId)!.value;
   }
 
   public getCalculatedValue(): number {

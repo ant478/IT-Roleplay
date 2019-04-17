@@ -7,7 +7,7 @@ import expect from '../../helpers/requirementsHelper';
 export default class Review3 extends ActivePerk {
   public static id = 9;
   public static key = 'Review3' as PerkKey;
-  public static complexityLevel = 3;
+  public static complexityLevel = 2;
   public static parent = Review2;
 
   public static isCharacterMatchRequirements(character: Character): boolean {

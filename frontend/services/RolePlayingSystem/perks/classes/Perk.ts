@@ -56,7 +56,7 @@ export default abstract class Perk {
       return false;
     }
 
-    if (character.backup.perks!.includes(this.id)) {
+    if (character.backup.perks.includes(this.id)) {
       return false;
     }
 
@@ -65,7 +65,21 @@ export default abstract class Perk {
 
   public static removeFromCharacter(character: Character): void {
     if (!this.canBeRemovedFromCharacter(character)) {
-      throw new Error('Perks cannot be removed from character.');
+      throw new Error('Perk cannot be removed from character.');
+    }
+
+    const Child = Object.values(character.perks)
+      .map(perk => perk.constructor as PerkClass)
+      .find((Class) => {
+        if (!Class.parent) {
+          return false;
+        }
+
+        return Class.parent.key === this.key;
+      });
+
+    if (Child) {
+      Child.removeFromCharacter(character);
     }
 
     delete character.perks[this.key];
@@ -73,4 +87,8 @@ export default abstract class Perk {
   }
 
   constructor(protected readonly owner: Character) {}
+
+  public getKey(): PerkKey {
+    return (this.constructor as PerkClass).key;
+  }
 }

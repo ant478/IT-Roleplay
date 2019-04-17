@@ -9,7 +9,7 @@ export default class JavaScript4 extends Technology {
   public static key = 'JavaScript4' as TechnologyKey;
   public static tags = ['JavaScript', 'Frontend'] as TechnologyTag[];
   public static basePrice = 4;
-  public static complexityLevel = 4;
+  public static complexityLevel = 3;
   public static group = 'Frontend' as TechnologyGroup;
   public static parent = JavaScript3;
 

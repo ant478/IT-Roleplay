@@ -1,0 +1,15 @@
+.mouse-following-popup {
+  position: absolute;
+
+  &_top {
+    transform: translateY(-100%);
+  }
+
+  &_left {
+    transform: translateX(-100%);
+  }
+}
+
+.mouse-following-popup_top.mouse-following-popup_left {
+  transform: translate(-100%, -100%);
+}
