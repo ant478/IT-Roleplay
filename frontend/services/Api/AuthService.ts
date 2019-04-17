@@ -22,6 +22,10 @@ export interface UserLoginData {
   password: string;
 }
 
+interface AuthServiceWithAuthenticatedUser extends AuthService {
+  getCurrentUser(): User;
+}
+
 export class AuthService extends BaseAPIService {
   private currentUser: User | null;
 
@@ -35,7 +39,7 @@ export class AuthService extends BaseAPIService {
       null;
   }
 
-  public isAuthenticated(): boolean {
+  public isAuthenticated(): this is AuthServiceWithAuthenticatedUser {
     return !!this.currentUser;
   }
 
@@ -48,6 +52,19 @@ export class AuthService extends BaseAPIService {
     const options = { method: 'POST', body: JSON.stringify(userRegistrationData) };
 
     return this.makeRequest<User>(location, options);
+  }
+
+  public validateUserSession(): Promise<void> {
+    if (!this.currentUser) {
+      return Promise.resolve();
+    }
+
+    const location = `${USERS_API_LOCATION}/isLoggedIn`;
+
+    return this.makeRequest<void>(location, {}).catch(() => {
+      this.currentUser = null;
+      localStorage.removeItem('currentUser');
+    });
   }
 
   public logIn(userLoginData: UserLoginData): Promise<User> {

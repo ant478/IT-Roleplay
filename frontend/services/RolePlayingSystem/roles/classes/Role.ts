@@ -16,20 +16,28 @@ export default abstract class Role {
     return false;
   }
 
+  public static canBeAddedToCharacter(character: Character): boolean {
+    if (!character.isLevelUpAvailable()) {
+      return false;
+    }
+
+    if (!this.isCharacterMatchRequirements(character)) {
+      return false;
+    }
+
+    if (character.roles[this.key]) {
+      return false;
+    }
+
+    return true;
+  }
+
   public static addRoleToCharacter(character: Character): void {
-    if (!character.isLevelUpInProgress()) {
-      throw new Error('Level up is not in progress.');
+    if (!this.canBeAddedToCharacter(character)) {
+      throw new Error('Role cannot be added to character.');
     }
 
     const Class = this as RoleClass;
-
-    if (!Class.isCharacterMatchRequirements(character)) {
-      throw new Error(`Character ${character.name} does not match requirements of ${Class.key} role`);
-    }
-
-    if (character.roles[Class.key]) {
-      throw new Error(`Character ${character.name} already has ${Class.key} role`);
-    }
 
     character.roles[Class.key] = new Class(character);
   }
@@ -43,12 +51,12 @@ export default abstract class Role {
     this.level = level || 0;
   }
 
-  public canBeUpped(): boolean {
-    if (!this.owner.isLevelUpInProgress()) {
-      return false;
-    }
+  public getKey(): RoleKey {
+    return (this.constructor as RoleClass).key;
+  }
 
-    if (this.owner.availablePoints.role < 1) {
+  public canBeUpped(): boolean {
+    if (!this.owner.isLevelUpAvailable()) {
       return false;
     }
 
@@ -64,7 +72,7 @@ export default abstract class Role {
     const isCreatingCharacter = this.owner.getLevel() === 0;
     const coefficient = isCreatingCharacter ? 2 : 1;
 
-    this.owner.availablePoints.role -= 1;
+    this.owner.availablePoints.roles -= 1;
     this.owner.availablePoints.attributes += isCreatingCharacter ? NEW_CHARACTER_ATTRIBUTES_POINTS_COUNT : Class.attributesPointsCountForLevel;
     this.owner.availablePoints.skills += coefficient * Class.skillsPointsCountForLevel;
     this.owner.availablePoints.technologies += isCreatingCharacter ? 3 : Class.technologiesPointsCountForLevel;

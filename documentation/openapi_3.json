@@ -12,6 +12,23 @@
     }
   },
   "paths": {
+    "/user/isLoggedIn": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Checking if user session exists.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/OK"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
     "/user/register": {
       "post": {
         "tags": ["Users"],
@@ -59,9 +76,6 @@
       "post": {
         "tags": ["Users"],
         "summary": "Logging user out.",
-        "requestBody": {
-          "$ref": "#/components/requestBodies/LoginUser"
-        },
         "responses": {
           "200": {
             "$ref": "#/components/responses/OK"
@@ -353,13 +367,13 @@
       "AvailablePoints": {
         "type": "object",
         "properties": {
-          "role": { "type": "number", "example": 1 },
+          "roles": { "type": "number", "example": 1 },
           "attributes": { "type": "number", "example": 0.25 },
           "skills": { "type": "number", "example": 1 },
           "technologies": { "type": "number", "example": 3 },
           "perks": { "type": "number", "example": 0 }
         },
-        "required": ["role", "attributes", "skills", "technologies", "perks"]
+        "required": ["roles", "attributes", "skills", "technologies", "perks"]
       },
       "CharacterBooleanPropertiesData": {
         "type": "array",

@@ -1,0 +1,80 @@
+.name-and-avatar-tab {
+  padding: 45px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.name-and-avatar-tab__avatar {
+  height: 350px;
+  width: 350px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 18px;
+
+  &_editable {
+    .name-and-avatar-tab__avatar-edit-icon {
+      display: block;
+    }
+  }
+}
+
+.name-and-avatar-tab__avatar-input-wrapper {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.name-and-avatar-tab__avatar-img {
+  height: 100%;
+  @include absoluteCenterTransform;
+}
+
+.name-and-avatar-tab__name {
+  text-align: center;
+  margin-bottom: 30px;
+
+  &_editable {
+    .name-and-avatar-tab__name-edit-icon {
+      display: inline-block;
+    }
+  }
+}
+
+.name-and-avatar-tab__buttons-wrapper {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.name-and-avatar-tab__button {
+  width: 100%;
+  display: block;
+  background-color: transparent;
+  border: 3px solid #6359ff;
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin: 0 0 0 auto;
+  cursor: pointer;
+  font-size: 20px;
+  text-align: center;
+
+  &:not(:last-child) {
+    margin-bottom: 15px;
+  }
+}
+
+.name-and-avatar-tab__avatar-edit-icon {
+  display: none;
+  position: absolute;
+  color: $white;
+  right: 5px;
+  bottom: 5px;
+  cursor: pointer;
+}
+
+.name-and-avatar-tab__name-edit-icon {
+  display: none;
+  color: $white;
+  margin-left: 5px;
+  cursor: pointer;
+}

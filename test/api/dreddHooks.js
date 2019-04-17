@@ -82,6 +82,10 @@ hooks.before('Users > /user/register > Registration of a new user. > 409 > appli
   assignPropertyInRequestBody(transaction, 'login', 'ant478');
 });
 
-hooks.before('Users > /user/logout > Logging user out. > 200 > application/json; charset=utf-8', (transaction) => {
+hooks.before('Users > /user/logout > Logging user out. > 200', (transaction) => {
+  logIn(transaction, 1);
+});
+
+hooks.before('Users > /user/isLoggedIn > Checking if user session exists. > 200 > application/json; charset=utf-8', (transaction) => {
   logIn(transaction, 1);
 });

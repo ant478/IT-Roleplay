@@ -16,6 +16,10 @@ export default abstract class Attribute {
     this.value = value || Class.defaultValue;
   }
 
+  public getKey(): AttributeKey {
+    return (this.constructor as AttributeClass).key;
+  }
+
   public canBeUpped(): boolean {
     if (!this.owner.isLevelUpInProgress()) {
       return false;
@@ -79,13 +83,13 @@ export default abstract class Attribute {
   }
 
   public getBackupValue(): number {
-    if (this.owner.backup.isEmpty()) {
+    if (!this.owner.backup.isFilled()) {
       throw new Error('Backup is empty');
     }
 
     const currentAttributeId = (this.constructor as AttributeClass).id;
 
-    return this.owner.backup.attributes!.find(({ id }) => id === currentAttributeId)!.value;
+    return this.owner.backup.attributes.find(({ id }) => id === currentAttributeId)!.value;
   }
 
   public getCalculatedValue(): number {

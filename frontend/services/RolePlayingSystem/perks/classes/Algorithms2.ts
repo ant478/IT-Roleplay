@@ -7,7 +7,7 @@ import expect from '../../helpers/requirementsHelper';
 export default class Algorithms2 extends PassivePerk {
   public static id = 2;
   public static key = 'Algorithms2' as PerkKey;
-  public static complexityLevel = 2;
+  public static complexityLevel = 1;
   public static parent = Algorithms1;
 
   public static isCharacterMatchRequirements(character: Character): boolean {

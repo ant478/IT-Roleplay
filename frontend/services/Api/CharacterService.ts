@@ -5,7 +5,7 @@ import { DeepPartial } from 'ts-essentials';
 const CHARACTERS_API_LOCATION = '/api/characters';
 
 export interface AvailablePoints {
-  role: number;
+  roles: number;
   attributes: number;
   skills: number;
   technologies: number;

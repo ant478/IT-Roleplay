@@ -9,7 +9,7 @@ export default class CSS2 extends Technology {
   public static key = 'CSS2' as TechnologyKey;
   public static tags = ['CSS', 'Frontend'] as TechnologyTag[];
   public static basePrice = 2;
-  public static complexityLevel = 2;
+  public static complexityLevel = 1;
   public static group = 'Frontend' as TechnologyGroup;
   public static parent = CSS1;
 

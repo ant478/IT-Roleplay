@@ -6,6 +6,14 @@ const USER_PRIVATE_PROPERTIES = require('../models/User').PRIVATE_PROPERTIES;
 const responses = require('../responses');
 const validationHelper = require('../helpers/userInputValidationHelper');
 
+module.exports.isLoggenIn = function isLoggedIn(req, res) {
+  if (!req.user) {
+    return res.status(401).json(new responses.Unauthorized());
+  }
+
+  return res.status(200).json(new responses.OK());
+};
+
 module.exports.register = async function register(req, res) {
   const { login, email, password } = req.body;
 

@@ -1,0 +1,181 @@
+$infoSectionHeight: 64px;
+
+.skills-tab {
+  height: 100%;
+}
+
+.skills-tab__info {
+  height: $infoSectionHeight;
+  text-align: center;
+}
+
+.skills-tab__available-points {
+  display: inline-block;
+  width: 50%;
+  height: 100%;
+  vertical-align: top;
+  line-height: $infoSectionHeight;
+  border-right: 4px solid #d8000b;
+}
+
+.skills-tab__available-points-label {
+  display: inline-block;
+  width: 80%;
+  height: 100%;
+  vertical-align: top;
+  border-right: 4px solid #d8000b;
+}
+
+.skills-tab__available-points-value {
+  display: inline-block;
+  width: 20%;
+  height: 100%;
+  vertical-align: top;
+}
+
+.skills-tab__price-and-role-attachment-wrapper {
+  display: inline-block;
+  width: 50%;
+  height: 100%;
+  vertical-align: top;
+  line-height: $infoSectionHeight / 2 - 2px
+}
+
+.skills-tab__role-attachment {
+  border-top: 2px solid #d8000b;
+  text-align: left;
+  padding-left: 25px;
+}
+
+.skills-tab__price {
+  display: block;
+  height: 50%;
+  border-bottom: 2px solid #d8000b;
+}
+
+.skills-tab__price-value {
+  display: inline-block;
+  width: 20%;
+  height: 100%;
+  vertical-align: top;
+  border-right: 4px solid #d8000b;
+}
+
+.skills-tab__price-label {
+  display: inline-block;
+  width: 80%;
+  height: 100%;
+  vertical-align: top;
+  text-align: left;
+  padding-left: 25px;
+}
+
+.skills-tab__modifier {
+  display: block;
+  height: 50%;
+}
+
+.skills-tab__controls {
+  width: 50%;
+  height: calc(100% - #{$infoSectionHeight});
+  display: inline-block;
+  border-top: 4px solid #d8000b;
+  border-right: 4px solid #d8000b;
+}
+
+.skills-tab__controls-list {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.skills-tab__description {
+  width: 50%;
+  height: calc(100% - #{$infoSectionHeight});
+  display: inline-block;
+  border-top: 4px solid #d8000b;
+  vertical-align: top;
+}
+
+.skills-tab__description-text-container {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.skills-tab__description-text {
+  padding: 20px;
+  text-align: justify;
+}
+
+.skills-tab__control {
+  width: 100%;
+  height: 64px;
+  line-height: 64px;
+  border-bottom: 4px solid #d8000b;
+  position: relative;
+
+  &:last-child {
+    margin-bottom: -4px;
+  }
+
+  &_can-be-upped {
+    & .skills-tab__control-up {
+      display: block;
+    }
+  }
+
+  &_can-be-downed {
+    & .skills-tab__control-down {
+      display: block;
+    }
+  }
+
+  &_selected {
+    background-color: #d8000b12;
+  }
+}
+
+.skills-tab__control-label {
+  display: inline-block;
+  width: 80%;
+  height: 100%;
+  vertical-align: top;
+  text-align: left;
+  padding-left: 20px;
+}
+
+.skills-tab__control-value-area {
+  display: inline-block;
+  width: 20%;
+  height: 100%;
+  vertical-align: top;
+  text-align: center;
+  position: relative;
+}
+
+@mixin controlArrow() {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 24px 24px 24px 0;
+  border-color: transparent #d8000b transparent transparent;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  cursor: pointer;
+}
+
+.skills-tab__control-down {
+  display: none;
+  @include controlArrow();
+  right: calc(50% + 18px);
+}
+
+.skills-tab__control-up {
+  display: none;
+  @include controlArrow();
+  transform: rotate(180deg);
+  left: calc(50% + 18px);
+}
