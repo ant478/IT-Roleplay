@@ -1,67 +1,66 @@
 .character-profile {
   height: 100%;
-  font-size: 20px;
 }
 
 .character-profile__tab-titles-list {
-  height: 31px;
-  line-height: 31px;
+  height: 1.55em;
+  line-height: 1.55em;
   display: flex;
   box-sizing: content-box;
-  border: 4px solid #d8000b;
+  border: 0.2em solid $borders;
   border-bottom: 0;
 }
 
 .character-profile__tab-title {
-  flex: 1;
-  padding: 0 20px;
+  flex-grow: 1;
+  padding: 0 1em;
   text-align: center;
   cursor: pointer;
 
-  &:not(:last-child) {
-    border-right: 4px solid #d8000b;
-  }
-
-  &:hover {
-    text-decoration: underline;
-  }
-
   &_active {
-    text-decoration: underline;
-    background-color: #d8000b38;
+    background-color: #{$select}d1;
+  }
+
+  @include flashBackgroundOnHover(#{$select});
+
+  &:not(:last-child) {
+    border-right: 0.2em solid $borders;
   }
 }
 
 .character-profile__active-tab-wrapper {
   overflow: hidden;
-  height: calc(100% - 35px);
-  border: 4px solid #d8000b;
+  height: calc(100% -  1.75em);
+  border: 0.2em solid $borders;
 
   &:not(:last-child) {
-    height: calc(100% - 131px);
+    height: calc(100% - 6.55em);
   }
 }
 
 .character-profile__buttons {
   text-align: center;
   display: block;
-  padding: 15px;
-  border-left: 4px solid #d8000b;
-  border-right: 4px solid #d8000b;
-  border-bottom: 4px solid #d8000b;
-  height: 96px;
+  padding: 0.75em;
+  border-left: 0.2em solid $borders;
+  border-right: 0.2em solid $borders;
+  border-bottom: 0.2em solid $borders;
+  height: 4.8em;
 }
 
 .character-profile__button {
-  width: calc(50% - 13px);
+  width: calc(50% - 0.65em);
   display: inline-block;
   background-color: transparent;
-  border: 3px solid #6359ff;
-  border-radius: 14px;
-  padding: 18px 20px;
+  border: 0.15em solid $action;
+  border-radius: 0.15rem;
+  padding: 0.9em 1em;
   cursor: pointer;
-  font-size: 20px;
   text-align: center;
+
+  &:not(&_disabled) {
+    @include flashBorderOnHover($select);
+  }
 
   &_disabled {
     cursor: default;
@@ -69,6 +68,16 @@
   }
 
   &:not(:last-child) {
-    margin-right: 25px;
+    margin-right: 1.25em;
   }
+}
+
+.character-profile__cannot-save-popup {
+  width: 25rem;
+  background: #3c3c3c;
+  border-radius: 0.5rem;
+  color: $text;
+  padding: 0.75em;
+  font-size: 0.9em;
+  text-align: justify;
 }

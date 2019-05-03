@@ -1,61 +1,107 @@
-import classNames from 'classnames';
 import * as _ from 'lodash';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import authService from '../../services/Api/AuthService';
 import locale from '../../services/LocalisationService';
 import { LoginForm, LoginFormData } from '../CommonForms';
+import classNames from 'classnames';
+import MainLoader from '../../components/MainLoader';
+
+interface HeaderProps {
+  onCurrentUserChanged: () => any;
+}
 
 interface HeaderState {
   isLoginFormExpanded: boolean;
   loginErrors: string[];
 }
 
-export default class Header extends React.Component<{}, HeaderState> {
-  constructor(props: {}) {
+export default class Header extends React.Component<HeaderProps, HeaderState> {
+  private loginFormContainer = React.createRef<HTMLLIElement>();
+
+  constructor(props: HeaderProps) {
     super(props);
 
     this.state = {
       isLoginFormExpanded: false,
       loginErrors: [],
     };
-
-    this.onSubmitLoginForm = this.onSubmitLoginForm.bind(this);
-    this.onLoginClick = this.onLoginClick.bind(this);
-    this.onLogoutClick = this.onLogoutClick.bind(this);
   }
 
-  public async onSubmitLoginForm(userInput: LoginFormData): Promise<void> {
-    if (!this.isUserInputValid(userInput)) {
-      this.setState({ loginErrors: [locale.getMessage('error.incorrectInput')] });
+  public componentDidMount(): void {
+    document.addEventListener('click', this.handleClick, true);
+  }
+
+  public componentWillUnmount(): void {
+    document.removeEventListener('click', this.handleClick, true);
+  }
+
+  public handleClick = (event: MouseEvent): void => {
+    if (!this.loginFormContainer.current || !this.state.isLoginFormExpanded) {
       return;
     }
 
-    const loginData = _.pick(userInput, ['login', 'password']);
+    const isClickOutsideLoginForm = !this.loginFormContainer.current.contains(event.target as Element);
 
-    try {
-      await authService.logIn(loginData);
-      window.location.reload();
-    } catch (error) {
-      this.setState({ loginErrors: [error.message] });
+    if (isClickOutsideLoginForm) {
+      this.setState({
+        isLoginFormExpanded: false,
+        loginErrors: [],
+      });
     }
   }
 
-  public onLoginClick(_event: React.MouseEvent): void {
-    this.setState({ isLoginFormExpanded: !this.state.isLoginFormExpanded });
+  public onSubmitLoginForm = async (userInput: LoginFormData): Promise<void> => {
+    const loginData = _.pick(userInput, ['login', 'password']);
+
+    await MainLoader.withLoader(() =>
+      authService.logIn(loginData).then(() => {
+        this.props.onCurrentUserChanged();
+      }).then(() => {
+        this.setState({ isLoginFormExpanded: false });
+      }).catch((error) => {
+        const errorMessage = error.code && error.code === 400 ?
+          locale.getMessage('login.error.400') :
+          locale.getMessage('error.500');
+
+        this.setState({
+          loginErrors: [errorMessage],
+        });
+      }),
+    );
   }
 
-  public async onLogoutClick(_event: React.MouseEvent): Promise<void> {
-    await authService.logOut();
-    window.location.reload();
+  public onLoginClick = (event: React.MouseEvent): void => {
+    event.preventDefault();
+
+    this.setState({
+      isLoginFormExpanded: !this.state.isLoginFormExpanded,
+      loginErrors: [],
+    });
   }
 
-  public renderLogo(): React.ReactNode {
+  public onLogoutClick = async (event: React.MouseEvent): Promise<void> => {
+    event.preventDefault();
+
+    await MainLoader.withLoader(() =>
+      authService.logOut().then(() => {
+        this.props.onCurrentUserChanged();
+      }),
+    );
+  }
+
+  public renderStatus(): React.ReactNode {
+    const classes = classNames('header__status', {
+      header__status_authenticated: authService.isAuthenticated(),
+    });
+
+    const message = authService.isAuthenticated() ?
+      locale.getMessage('header.status.authenticated', { login: authService.getCurrentUser().login }) :
+      locale.getMessage('header.status.notAuthenticated');
+
     return (
-      <div className="header__logo">
-        <Link className="header__logo-link" to="/">
-          <img className="header__logo-img" src="https://www.designfreelogoonline.com/wp-content/uploads/2015/05/00496-cat-logo-design-free-logomaker-01.png" />
-        </Link>
+      <div className={classes}>
+        <span className="header__status-message">{message}</span>
       </div>
     );
   }
@@ -70,17 +116,23 @@ export default class Header extends React.Component<{}, HeaderState> {
     );
   }
 
-  public renderLoginButton(): React.ReactNode {
-    const containerClassNames = classNames('header__login-form-container', {
+  public renderLoginForm(): React.ReactNode {
+    const classes = classNames('header__login-form-container', {
       'header__login-form-container_expanded': this.state.isLoginFormExpanded,
     });
 
     return (
-      <li key="login" className="header__navigation-element header__navigation-element_login">
-        <a className="header__navigation-link" href="#" onClick={this.onLoginClick}>{locale.getMessage('navigation.login')}</a>
-        <div className={containerClassNames}>
-          <LoginForm onSubmit={this.onSubmitLoginForm} errors={this.state.loginErrors} />
-        </div>
+      <div className={classes}>
+        <LoginForm onSubmit={this.onSubmitLoginForm} errors={this.state.loginErrors} />
+      </div>
+    );
+  }
+
+  public renderLoginButton(): React.ReactNode {
+    return (
+      <li key="login" className="header__navigation-element header__navigation-element_login" ref={this.loginFormContainer}>
+        <a className="header__navigation-link" href="#" onClick={this.onLoginClick}>{locale.getMessage('header.navigation.login')}</a>
+        {this.renderLoginForm()}
       </li>
     );
   }
@@ -88,7 +140,7 @@ export default class Header extends React.Component<{}, HeaderState> {
   public renderLogoutButton(): React.ReactNode {
     return (
       <li key="logout" className="header__navigation-element" onClick={this.onLogoutClick}>
-        <a className="header__navigation-link" href="#">{locale.getMessage('navigation.logout')}</a>
+        <a className="header__navigation-link" href="#">{locale.getMessage('header.navigation.logout')}</a>
       </li>
     );
   }
@@ -96,15 +148,15 @@ export default class Header extends React.Component<{}, HeaderState> {
   public renderNavigationElements(): React.ReactNode[] {
     if (!authService.isAuthenticated()) {
       return [
-        this.renderNavigationElement('/characters', locale.getMessage('navigation.charactersList')),
-        this.renderNavigationElement('/register', locale.getMessage('navigation.register')),
+        this.renderNavigationElement('/characters', locale.getMessage('header.navigation.charactersList')),
+        this.renderNavigationElement('/register', locale.getMessage('header.navigation.register')),
         this.renderLoginButton(),
       ];
     }
 
     return [
-      this.renderNavigationElement('/characters', locale.getMessage('navigation.charactersList')),
-      this.renderNavigationElement('/characters/new', locale.getMessage('navigation.newCharacter')),
+      this.renderNavigationElement('/characters', locale.getMessage('header.navigation.charactersList')),
+      this.renderNavigationElement('/characters/new', locale.getMessage('header.navigation.newCharacter')),
       this.renderLogoutButton(),
     ];
   }
@@ -122,13 +174,9 @@ export default class Header extends React.Component<{}, HeaderState> {
   public render(): React.ReactNode {
     return (
       <header className="header">
+        {this.renderStatus()}
         {this.renderNavigation()}
-        {this.renderLogo()}
       </header>
     );
-  }
-
-  private isUserInputValid(_userInput: LoginFormData): boolean {
-    return true; // TODO: share validation with backend
   }
 }

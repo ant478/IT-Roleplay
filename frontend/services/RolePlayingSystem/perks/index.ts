@@ -38,7 +38,7 @@ export const perkUsageTypes: Record<PerkUsageTypeName, PerkUsageTypeKey> = {
   passive: 'Passive',
 };
 
-const perkClasses = [
+export const perkClasses = [
   Algorithms1, Algorithms2, Algorithms3,
   Patterns1, Patterns2, Patterns3,
   Review1, Review2, Review3,
@@ -58,7 +58,7 @@ export type Perk = Algorithms1 | Algorithms2 | Algorithms3 |
 export type Perks = Record<PerkKey, Perk>;
 
 export function getPerks(character: Character, ids: BooleanDataProperty[]): Perks {
-  return getInstances<Perks>(character, ids, perkClassesWithKeys);
+  return getInstances<Perks>(character, ids, perkClasses);
 }
 
 export function getPerksData(perks: Perks): BooleanDataProperty[] {

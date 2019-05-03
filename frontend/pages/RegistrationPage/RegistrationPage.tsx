@@ -3,49 +3,61 @@ import * as React from 'react';
 import { RegistrationForm, RegistrationFormData } from '../../components/CommonForms';
 import authService from '../../services/Api/AuthService';
 import locale from '../../services/LocalisationService';
+import MainLoader from '../../components/MainLoader';
+import { RouteComponentProps, match } from 'react-router-dom';
+import OrangeScrollbar from '../../components/OrangeScrollbar';
+import PageHeader from '../../components/PageHeader';
 
 interface RegistrationPageState {
   errors: string[];
-  isSuccessfullyRegistered: boolean;
 }
 
-export default class RegistrationPage extends React.Component<{}, RegistrationPageState> {
-  constructor(props: {}) {
+export default class RegistrationPage extends React.PureComponent<RouteComponentProps, RegistrationPageState> {
+  public static async preload(_matchParams: match): Promise<{}> {
+    return {};
+  }
+
+  constructor(props: RouteComponentProps) {
     super(props);
 
     this.state = {
       errors: [],
-      isSuccessfullyRegistered: false,
     };
-
-    this.onRegistrationFormSubmitted = this.onRegistrationFormSubmitted.bind(this);
   }
 
   public componentDidMount(): void {
     document.title = locale.getMessage('pageTitle.registration');
   }
 
-  public async onRegistrationFormSubmitted(userInput: RegistrationFormData): Promise<void> {
-    if (!this.isUserInputValid(userInput)) {
-      this.setState({ errors: [locale.getMessage('error.incorrectInput')] });
-      return;
-    }
+  public onRegistrationFormSubmitted = async (userInput: RegistrationFormData): Promise<void> => {
+    await MainLoader.withLoader(async () => {
+      try {
+        const registrationData = _.pick(userInput, ['login', 'email', 'password']);
 
-    const registrationData = _.pick(userInput, ['login', 'email', 'password']);
+        await authService.register(registrationData);
 
-    try {
-      await authService.register(registrationData);
-      this.setState({ isSuccessfullyRegistered: true });
-    } catch (error) {
-      this.setState({ errors: [error.message] });
-    }
+        const loginData = _.pick(userInput, ['login', 'password']);
+
+        await authService.logIn(loginData);
+
+        this.props.history.push('/characters/');
+      } catch (error) {
+        let errorMessage;
+
+        if (error.code && error.code === 400) {
+          errorMessage = locale.getMessage('registration.error.400');
+        } else if (error.code && error.code === 409) {
+          errorMessage = locale.getMessage('registration.error.409');
+        } else {
+          errorMessage = locale.getMessage('error.500');
+        }
+
+        this.setState({ errors: [errorMessage] });
+      }
+    });
   }
 
   public renderRegistrationForm(): React.ReactNode | null {
-    if (this.state.isSuccessfullyRegistered) {
-      return null;
-    }
-
     return (
       <RegistrationForm
         onSubmit={this.onRegistrationFormSubmitted}
@@ -54,31 +66,16 @@ export default class RegistrationPage extends React.Component<{}, RegistrationPa
     );
   }
 
-  public renderConfirmationMessage(): React.ReactNode | null {
-    if (!this.state.isSuccessfullyRegistered) {
-      return null;
-    }
-
-    return (
-      <span className="registration-page__confirmation-message">
-        {locale.getMessage('registration.success')}
-      </span>
-    );
-  }
-
   public render(): React.ReactNode {
     return (
       <div className="page registration-page">
-        <h1 className="registration-page__header">{locale.getMessage('registration.pageHeader')}</h1>
-        <div className="registration-page__content-wrapper">
-          {this.renderRegistrationForm()}
-          {this.renderConfirmationMessage()}
-        </div>
+        <OrangeScrollbar>
+          <PageHeader message={locale.getMessage('registration.pageHeader')}/>
+          <div className="registration-page__content-wrapper">
+            {this.renderRegistrationForm()}
+          </div>
+        </OrangeScrollbar>
       </div>
     );
-  }
-
-  private isUserInputValid(_userInput: RegistrationFormData): boolean {
-    return true; // TODO: share validation with backend
   }
 }

@@ -1,64 +1,81 @@
 import * as React from 'react';
-import authService from '../../services/Api/AuthService';
-import { Redirect, Route, Switch } from 'react-router-dom';
-import Footer from '../../components/Footer';
+import authService, { User } from '../../services/Api/AuthService';
+import { Redirect, Route, Switch, withRouter, RouteComponentProps, matchPath } from 'react-router-dom';
 import Header from '../../components/Header';
 import MouseFollowingPopup from '../../components/MouseFollowingPopup';
-import CharacterPage from '../../pages/CharacterPage';
-import NewCharacterPage from '../../pages/NewCharacterPage';
-import CharactersPage from '../../pages/CharactersPage';
-import HomePage from '../../pages/HomePage';
-import RegistrationPage from '../../pages/RegistrationPage';
-import ErrorPage from '../../pages/ErrorPage';
-import ErrorsHandler from '../../components/ErrorsHandler';
+import MainLoader from '../../components/MainLoader';
+import HighTechContainer from '../../components/HighTechContainer';
+import UndergroundBroadcast from '../../components/UndergroundBroadcast';
+import ErrorsHandler from '../ErrorsHandler/ErrorsHandler';
+import routeConfigs from './routeConfigs';
+import ExtendedRoute from '../ExtendedRoute';
 
-const redirectHome = () => <Redirect to="/" />;
-
-const PrivateRoute = ({ component: Component, ...rest }: { component: React.ComponentClass<any, any>, [key: string]: any }) => {
-  const redirectAuthenticatedOrRedirect = (props: any) => (
-    authService.isAuthenticated() ? (<Component {...props}/>) : (<Redirect to="/"/>)
-  );
-
-  return (<Route {...rest} render={redirectAuthenticatedOrRedirect}/>);
-};
+const redirectHome = () => <Redirect to="/characters" />; // <Redirect to="/" />;
+const isAuthenticated = () => authService.isAuthenticated();
+const isNotAuthenticated = () => !authService.isAuthenticated();
 
 interface AppState {
-  isLoading: boolean;
+  isPreloading: boolean;
+  preloadedProps: any;
+  currentUser: User | null;
 }
 
-export default class App extends React.Component<{}, AppState> {
-  constructor(props: {}) {
+const AppClass = class App extends React.Component<RouteComponentProps, AppState> {
+  constructor(props: RouteComponentProps) {
     super(props);
 
     this.state = {
-      isLoading: true,
+      isPreloading: true,
+      preloadedProps: {},
+      currentUser: authService.getCurrentUser(),
     };
   }
 
-  public async componentDidMount(): Promise<void> {
-    await authService.validateUserSession();
+  public onCurrentUserChanged = (): void => {
+    this.setState({ currentUser: authService.getCurrentUser() });
+  }
 
-    this.setState({ isLoading: false });
+  public shouldComponentUpdate(_nextProps: RouteComponentProps, nextState: AppState): boolean {
+    return !nextState.isPreloading;
+  }
+
+  public async componentWillReceiveProps(nextProps: RouteComponentProps): Promise<void> {
+    if (nextProps.location.pathname === this.props.location.pathname) {
+      return;
+    }
+
+    await MainLoader.withLoader(() =>
+      this.preloadNextRoute(nextProps),
+    );
+  }
+
+  public async componentDidMount(): Promise<void> {
+    const validatingUserSession = authService.validateUserSession().catch(() => {
+      this.onCurrentUserChanged();
+    });
+    const preloadingNextRoute = this.preloadNextRoute(this.props);
+
+    await MainLoader.withLoader(() =>
+      Promise.all([validatingUserSession, preloadingNextRoute]),
+    );
   }
 
   public renderMain(): React.ReactNode {
-    if (this.state.isLoading) {
+    if (this.state.isPreloading) {
       return null;
     }
 
     return (
       <main className="main">
-        <ErrorsHandler redirectPath="/error">
-          <Switch>
-            <Route exact={true} path="/" component={HomePage} />
-            <Route path="/register" component={RegistrationPage} />
-            <Route exact={true} path="/characters" component={CharactersPage} />
-            <PrivateRoute exact={true} path="/characters/new" component={NewCharacterPage} />
-            <Route path="/characters/:characterId" component={CharacterPage} />
-            <Route exact={true} path="/error" component={ErrorPage} />
-            <Route component={redirectHome} />
-          </Switch>
-        </ErrorsHandler>
+        <Switch>
+          {/*<ExtendedRoute {...routeConfigs.homePage} preloadedProps={this.state.preloadedProps}/> not yet implemented*/}
+          <ExtendedRoute {...routeConfigs.registrationPage} condition={isNotAuthenticated} preloadedProps={this.state.preloadedProps} />
+          <ExtendedRoute {...routeConfigs.charactersPage} preloadedProps={this.state.preloadedProps} />
+          <ExtendedRoute {...routeConfigs.newCharacterPage} condition={isAuthenticated} preloadedProps={this.state.preloadedProps} />
+          <ExtendedRoute {...routeConfigs.characterPage} preloadedProps={this.state.preloadedProps} />
+          <ExtendedRoute {...routeConfigs.errorPage} preloadedProps={this.state.preloadedProps} />
+          <Route component={redirectHome} />
+        </Switch>
       </main>
     );
   }
@@ -66,11 +83,41 @@ export default class App extends React.Component<{}, AppState> {
   public render(): React.ReactNode {
     return (
       <div className="app">
-        <Header />
-        {this.renderMain()}
-        <Footer />
+        <HighTechContainer backSide={UndergroundBroadcast}>
+          <ErrorsHandler redirectPath="/error">
+            <MainLoader isInitiallyDisplayed={true}/>
+            <Header onCurrentUserChanged={this.onCurrentUserChanged}/>
+            {this.renderMain()}
+          </ErrorsHandler>
+        </HighTechContainer>
         <MouseFollowingPopup />
       </div>
     );
   }
-}
+
+  private async preloadNextRoute(nextProps: RouteComponentProps): Promise<void> {
+    const matchingRouteConfig = Object.values(routeConfigs).find(config => !!matchPath(nextProps.location.pathname, config));
+    const Component = matchingRouteConfig ? matchingRouteConfig.component : null;
+
+    if (!Component) {
+      this.setState({
+        isPreloading: false,
+        preloadedProps: {},
+      });
+
+      return;
+    }
+
+    this.setState({ isPreloading: true });
+
+    const matchParams = matchPath(nextProps.location.pathname, matchingRouteConfig!)!;
+    const preloadedProps = await Component.preload(matchParams);
+
+    this.setState({
+      preloadedProps,
+      isPreloading: false,
+    });
+  }
+};
+
+export default withRouter(AppClass);

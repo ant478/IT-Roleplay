@@ -22,7 +22,7 @@ export class LocalisationService {
     this.localeConfig = locales[key];
   }
 
-  public getMessage(path: string, args: Record<string, any> = {}): string {
+  public getMessage(path: string, args: Record<string, string | number> = {}): string {
     const rawMessage = _.get(this.localeConfig, path);
 
     if (!_.isString(rawMessage)) {

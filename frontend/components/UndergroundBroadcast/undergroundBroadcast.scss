@@ -1,0 +1,115 @@
+.underground-broadcast {
+  @include absoluteCenterPositioning;
+}
+
+.underground-broadcast__status {
+  height: 2.5em;
+  padding-left: 2.2em;
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    height: 0.8em;
+    width: 0.8em;
+    top: 0;
+    bottom: 0.16em;
+    left: 0.8em;
+    border-radius: 1em;
+    margin: auto;
+  }
+
+  &_lost, &_disabled {
+    @include statusBlinker;
+
+    &:before {
+      background-color: $error;
+    }
+
+    .underground-broadcast__status-message {
+      color: $error;
+    }
+  }
+
+  &_establishing {
+    @include statusBlinker;
+
+    &:before {
+      background-color: $select;
+    }
+
+    .underground-broadcast__status-message {
+      color: $select;
+    }
+  }
+
+  &_established {
+    &:before {
+      background-color: #0FDC00;
+    }
+
+    .underground-broadcast__status-message {
+      color: #066ab5;
+    }
+  }
+}
+
+.underground-broadcast__status-message {
+  line-height: 2.5em;
+  height: 100%;
+  display: block;
+}
+
+.underground-broadcast__screen {
+  height: calc(100% - 4.5em);
+  width: calc(100% - 3em);
+  margin: 0.5em 1.5em 1.5em;
+  border: 0.2em solid $borders;
+  background-size: cover;
+  background-image: url('./resources/images/UndergroundBroadcast__NoSignal.gif');
+  background-repeat: no-repeat;
+  background-position: center;
+  animation-name: signal2;
+
+  &_red-window {
+    animation-name: signal1;
+    background-size: contain;
+    background-image: url('./resources/images/UndergroundBroadcast__RedWindow.gif');
+    background-color: #0c0b07;
+  }
+
+  &_blood-from-the-eyes {
+    animation-name: signal1;
+    background-size: contain;
+    background-image: url('./resources/images/UndergroundBroadcast__BloodFromTheEyes.gif');
+    background-color: #010e0f;
+  }
+
+  &_help-me {
+    animation-name: signal1;
+    background-size: contain;
+    background-image: url('./resources/images/UndergroundBroadcast__HelpMe.gif');
+    background-color: #010000;
+  }
+
+  &_disabled {
+    animation-name: signal1;
+    background-image: none;
+  }
+
+  animation-iteration-count: 1;
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(0, 1.63, 0, 0.69);
+
+  @keyframes signal1 {
+    50% {
+      background-image: url("./resources/images/UndergroundBroadcast__WeakSignal.gif");
+    }
+  }
+
+  @keyframes signal2 {
+    50% {
+      background-image: url("./resources/images/UndergroundBroadcast__WeakSignal.gif");
+    }
+  }
+}

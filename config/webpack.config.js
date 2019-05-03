@@ -3,22 +3,24 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const postcssPresetEnv = require('postcss-preset-env');
+const cssnano = require('cssnano');
 
 const devMode = process.env.NODE_ENV !== 'production';
 
-const presetEnvOptions = {
-  targets: '> 0.25%, not dead',
+const babelPresetEnvOptions = {
   useBuiltIns: 'usage',
   modules: false,
+  corejs: '3.0.1',
 };
 
 const babelOptions = {
-  presets: [['@babel/preset-env', presetEnvOptions]],
+  presets: [['@babel/preset-env', babelPresetEnvOptions]],
   plugins: ['@babel/plugin-transform-runtime'],
 };
 
 const babelReactOptions = {
-  presets: [['@babel/preset-env', presetEnvOptions], '@babel/react'],
+  presets: [['@babel/preset-env', babelPresetEnvOptions], '@babel/react'],
   plugins: ['@babel/plugin-transform-runtime'],
 };
 
@@ -75,6 +77,19 @@ const config = {
         devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
         'css-loader',
         {
+          loader: 'postcss-loader',
+          options: {
+            config: {
+              path: path.resolve(__dirname, './config'),
+            },
+            plugins: () => {
+              const productionPlugins = [postcssPresetEnv(), cssnano()];
+              const devPlugins = [postcssPresetEnv()];
+
+              return devMode ? devPlugins : productionPlugins;
+            },
+          },
+        }, {
           loader: 'sass-loader',
           options: {
             data: '@import "variables";',
@@ -84,18 +99,34 @@ const config = {
           },
         },
       ],
+    }, {
+      test: /\.(png|jpe?g|gif)$/,
+      use: [{
+        loader: 'file-loader',
+        options: {
+          name: '/resources/images/[name].[ext]',
+        },
+      }],
+    }, {
+      test: /\.(woff(2)?|ttf|eot|svg|otf)(\?v=\d+\.\d+\.\d+)?$/,
+      use: [{
+        loader: 'file-loader',
+        options: {
+          name: '/resources/fonts/[hash].[ext]',
+        },
+      }],
     }],
   },
   resolve: {
     extensions: ['.js', '.json', '.jsx', '.ts', '.tsx'],
   },
-  devtool: 'source-map',
+  devtool: devMode ? 'source-map' : 'none',
   watchOptions: {
     ignored: /node_modules/,
   },
   plugins: [
-    new CleanWebpackPlugin(['build'], {
-      root: path.resolve(__dirname, '../frontend'),
+    new CleanWebpackPlugin({
+      cleanStaleWebpackAssets: false,
     }),
     new MiniCssExtractPlugin({
       filename: 'style.css',

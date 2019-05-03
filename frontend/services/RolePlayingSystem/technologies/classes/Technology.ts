@@ -26,7 +26,7 @@ export default abstract class Technology {
   }
 
   public static canBeAddedToCharacter(character: Character): boolean {
-    if (!character.isLevelUpInProgress()) {
+    if (!character.isLevelUpRoleSelected()) {
       return false;
     }
 
@@ -57,7 +57,7 @@ export default abstract class Technology {
   }
 
   public static canBeRemovedFromCharacter(character: Character): boolean {
-    if (!character.isLevelUpInProgress()) {
+    if (!character.isLevelUpRoleSelected()) {
       return false;
     }
 

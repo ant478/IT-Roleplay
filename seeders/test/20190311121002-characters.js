@@ -2,7 +2,7 @@ module.exports = {
   up: queryInterface => queryInterface.bulkInsert('characters', [{
     id: 1,
     name: 'Thomas Anderson',
-    avatar_url: 'https://upload.wikimedia.org/wikipedia/ru/4/4c/Neo2.jpg',
+    avatar_id: 'IT-Roleplay/avatar/default.jpg',
     author_id: 1,
     data: JSON.stringify({
       attributes: [
@@ -23,7 +23,7 @@ module.exports = {
   }, {
     id: 2,
     name: 'Антон Городецкий',
-    avatar_url: 'https://vignette.wikia.nocookie.net/dozory/images/f/fd/Habensky_00000.jpg/revision/latest',
+    avatar_id: 'IT-Roleplay/avatar/default.jpg',
     author_id: 1,
     data: JSON.stringify({
       attributes: [

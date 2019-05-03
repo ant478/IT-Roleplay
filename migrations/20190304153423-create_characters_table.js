@@ -11,8 +11,8 @@ module.exports = {
         type: Sequelize.STRING(255),
         allowNull: false,
       },
-      avatar_url: {
-        type: Sequelize.STRING(2083),
+      avatar_id: {
+        type: Sequelize.STRING(255),
       },
       author_id: {
         type: Sequelize.INTEGER.UNSIGNED,

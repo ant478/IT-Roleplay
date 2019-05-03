@@ -12,20 +12,20 @@ import CSS2 from './classes/CSS2';
 import CSS3 from './classes/CSS3';
 import { getInstances, getBooleanData, BooleanDataProperty } from '../helpers/characterBooleanDataConverter';
 
-type TechnologyKeyName = 'javaScrip1' | 'javaScrip2' | 'javaScrip3' | 'javaScrip4' | 'javaScrip5' |
+type TechnologyKeyName = 'javaScript1' | 'javaScript2' | 'javaScript3' | 'javaScript4' | 'javaScript5' |
   'HTML1' | 'HTML2' | 'HTML3' |
   'CSS1' | 'CSS2' | 'CSS3';
 
-export type TechnologyKey = 'JavaScrip1' | 'JavaScrip2' | 'JavaScrip3' | 'JavaScrip4' | 'JavaScrip5' |
+export type TechnologyKey = 'JavaScript1' | 'JavaScript2' | 'JavaScript3' | 'JavaScript4' | 'JavaScript5' |
   'HTML1' | 'HTML2' | 'HTML3' |
   'CSS1' | 'CSS2' | 'CSS3';
 
 export const technologyKeys: Record<TechnologyKeyName, TechnologyKey> = {
-  javaScrip1: 'JavaScrip1',
-  javaScrip2: 'JavaScrip2',
-  javaScrip3: 'JavaScrip3',
-  javaScrip4: 'JavaScrip4',
-  javaScrip5: 'JavaScrip5',
+  javaScript1: 'JavaScript1',
+  javaScript2: 'JavaScript2',
+  javaScript3: 'JavaScript3',
+  javaScript4: 'JavaScript4',
+  javaScript5: 'JavaScript5',
   HTML1: 'HTML1',
   HTML2: 'HTML2',
   HTML3: 'HTML3',
@@ -52,7 +52,7 @@ export const technologyGroups: Record<technologyGroupNames, TechnologyGroup> = {
   backend: 'Backend',
 };
 
-const technologyClasses = [
+export const technologyClasses = [
   JavaScript1, JavaScript2, JavaScript3, JavaScript4, JavaScript5,
   HTML1, HTML2, HTML3,
   CSS1, CSS2, CSS3,
@@ -72,7 +72,7 @@ export type Technology = JavaScript1 | JavaScript2 | JavaScript3 | JavaScript4 |
 export type Technologies = Record<TechnologyKey, Technology>;
 
 export function getTechnologies(character: Character, ids: BooleanDataProperty[]): Technologies {
-  return getInstances<Technologies>(character, ids, technologyClassesWithKeys);
+  return getInstances<Technologies>(character, ids, technologyClasses);
 }
 
 export function getTechnologiesData(technologies: Technologies): BooleanDataProperty[] {

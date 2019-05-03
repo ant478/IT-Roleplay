@@ -4,52 +4,78 @@
 
 .common-form__label {
   display: block;
-  font-size: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 1em;
 
   &_single-checkbox {
     position: relative;
-    padding-left: 28px;
+    padding-left: 1.5em;
   }
 }
 
 .common-form__error {
   display: block;
-  background: #ff7676;
-  padding: 15px;
-  border: 2px solid #ff0000;
-  margin-bottom: 15px;
+  background: $error;
+  padding: 0.75em;
+  border: 0.1em solid #f00;
+  margin-bottom: 0.75em;
 }
 
 .common-form__imput {
+  color: $text;
+  caret-color: $text;
   display: block;
   width: 100%;
-  border-radius: 8px;
-  height: 37px;
-  border: 2px solid #777;
-  padding: 0 10px;
-  font-size: 18px;
-  margin-top: 8px;
-}
+  border: 0.2em solid $input;
+  background: $background;
+  padding: 0.25em 0.5em;
+  margin-top: 0.4em;
+  outline: none;
+  font: inherit;
 
-.common-form__single-checkbox {
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  margin: 0;
-  height: 20px;
-  width: 20px;
+  @include flashBorderOnHover($select);
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0 1.5em $background inset !important;
+  };
+
+  &:-webkit-autofill {
+    -webkit-text-fill-color: $text !important;
+  }
+
+  &:required {
+    box-shadow: none;
+  }
+
+  &:focus {
+    transition: border-color 0s;
+    border-color: $select;
+  }
 }
 
 .common-form__submit-button {
   display: block;
-  height: 40px;
-  background-color: #004fc5;
-  border: 2px solid #0c00c5;
-  color: #fff;
-  font-size: 17px;
-  padding: 0 12px;
+  height: 2em;
+  background-color: transparent;
+  border-radius: 0.15rem;
+  border: 0.15em solid $action;
+  color: $text;
+  padding: 0 0.6em;
   margin: 0 0 0 auto;
   cursor: pointer;
+  outline: none;
+  font: inherit;
+
+  &::-moz-focus-inner {
+    border: 0;
+  }
+
+  @include flashBorderOnHover($select);
+
+  &:focus {
+    transition: border-color 0s;
+    border-color: $select;
+  }
 }

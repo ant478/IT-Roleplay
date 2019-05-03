@@ -12,6 +12,29 @@
     }
   },
   "paths": {
+    "/avatars": {
+      "post": {
+        "tags": ["Avatars"],
+        "summary": "Uploads an avatar.",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/AvatarUploadData"
+        },
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/AvatarUploaded"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
     "/user/isLoggedIn": {
       "get": {
         "tags": ["Users"],
@@ -93,6 +116,28 @@
       "get": {
         "tags": ["Characters"],
         "summary": "Gets list of character short descriptions.",
+        "parameters": [{
+          "in": "query",
+          "name": "offset",
+          "description": "The number of items to skip before starting to collect the result set.",
+          "schema": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0,
+            "example": 0
+          }
+        }, {
+          "in": "query",
+          "name": "limit",
+          "description": "The numbers of items to return.",
+          "schema": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0,
+            "maximum": 100,
+            "example": 10
+          }
+        }],
         "responses": {
           "200": {
             "$ref": "#/components/responses/CharactersList"
@@ -246,11 +291,10 @@
             "description": "Name of a character.",
             "example": "Thomas Anderson"
           },
-          "avatarUrl": {
+          "avatarId": {
             "type": "string",
-            "format": "url",
-            "description": "URL of an image that will be displayed as characters avatar.",
-            "example": "https://upload.wikimedia.org/wikipedia/ru/4/4c/Neo2.jpg"
+            "description": "Cloudinary public id and extension of an image that will be displayed as characters avatar.",
+            "example": "IT-Roleplay/avatar/default.jpg"
           },
           "data": {
             "$ref": "#/components/schemas/UpdateCharactersDataFull"
@@ -266,11 +310,10 @@
             "description": "Name of a character.",
             "example": "Thomas Anderson"
           },
-          "avatarUrl": {
+          "avatarId": {
             "type": "string",
-            "format": "url",
-            "description": "URL of an image that will be displayed as characters avatar.",
-            "example": "https://upload.wikimedia.org/wikipedia/ru/4/4c/Neo2.jpg"
+            "description": "Cloudinary public id and extension of an image that will be displayed as characters avatar.",
+            "example": "IT-Roleplay/avatar/default.jpg"
           },
           "data": {
             "$ref": "#/components/schemas/CharactersDataFull"
@@ -451,6 +494,25 @@
       }
     },
     "requestBodies": {
+      "AvatarUploadData": {
+        "required": true,
+        "content": {
+          "multipart/form-data": {
+            "schema": {
+              "type": "object",
+              "description": "Avatar upload data.",
+              "properties": {
+                "avatar": {
+                  "type": "string",
+                  "format": "binary",
+                  "example": "3f9966addc73cd34bc9ebec92877ea513b173765eb081c054bd587216a0b23aa"
+                }
+              },
+              "required": ["avatar"]
+            }
+          }
+        }
+      },
       "RegisterNewUser": {
         "required": true,
         "content": {
@@ -583,11 +645,10 @@
                     "description": "Name of a character.",
                     "example": "Thomas Anderson"
                   },
-                  "avatarUrl": {
+                  "avatarId": {
                     "type": "string",
-                    "format": "url",
-                    "description": "URL of an image that will be displayed as characters avatar.",
-                    "example": "https://upload.wikimedia.org/wikipedia/ru/4/4c/Neo2.jpg"
+                    "description": "Cloudinary public id and extension of an image that will be displayed as characters avatar.",
+                    "example": "IT-Roleplay/avatar/default.jpg"
                   },
                   "author": {
                     "$ref": "#/components/schemas/User"
@@ -629,11 +690,10 @@
                   "description": "Name of a character.",
                   "example": "Thomas Anderson"
                 },
-                "avatarUrl": {
+                "avatarId": {
                   "type": "string",
-                  "format": "url",
-                  "description": "URL of an image that will be displayed as characters avatar.",
-                  "example": "https://upload.wikimedia.org/wikipedia/ru/4/4c/Neo2.jpg"
+                  "description": "Cloudinary public id and extension on an image that will be displayed as characters avatar.",
+                  "example": "IT-Roleplay/avatar/default.jpg"
                 },
                 "author": {
                   "$ref": "#/components/schemas/User"
@@ -673,11 +733,10 @@
                   "description": "Name of a character.",
                   "example": "Thomas Anderson"
                 },
-                "avatarUrl": {
+                "avatarId": {
                   "type": "string",
-                  "format": "url",
-                  "description": "URL of an image that will be displayed as characters avatar.",
-                  "example": "https://upload.wikimedia.org/wikipedia/ru/4/4c/Neo2.jpg"
+                  "description": "Cloudinary public id and extension of an image that will be displayed as characters avatar.",
+                  "example": "IT-Roleplay/avatar/default.jpg"
                 },
                 "author": {
                   "$ref": "#/components/schemas/User"
@@ -697,6 +756,23 @@
                 }
               },
               "required": ["id", "name", "author", "data", "createdAt", "updatedAt"]
+            }
+          }
+        }
+      },
+      "AvatarUploaded": {
+        "description": "New uploaded avatar data.",
+        "content": {
+          "application/json; charset=utf-8": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "IT-Roleplay/avatar/default.jpg"
+                }
+              },
+              "required": ["id"]
             }
           }
         }

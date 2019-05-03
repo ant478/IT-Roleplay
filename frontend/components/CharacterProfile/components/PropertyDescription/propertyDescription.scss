@@ -1,0 +1,12 @@
+.property-description {
+  position: relative;
+  width: 50%;
+  height: 100%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.property-description__text {
+  padding: 1em;
+  text-align: justify;
+}

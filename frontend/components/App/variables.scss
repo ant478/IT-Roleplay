@@ -1,11 +1,20 @@
 /* sizes */
-$header-height: 50px;
-$footer-height: 80px;
+$header-height: 2.5em;
+$info-section-height: 3.2em;
 
 /* colors */
-$white: #fff;
-$grey: #777;
-$black: #000;
+$background: #050d15;
+$borders: #5ad1ff;
+$select: #ff5f22;
+$action: #861dff;
+$error: #9d0000;
+$input: #066ab5;
+$text: #e2e2e2;
+
+/* z-indexes */
+$mainLoaderZIndex: 5;
+$loginFormZIndex: 6;
+$mouseFollowingPopup: 7;
 
 @mixin absoluteCenterTransform {
   position: absolute;
@@ -21,4 +30,74 @@ $black: #000;
   left: 0;
   right: 0;
   margin: auto;
+}
+
+@mixin flashBorderOnHover($color) {
+  transition: border-color 0.15s;
+  transition-timing-function: ease-out;
+
+  &:hover {
+    transition: border-color 0s;
+    border-color: $color;
+  }
+}
+
+@mixin flashBackgroundWithBoxShadowBorderOnHover($color) {
+  transition: background-color 0.15s, box-shadow 0.15s;
+  transition-timing-function: ease-out;
+
+  &:hover {
+    transition: background-color 0s, box-shadow 0s;
+    background-color: $color;
+    box-shadow: 0 1px 0 0 $color, 0 -1px 0 0 $color, -1px 0 0 0 $color, 1px 0 0 0 $color;
+  }
+}
+
+@mixin flashBackgroundOnHover($color) {
+  transition: background-color 0.15s;
+  transition-timing-function: ease-out;
+
+  &:hover {
+    transition: background-color 0s;
+    background-color: $color;
+  }
+}
+
+@mixin flashColorOnHover($color) {
+  transition: color 0.15s;
+  transition-timing-function: ease-out;
+
+  &:hover {
+    transition: color 0s;
+    color: $color;
+  }
+}
+
+@mixin statusBlinker {
+  animation: statusBlinker 1s linear infinite;
+
+  @keyframes statusBlinker {
+    50% {
+      opacity: 0;
+    }
+  }
+}
+
+@mixin blink($color) {
+  animation-name: backgroundBlinker;
+  animation-iteration-count: 6;
+  animation-duration: 0.12s;
+  animation-timing-function: cubic-bezier(1, 0, 0, 1);
+
+  @keyframes backgroundBlinker {
+    0% {
+      background-color: transparent;
+    }
+    50% {
+      background-color: $color;
+    }
+    100% {
+      background-color: transparent;
+    }
+  }
 }

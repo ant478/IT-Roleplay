@@ -11,11 +11,11 @@ export interface ErrorResponseBody {
 export default class BaseAPIService {
   protected makeRequest<ResultType>(location: string, options: RequestInit = {}): Promise<ResultType> {
     const requestOptions: RequestInit = {
-      ...options,
       headers: {
         Accept: 'application/json; charset=utf-8',
         'Content-Type': 'application/json; charset=utf-8',
       },
+      ...options,
     };
 
     return fetch(location, requestOptions).then(response => this.processResponse<ResultType>(response));
@@ -31,5 +31,11 @@ export default class BaseAPIService {
 
   protected isErrorResponse(response: Response): response is ErrorResponse {
     return response.status >= 300 || response.status < 200;
+  }
+
+  protected getQueryString(params: Record<string, any>): string {
+    return Object.keys(params)
+      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+      .join('&');
   }
 }

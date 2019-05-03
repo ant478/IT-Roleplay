@@ -3,13 +3,13 @@ import BaseAPIService from './BaseAPIService';
 
 const USERS_API_LOCATION = '/api/user';
 
-export interface User {
+export type User = Readonly<{
   id: number;
   login: string;
   email: string;
   createdAt: string;
   updatedAt: string;
-}
+}>;
 
 export interface UserRegistrationData {
   login: string;
@@ -61,9 +61,11 @@ export class AuthService extends BaseAPIService {
 
     const location = `${USERS_API_LOCATION}/isLoggedIn`;
 
-    return this.makeRequest<void>(location, {}).catch(() => {
+    return this.makeRequest<void>(location, {}).catch((error) => {
       this.currentUser = null;
       localStorage.removeItem('currentUser');
+
+      throw error;
     });
   }
 

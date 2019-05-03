@@ -1,0 +1,80 @@
+.role-control {
+  width: 100%;
+  height: 3em;
+  line-height: 3em;
+  position: relative;
+  @include flashBackgroundWithBoxShadowBorderOnHover(#{$select}f2);
+
+  &_not-available {
+    & > * {
+      opacity: 0.3;
+    }
+  }
+
+  &_is-just-added {
+    background-color: #{$select}d1;
+    box-shadow: 0 1px 0 0 $select, 0 -1px 0 0 $select, -1px 0 0 0 $select, 1px 0 0 0 $select;
+  }
+
+  &_can-be-upped {
+    & .role-control__up {
+      display: block;
+    }
+  }
+
+  &_can-be-downed {
+    & .role-control__down {
+      display: block;
+    }
+  }
+}
+
+.role-control__label {
+  display: inline-block;
+  width: 80%;
+  height: 100%;
+  vertical-align: top;
+  text-align: left;
+  padding-left: 1em;
+}
+
+.role-control__value-area {
+  display: inline-block;
+  width: 20%;
+  height: 100%;
+  vertical-align: top;
+  text-align: center;
+  position: relative;
+}
+
+@mixin controlStripe() {
+  @include absoluteCenterPositioning;
+  content: '';
+  height: 100%;
+  width: 0.3em;
+  background: $action;
+  display: block;
+}
+
+.role-control__down, .role-control__up {
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(50% + 0.8em);
+  margin: auto;
+  height: 1.5em;
+  width: 1.5em;
+  cursor: pointer;
+
+  &:after {
+    @include controlStripe;
+    transform: rotate(90deg);
+  }
+}
+
+.role-control__up {
+  &:before {
+    @include controlStripe;
+  }
+}

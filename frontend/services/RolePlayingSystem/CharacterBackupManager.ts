@@ -8,6 +8,8 @@ import { getTechnologies, getTechnologiesData } from './technologies';
 import { getPerks, getPerksData } from './perks';
 
 export interface CharacterBackupManagerEmpty extends CharacterBackupManager {
+  name: null;
+  avatarId: null;
   attributes: null;
   roles: null;
   skills: null;
@@ -19,6 +21,8 @@ export interface CharacterBackupManagerEmpty extends CharacterBackupManager {
 }
 
 export interface CharacterBackupManagerFilled extends CharacterBackupManager {
+  name: string;
+  avatarId: string | null;
   attributes: IntegerDataProperty[];
   roles: IntegerDataProperty[];
   skills: IntegerDataProperty[];
@@ -32,6 +36,8 @@ export interface CharacterBackupManagerFilled extends CharacterBackupManager {
 export default class CharacterBackupManager {
   public _isEmpty = true;
 
+  public name: string | null = null;
+  public avatarId: string | null = null;
   public attributes: IntegerDataProperty[] | null = null;
   public roles: IntegerDataProperty[] | null = null;
   public skills: IntegerDataProperty[] | null = null;
@@ -50,6 +56,8 @@ export default class CharacterBackupManager {
   }
 
   public make(): void {
+    this.name = this.owner.name;
+    this.avatarId = this.owner.avatarId;
     this.attributes = getAttributesData(this.owner.attributes);
     this.roles = getRolesData(this.owner.roles);
     this.skills = getSkillsData(this.owner.skills);
@@ -65,6 +73,8 @@ export default class CharacterBackupManager {
       throw new Error('Backup is empty.');
     }
 
+    this.owner.name = this.name!;
+    this.owner.avatarId = this.avatarId!;
     this.owner.attributes = getAttributes(this.owner, this.attributes!);
     this.owner.roles = getRoles(this.owner, this.roles!);
     this.owner.skills = getSkills(this.owner, this.skills!);
@@ -76,6 +86,8 @@ export default class CharacterBackupManager {
   }
 
   public reset(): void {
+    this.name = null;
+    this.avatarId = null;
     this.attributes = null;
     this.roles = null;
     this.skills = null;

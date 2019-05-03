@@ -17,7 +17,7 @@ export default abstract class Perk {
   }
 
   public static canBeAddedToCharacter(character: Character): boolean {
-    if (!character.isLevelUpInProgress()) {
+    if (!character.isLevelUpRoleSelected()) {
       return false;
     }
 
@@ -48,7 +48,7 @@ export default abstract class Perk {
   }
 
   public static canBeRemovedFromCharacter(character: Character): boolean {
-    if (!character.isLevelUpInProgress()) {
+    if (!character.isLevelUpRoleSelected()) {
       return false;
     }
 

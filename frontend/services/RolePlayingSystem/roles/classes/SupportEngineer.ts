@@ -10,6 +10,6 @@ export default class SupportEngineer extends Role {
   public static skillsPointsCountForLevel = 12;
 
   public static isCharacterMatchRequirements(_character: Character): boolean {
-    return true;
+    return false;
   }
 }

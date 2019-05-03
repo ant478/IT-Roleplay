@@ -36,14 +36,14 @@ export interface ExistingCharacter extends Character {
   oldCharacterData: CharacterData;
 }
 
-export interface CharacterWithLevelUpInProgress extends Character {
+export interface CharacterWithSelectedLevelUpRole extends Character {
   backup: CharacterBackupManagerFilled;
   currentLevelUpRole: RoleClass;
 }
 
 export default class Character {
-  public static createNew(name: string, avatarUrl: string | null = null): NewCharacter {
-    const newCharacter = new Character(null, name, avatarUrl, null);
+  public static createNew(name: string, avatarId: string | null = null): NewCharacter {
+    const newCharacter = new Character(null, name, avatarId, null);
 
     newCharacter.attributes = getDefaultAttributes(newCharacter);
     newCharacter.roles = {} as any as Roles;
@@ -59,7 +59,7 @@ export default class Character {
     const character = new Character(
       characterData.id,
       characterData.name,
-      characterData.avatarUrl || null,
+      characterData.avatarId || null,
       characterData.author,
       {
         createdAt: new Date(characterData.createdAt),
@@ -81,7 +81,7 @@ export default class Character {
   /* base properties */
   public readonly id: number | null;
   public name: string;
-  public avatarUrl: string | null;
+  public avatarId: string | null;
   public readonly author: User | null;
   public readonly createdAt: Date;
   public readonly updatedAt: Date;
@@ -102,13 +102,13 @@ export default class Character {
   constructor(
     id: number | null,
     name: string,
-    avatarUrl: string | null,
+    avatarId: string | null,
     author: User | null,
     timestamps?: { createdAt: Date, updatedAt: Date },
   ) {
     this.id = id;
     this.name = name;
-    this.avatarUrl = avatarUrl;
+    this.avatarId = avatarId;
     this.author = author;
     this.backup = new CharacterBackupManager(this);
 
@@ -124,8 +124,12 @@ export default class Character {
     return this.availablePoints.roles >= 1;
   }
 
-  public isLevelUpInProgress(): this is CharacterWithLevelUpInProgress {
+  public isLevelUpRoleSelected(): this is CharacterWithSelectedLevelUpRole {
     return !!this.currentLevelUpRole;
+  }
+
+  public isLevelUpInProgress(): boolean {
+    return this.isLevelUpAvailable() || this.isLevelUpRoleSelected();
   }
 
   public isNew(): this is NewCharacter {
@@ -145,10 +149,6 @@ export default class Character {
   }
 
   public startLevelUp(): void {
-    if (this.isLevelUpAvailable()) {
-      throw new Error('Level up is already available.');
-    }
-
     if (this.isLevelUpInProgress()) {
       throw new Error('Level up is already in progress.');
     }
@@ -162,7 +162,7 @@ export default class Character {
       throw new Error('Level up is not available.');
     }
 
-    if (this.isLevelUpInProgress()) {
+    if (this.isLevelUpRoleSelected()) {
       throw new Error('Level up is already in progress.');
     }
 
@@ -183,7 +183,7 @@ export default class Character {
   }
 
   public finishLevelUp(): void {
-    if (!this.isLevelUpInProgress()) {
+    if (!this.isLevelUpRoleSelected()) {
       throw new Error('No level up in progress.');
     }
 
@@ -196,7 +196,7 @@ export default class Character {
   }
 
   public cancelLevelUp(): void {
-    if (!this.isLevelUpInProgress() && !this.isLevelUpAvailable()) {
+    if (!this.isLevelUpInProgress()) {
       throw new Error('No level up in progress.');
     }
 
@@ -219,7 +219,7 @@ export default class Character {
 
     return {
       name: this.name,
-      avatarUrl: this.avatarUrl,
+      avatarId: this.avatarId,
       data: this.getRoleplayData(),
     };
   }
@@ -239,8 +239,8 @@ export default class Character {
       updateData.name = this.name;
     }
 
-    if (this.avatarUrl !== this.oldCharacterData.avatarUrl) {
-      updateData.avatarUrl = this.avatarUrl;
+    if (this.avatarId !== this.oldCharacterData.avatarId) {
+      updateData.avatarId = this.avatarId;
     }
 
     const roleplayData = this.getRoleplayData();
@@ -278,7 +278,7 @@ export default class Character {
     return {
       id: this.id,
       name: this.name,
-      avatarUrl: this.avatarUrl,
+      avatarId: this.avatarId,
       author: this.author,
       data: this.getRoleplayData(),
       createdAt: this.createdAt.toISOString(),

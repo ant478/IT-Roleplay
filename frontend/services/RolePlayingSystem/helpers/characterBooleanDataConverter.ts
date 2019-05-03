@@ -15,14 +15,16 @@ interface Class<T extends Instance> {
   new(character: Character): T;
 }
 
+type Classes<T extends Instance> = Class<T>[];
+
 interface ClassesWithKeys<T extends Instance> {
   [key: string]: Class<T>;
 }
 
-export function getInstances<Instances extends CharacterInstances>(character: Character, classIds: BooleanDataProperty[], classes: ClassesWithKeys<ValueOf<Instances>>): Instances {
+export function getInstances<Instances extends CharacterInstances>(character: Character, classIds: BooleanDataProperty[], classes: Classes<ValueOf<Instances>>): Instances {
   return classIds.reduce(
     (instances, classId) => {
-      const InstanceClass = Object.values(classes).find(({ id }) => id === classId);
+      const InstanceClass = classes.find(({ id }) => id === classId);
 
       if (!InstanceClass) {
         throw new Error(`Unknown class id:${classId}`);
@@ -37,10 +39,10 @@ export function getInstances<Instances extends CharacterInstances>(character: Ch
   );
 }
 
-export function getBooleanData<Instances extends CharacterInstances>(instances: Instances, classes: ClassesWithKeys<ValueOf<Instances>>): BooleanDataProperty[] {
+export function getBooleanData<Instances extends CharacterInstances>(instances: Instances, classesWithKeys: ClassesWithKeys<ValueOf<Instances>>): BooleanDataProperty[] {
   return Object.keys(instances).reduce(
     (ids, classKey) => {
-      const InstanceClass = classes[classKey];
+      const InstanceClass = classesWithKeys[classKey];
 
       if (!InstanceClass) {
         throw new Error(`Unknown class ${classKey}`);

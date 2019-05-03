@@ -11,12 +11,26 @@ export default {
     character: 'IT Roleplay: ${characterName}',
     charactersList: 'IT Roleplay: Список персонажей',
   },
-  navigation: {
-    charactersList: 'Список персонажей',
-    newCharacter: 'Создать персонажа',
-    login: 'Вход',
-    logout: 'Выход',
-    register: 'Регистрация',
+  header: {
+    status: {
+      authenticated: 'Добро пожаловать, ${login}.',
+      notAuthenticated: 'Пользователь не опознан.',
+    },
+    navigation: {
+      charactersList: 'Список персонажей',
+      newCharacter: 'Создать персонажа',
+      login: 'Вход',
+      logout: 'Выход',
+      register: 'Регистрация',
+    },
+  },
+  undergroundBroadcast: {
+    connectionStatus: {
+      disabled: 'Нет сигнала',
+      lost: 'Нет сигнала',
+      establishing: 'Установка соединения',
+      established: 'Соединение установлено',
+    },
   },
   registration: {
     formLabel: {
@@ -27,6 +41,10 @@ export default {
       passwordConfirmation: 'Подтверждение пароля',
       areTermsAccepted: 'Я обещаю поставить звезду на гитхабе если проект понравится или написать конструктивный отзыв автору если нет.',
     },
+    error: {
+      400: 'Введённые данные некорректны.',
+      409: 'Введенный логин или email уже занят.',
+    },
     success: 'Новый пользователь успешно зарегистрирован.',
     pageHeader: 'Регистрация',
   },
@@ -36,6 +54,9 @@ export default {
       password: 'Пароль',
       submit: 'Войти',
     },
+    error: {
+      400: 'Неправильный логин или пароль.',
+    },
   },
   charactersPage: {
     header: 'Список персонажей',
@@ -44,17 +65,18 @@ export default {
     header: 'Создание персонажа',
     defaultCharacterName: 'Новый персонаж',
   },
-  errorPage: {
-    errorMessageText: loremIpsumShort,
-  },
   characterPage: {
     header: 'Профиль персонажа',
-    levelUpHeader: 'Повышение уровня',
+    levelUpHeader: 'Повышение уровня: ${level}',
+  },
+  mainLoader: {
+    loadingMessage: 'Синхронизация',
   },
   characterProfile: {
     cancelButtonText: 'Отменить',
     nextButtonText: 'Далее',
     saveButtonText: 'Сохранить',
+    cannotSaveText: 'У персонажа остались непотраченные очки классов, аттрибутов или способностей',
     tabs: {
       nameAndAvatar: {
         levelUpButtonText: 'Повысить уровень',
@@ -63,6 +85,7 @@ export default {
         deleteButtonText: 'Удалить персонажа',
         nextTabButtonText: 'Продолжить',
         avatarEditLabel: 'URL картинки',
+        uploadingAvatar: 'Загрузка...',
       },
       attributes: {
         availablePointsLabel: 'Осталось очков',
@@ -258,7 +281,9 @@ export default {
     },
   },
   error: {
-    incorrectInput: 'Введенные данные некорректны.',
+    400: 'Введенные данные некорректны.',
+    404: 'Данные не найдены.',
+    500: 'Произошла неизвестная ошибка.',
   },
 };
 /* tslint:enable:no-invalid-template-strings */

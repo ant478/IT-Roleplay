@@ -1,0 +1,63 @@
+.integer-property-control {
+  width: 100%;
+  height: 3em;
+  line-height: 3em;
+  position: relative;
+  @include flashBackgroundWithBoxShadowBorderOnHover(#{$select}f2);
+
+  &_can-be-upped {
+    & .integer-property-control__up {
+      display: block;
+    }
+  }
+
+  &_can-be-downed {
+    & .integer-property-control__down {
+      display: block;
+    }
+  }
+}
+
+.integer-property-control__label {
+  display: inline-block;
+  width: 80%;
+  height: 100%;
+  vertical-align: top;
+  text-align: left;
+  padding-left: 1em;
+}
+
+.integer-property-control__value-area {
+  display: inline-block;
+  width: 20%;
+  height: 100%;
+  vertical-align: top;
+  text-align: center;
+  position: relative;
+}
+
+@mixin controlArrow() {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 1.2em 1.2em 1.2em 0;
+  border-color: transparent $action transparent transparent;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  cursor: pointer;
+}
+
+.integer-property-control__down {
+  display: none;
+  @include controlArrow();
+  right: calc(50% + 0.9em);
+}
+
+.integer-property-control__up {
+  display: none;
+  @include controlArrow();
+  transform: rotate(180deg);
+  left: calc(50% + 0.9em);
+}

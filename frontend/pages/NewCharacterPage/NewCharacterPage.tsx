@@ -1,44 +1,52 @@
 import * as _ from 'lodash';
 import * as React from 'react';
 import CharacterProfile from '../../components/CharacterProfile';
-import characterService from '../../services/Api/CharacterService';
+import characterService, { CharacterData } from '../../services/Api/CharacterService';
 import locale from '../../services/LocalisationService';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, match } from 'react-router-dom';
 import { Character, NewCharacter } from '../../services/RolePlayingSystem';
+import MainLoader from '../../components/MainLoader';
+import imagePreloader from '../../utils/ImagePreloader';
+import { getCharacterProfileAvatarUrl } from '../../services/CharacterAvatarService';
+import PageHeader from '../../components/PageHeader';
 
 interface CharacterState {
   character: NewCharacter | null;
-  isLoading: boolean;
 }
 
-export default class NewCharacterPage extends React.Component<RouteComponentProps, CharacterState> {
+export default class NewCharacterPage extends React.PureComponent<RouteComponentProps, CharacterState> {
+  public static async preload(_matchParams: match): Promise<{}> {
+    return {};
+  }
+
   constructor(props: RouteComponentProps) {
     super(props);
 
     this.state = {
       character: null,
-      isLoading: true,
     };
-
-    this.onCharacterSave = this.onCharacterSave.bind(this);
-    this.onCancelCharacterCreating = this.onCancelCharacterCreating.bind(this);
   }
 
-  public onCancelCharacterCreating(): void {
+  public onCancelCharacterCreating = (): void => {
     this.props.history.push('/characters/');
   }
 
-  public async onCharacterSave(): Promise<void> {
-    this.setState({ isLoading: true });
+  public async saveCharacterAndPreloadAvatar(): Promise<CharacterData> {
+    const createCharacterData = this.state.character!.toCreateCharacterData();
 
-    try {
-      const createCharacterData = this.state.character!.toCreateCharacterData();
-      const characterData = await characterService.createCharacter(createCharacterData);
-
-      this.props.history.push(`/characters/${characterData.id}`);
-    } catch (error) {
-      throw error;
+    if (this.state.character!.avatarId) {
+      await imagePreloader.preloadImage(getCharacterProfileAvatarUrl(this.state.character!.avatarId), true);
     }
+
+    return characterService.createCharacter(createCharacterData);
+  }
+
+  public onCharacterSave = async (): Promise<void> => {
+    const characterData = await MainLoader.withLoader(() =>
+      this.saveCharacterAndPreloadAvatar(),
+    );
+
+    this.props.history.push(`/characters/${characterData.id}`);
   }
 
   public componentDidMount(): void {
@@ -49,7 +57,6 @@ export default class NewCharacterPage extends React.Component<RouteComponentProp
 
     this.setState({
       character: newCharacter,
-      isLoading: false,
     });
   }
 
@@ -61,9 +68,11 @@ export default class NewCharacterPage extends React.Component<RouteComponentProp
     return (
       <CharacterProfile
         character={this.state.character}
-        onLevelUpStateUpdate={this.onCancelCharacterCreating}
+        isBelongToCurrentUser={true}
+        onCancel={this.onCancelCharacterCreating}
         onSave={this.onCharacterSave}
         onDelete={_.noop}
+        onLevelUpStateUpdate={_.noop}
       />
     );
   }
@@ -71,7 +80,7 @@ export default class NewCharacterPage extends React.Component<RouteComponentProp
   public render(): React.ReactNode {
     return (
       <div className="page new-character-page">
-        <h1 className="new-character-page__header">{locale.getMessage('newCharacterPage.header')}</h1>
+        <PageHeader message={locale.getMessage('newCharacterPage.header')}/>
         <div className="new-character-page__content-wrapper">
           {this.renderContent()}
         </div>

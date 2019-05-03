@@ -14,13 +14,10 @@ module.exports.Character = (sequelize, Sequelize) => {
       type: Sequelize.STRING(255),
       allowNull: false,
     },
-    avatarUrl: {
-      field: 'avatar_url',
-      type: Sequelize.STRING(2083),
+    avatarId: {
+      field: 'avatar_id',
+      type: Sequelize.STRING(255),
       allowNull: true,
-      validate: {
-        isUrl: true,
-      },
     },
     authorId: {
       field: 'author_id',

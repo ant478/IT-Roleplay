@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import * as React from 'react';
 import classNames from 'classnames';
 
@@ -7,18 +6,17 @@ const WINDOW_OFFSET = 20;
 
 interface PopupState {
   content: React.ReactNode | null;
-  contentHeight: number;
-  contentWidth: number;
-  mousePosition: { x: number, y: number };
+  isTop: boolean;
+  isLeft: boolean;
 }
 
-export default class MouseFollowingPopup extends React.Component<{}, PopupState> {
+export default class MouseFollowingPopup extends React.PureComponent<{}, PopupState> {
   public static render(content: React.ReactNode): void {
     if (!this.singletonInstance) {
       throw new Error('No instance created.');
     }
 
-    this.singletonInstance.setState({ content }, () => this.singletonInstance!.updateContentSize());
+    this.singletonInstance.setState({ content });
   }
 
   public static hide(): void {
@@ -26,96 +24,85 @@ export default class MouseFollowingPopup extends React.Component<{}, PopupState>
       throw new Error('No instance created.');
     }
 
-    this.singletonInstance.setState({ content: null }, () => this.singletonInstance!.updateContentSize());
+    this.singletonInstance.setState({ content: null });
+  }
+
+  public static isDisplayed(): boolean {
+    return !!this.singletonInstance && !!this.singletonInstance.state.content;
   }
 
   private static singletonInstance: MouseFollowingPopup | null = null;
-  private readonly throttledSaveMousePosition = _.throttle(this.saveMousePosition.bind(this), 10);
-  private popupRef = React.createRef<HTMLDivElement>();
+  private popup = React.createRef<HTMLDivElement>();
+  private mousePosition: { x: number, y: number } = { x: 0, y: 0 };
 
   constructor(props: {}) {
     super(props);
 
-    if (MouseFollowingPopup.singletonInstance) {
-      throw new Error('Popup should be singleton.');
-    }
-
     this.state = {
       content: null,
-      contentHeight: 0,
-      contentWidth: 0,
-      mousePosition: { x: 0, y: 0 },
+      isTop: false,
+      isLeft: false,
     };
 
     MouseFollowingPopup.singletonInstance = this;
   }
 
   public componentDidMount(): void {
-    document.addEventListener('mousemove', this.throttledSaveMousePosition);
+    document.addEventListener('mousemove', this.onMouseMove, true);
   }
 
   public componentWillUnmount(): void {
-    document.removeEventListener('mousemove', this.throttledSaveMousePosition);
-  }
-
-  public isNotEnoughSpaceBellow(): boolean {
-    const { mousePosition, contentHeight } = this.state;
-
-    return window.innerHeight - mousePosition.y - MOUSE_POSITION_OFFSET - contentHeight < WINDOW_OFFSET;
-  }
-
-  public isNotEnoughSpaceRight(): boolean {
-    const { mousePosition, contentWidth } = this.state;
-
-    return window.innerWidth - mousePosition.x - MOUSE_POSITION_OFFSET - contentWidth < WINDOW_OFFSET;
+    document.removeEventListener('mousemove', this.onMouseMove, true);
   }
 
   public render(): React.ReactNode {
-    if (!this.state.content) {
-      return null;
-    }
-
     const popupClasses = classNames('mouse-following-popup', {
-      'mouse-following-popup_top': this.isNotEnoughSpaceBellow(),
-      'mouse-following-popup_left': this.isNotEnoughSpaceRight(),
+      'mouse-following-popup_has-content': !!this.state.content,
+      'mouse-following-popup_top': this.state.isTop,
+      'mouse-following-popup_left': this.state.isLeft,
     });
 
     return (
-      <div className={popupClasses} style={this.getInlineStyle()} ref={this.popupRef}>
+      <div className={popupClasses} ref={this.popup}>
         {this.state.content}
       </div>
     );
   }
 
-  public updateContentSize(): void {
-    if (!this.popupRef.current) {
-      this.setState({
-        contentHeight: 0,
-        contentWidth: 0,
-      });
+  private getContentHeight(): number {
+    return MouseFollowingPopup.isDisplayed() ? this.popup.current!.offsetHeight : 0;
+  }
 
-      return;
+  private getContentWidth(): number {
+    return MouseFollowingPopup.isDisplayed() ? this.popup.current!.offsetWidth : 0;
+  }
+
+  private isNotEnoughSpaceBellow(): boolean {
+    return window.innerHeight - this.mousePosition.y - MOUSE_POSITION_OFFSET - this.getContentHeight() < WINDOW_OFFSET;
+  }
+
+  private isNotEnoughSpaceRight(): boolean {
+    return window.innerWidth - this.mousePosition.x - MOUSE_POSITION_OFFSET - this.getContentWidth() < WINDOW_OFFSET;
+  }
+
+  private updatePosition(): void {
+    const isLeft = this.isNotEnoughSpaceRight();
+    const isTop = this.isNotEnoughSpaceBellow();
+
+    const offsetX = isLeft ? -MOUSE_POSITION_OFFSET : MOUSE_POSITION_OFFSET;
+    const offsetY = isTop ? -MOUSE_POSITION_OFFSET : MOUSE_POSITION_OFFSET;
+
+    this.popup.current!.style.left = `${this.mousePosition.x + offsetX}px`; // setting css directly for better performance comparing to rerender
+    this.popup.current!.style.top = `${this.mousePosition.y + offsetY}px`;
+
+    this.setState({ isLeft, isTop });
+  }
+
+  private onMouseMove = (event: MouseEvent): void => {
+    this.mousePosition = { x: event.pageX, y: event.pageY };
+
+    if (MouseFollowingPopup.isDisplayed()) {
+      this.updatePosition();
     }
-
-    this.setState({
-      contentHeight: this.popupRef.current.offsetHeight,
-      contentWidth: this.popupRef.current.offsetWidth,
-    });
-  }
-
-  private getInlineStyle(): React.CSSProperties {
-    const offsetX = this.isNotEnoughSpaceRight() ? -MOUSE_POSITION_OFFSET : MOUSE_POSITION_OFFSET;
-    const offsetY = this.isNotEnoughSpaceBellow() ? -MOUSE_POSITION_OFFSET : MOUSE_POSITION_OFFSET;
-
-    return {
-      left: this.state.mousePosition.x + offsetX,
-      top: this.state.mousePosition.y + offsetY,
-    };
-  }
-
-  private saveMousePosition(event: MouseEvent): void {
-    this.setState({
-      mousePosition: { x: event.pageX, y: event.pageY },
-    });
   }
 }

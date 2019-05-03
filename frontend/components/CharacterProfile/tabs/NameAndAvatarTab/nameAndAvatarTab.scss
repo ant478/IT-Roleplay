@@ -1,22 +1,44 @@
 .name-and-avatar-tab {
-  padding: 45px;
   height: 100%;
-  overflow-y: auto;
+}
+
+.name-and-avatar-tab__wrapper {
+  padding: 1.5em 2.25em 0;
+  //height: 100%;
 }
 
 .name-and-avatar-tab__avatar {
-  height: 350px;
-  width: 350px;
+  height: 15.5em;
+  width: 15.5em;
   margin: 0 auto;
   position: relative;
   overflow: hidden;
-  margin-bottom: 18px;
+  margin-bottom: 0.9em;
 
   &_editable {
     .name-and-avatar-tab__avatar-edit-icon {
       display: block;
     }
   }
+
+  &_is-loading {
+    &:after {
+      content: attr(data-loading-message);
+      font-size: 2em;
+      line-height: 7.25em;
+      color: $text;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      background: #000;
+      opacity: 0.7;
+      text-align: center;
+    }
+  }
+}
+
+.name-and-avatar-tab__avatar-input {
+  display: none;
 }
 
 .name-and-avatar-tab__avatar-input-wrapper {
@@ -31,50 +53,39 @@
 }
 
 .name-and-avatar-tab__name {
+  margin: 0 auto 1em;
   text-align: center;
-  margin-bottom: 30px;
-
-  &_editable {
-    .name-and-avatar-tab__name-edit-icon {
-      display: inline-block;
-    }
-  }
 }
 
 .name-and-avatar-tab__buttons-wrapper {
-  max-width: 600px;
-  margin: 0 auto;
+  margin: 0 auto 1.5em;
 }
 
 .name-and-avatar-tab__button {
-  width: 100%;
-  display: block;
+  width: calc(50% - 0.65em);
+  display: inline-block;
   background-color: transparent;
-  border: 3px solid #6359ff;
-  border-radius: 14px;
-  padding: 18px 20px;
+  border: 0.15em solid $action;
+  border-radius: 0.15rem;
+  padding: 0.9em 1em;
   margin: 0 0 0 auto;
   cursor: pointer;
-  font-size: 20px;
   text-align: center;
 
+  @include flashBorderOnHover($select);
+
   &:not(:last-child) {
-    margin-bottom: 15px;
+    margin-right: 1.25em;
   }
 }
 
 .name-and-avatar-tab__avatar-edit-icon {
   display: none;
   position: absolute;
-  color: $white;
-  right: 5px;
-  bottom: 5px;
+  color: $action;
+  right: 0.25em;
+  bottom: 0.25em;
   cursor: pointer;
-}
 
-.name-and-avatar-tab__name-edit-icon {
-  display: none;
-  color: $white;
-  margin-left: 5px;
-  cursor: pointer;
+  @include flashColorOnHover($select);
 }

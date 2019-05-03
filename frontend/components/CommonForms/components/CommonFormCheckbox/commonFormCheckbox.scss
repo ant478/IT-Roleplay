@@ -1,0 +1,39 @@
+.common-form-checkbox {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.common-form-checkbox__input {
+  position: absolute;
+  opacity: 0;
+
+  &:hover + .common-form-checkbox__placeholder, &:focus + .common-form-checkbox__placeholder {
+    transition: border-color 0s;
+    border-color: $select;
+  }
+
+  &:checked + .common-form-checkbox__placeholder:after {
+    content: '✔';
+  }
+}
+
+.common-form-checkbox__placeholder {
+  position: relative;
+  height: 1em;
+  width: 1em;
+  border: 0.1em solid $input;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+  transition-timing-function: ease-out;
+  background-color: $background;
+
+  &:after {
+    content: '';
+    color: $text;
+    line-height: 1.2em;
+    text-align: center;
+    font-size: 0.75em;
+    @include absoluteCenterPositioning;
+  }
+}

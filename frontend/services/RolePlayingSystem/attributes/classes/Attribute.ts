@@ -21,7 +21,7 @@ export default abstract class Attribute {
   }
 
   public canBeUpped(): boolean {
-    if (!this.owner.isLevelUpInProgress()) {
+    if (!this.owner.isLevelUpRoleSelected()) {
       return false;
     }
 
@@ -42,7 +42,7 @@ export default abstract class Attribute {
   }
 
   public canBeDowned(): boolean {
-    if (!this.owner.isLevelUpInProgress()) {
+    if (!this.owner.isLevelUpRoleSelected()) {
       return false;
     }
 

@@ -7,16 +7,9 @@ interface BaseCommonFormProps {
 }
 
 export default abstract class BaseCommonForm<PropsType extends BaseCommonFormProps, StateType> extends React.Component<PropsType, StateType> {
-  constructor(props: PropsType) {
-    super(props);
-
-    this.onFormSubmit = this.onFormSubmit.bind(this);
-    this.onInputChange = this.onInputChange.bind(this);
-  }
-
   public abstract render(): React.ReactNode;
 
-  protected onFormSubmit(event: React.FormEvent): void {
+  protected onFormSubmit = (event: React.FormEvent): void => {
     event.preventDefault();
 
     const userInput = _.pick(this.state, this.getPropertiesNames());
@@ -24,7 +17,7 @@ export default abstract class BaseCommonForm<PropsType extends BaseCommonFormPro
     this.props.onSubmit(userInput);
   }
 
-  protected onInputChange(event: React.ChangeEvent<HTMLInputElement>): void {
+  protected onInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;

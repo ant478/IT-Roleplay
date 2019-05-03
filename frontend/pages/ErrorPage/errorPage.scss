@@ -1,11 +1,19 @@
 .error-page {
   display: block;
-}
+  background-image: url("./resources/images/ErrorPage__Message.gif");
+  background-size: cover;
+  background-position: center;
+  animation-name: error;
+  animation-iteration-count: infinite;
+  animation-duration: 1.5s;
+  animation-timing-function: cubic-bezier(0, 1.63, 0, 0.69);
 
-.error-page__content-wrapper {
-  display: block;
-}
-
-.error-page__error-message {
-  display: block;
+  @keyframes error {
+    0% {
+      background-image: url("./resources/images/ErrorPage__Init.gif");
+    }
+    100% {
+      background-image: url("./resources/images/ErrorPage__Message.gif");
+    }
+  }
 }
