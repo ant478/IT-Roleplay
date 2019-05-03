@@ -22,7 +22,7 @@ export default abstract class Skill {
   }
 
   public canBeUpped(): boolean {
-    if (!this.owner.isLevelUpInProgress()) {
+    if (!this.owner.isLevelUpRoleSelected()) {
       return false;
     }
 
@@ -47,7 +47,7 @@ export default abstract class Skill {
   }
 
   public canBeDowned(): boolean {
-    if (!this.owner.isLevelUpInProgress()) {
+    if (!this.owner.isLevelUpRoleSelected()) {
       return false;
     }
 
@@ -68,7 +68,7 @@ export default abstract class Skill {
   }
 
   public getMaxValue(): number {
-    if (!this.owner.isLevelUpInProgress()) {
+    if (!this.owner.isLevelUpRoleSelected()) {
       throw new Error('Max value can be calculated only when level up is in progress.');
     }
 
@@ -80,7 +80,7 @@ export default abstract class Skill {
   }
 
   public getPrice(): number {
-    if (!this.owner.isLevelUpInProgress()) {
+    if (!this.owner.isLevelUpRoleSelected()) {
       throw new Error('Skill price can be calculated only when level up is in progress.');
     }
 

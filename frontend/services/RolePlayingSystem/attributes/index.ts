@@ -8,7 +8,7 @@ import Charisma from './classes/Charisma';
 import { getInstances, getIntegerData, IntegerDataProperty } from '../helpers/characterIntegerDataConverter';
 import getDefaultInstances from '../helpers/defaultInstancesHelper';
 
-const attributeClasses = [Strength, Dexterity, Endurance, Intelligence, Wisdom, Charisma];
+export const attributeClasses = [Strength, Dexterity, Endurance, Intelligence, Wisdom, Charisma];
 type AttributeKeyName = 'strength' | 'dexterity' | 'endurance' | 'intelligence' | 'wisdom' | 'charisma';
 
 export const attributeKeys: Record<AttributeKeyName, AttributeKey> = {

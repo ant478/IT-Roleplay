@@ -1,0 +1,43 @@
+.main-loader {
+  @include absoluteCenterPositioning;
+  text-align: center;
+
+  z-index: $mainLoaderZIndex;
+  background-image: url("./resources/images/MainLoader__Background.gif");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #080806;
+  background-size: contain;
+
+  & ~ * {
+    opacity: 0 !important;
+  }
+}
+
+.main-loader__message {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  font-size: 2em;
+
+  &:after {
+    content: '...';
+
+    animation-name: mainLoaderMessage;
+    animation-iteration-count: infinite;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+
+    @keyframes mainLoaderMessage {
+      33% {
+        content: '.';
+      }
+      66% {
+        content: '..';
+      }
+      100% {
+        content: '...';
+      }
+    }
+  }
+}

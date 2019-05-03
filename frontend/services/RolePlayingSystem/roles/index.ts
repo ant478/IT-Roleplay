@@ -5,7 +5,7 @@ import Reviewer from './classes/Reviewer';
 import SupportEngineer from './classes/SupportEngineer';
 import { getInstances, getIntegerData, IntegerDataProperty } from '../helpers/characterIntegerDataConverter';
 
-const RoleClasses = [Developer, Teamlead, Reviewer, SupportEngineer];
+export const roleClasses = [Developer, Teamlead, Reviewer, SupportEngineer];
 type RoleKeyName = 'developer' | 'teamlead' | 'reviewer' | 'supportEngineer';
 
 export const roleKeys: Record<RoleKeyName, RoleKey> = {
@@ -15,7 +15,7 @@ export const roleKeys: Record<RoleKeyName, RoleKey> = {
   supportEngineer: 'SupportEngineer',
 };
 
-export const roleClassesWithKeys = RoleClasses.reduce(
+export const roleClassesWithKeys = roleClasses.reduce(
   (acc, Class) => ({ ...acc, [Class.key]: Class }),
   {} as Record<RoleKey, RoleClass>,
 );
@@ -23,7 +23,7 @@ export const roleClassesWithKeys = RoleClasses.reduce(
 export type RoleKey = 'Developer' | 'Teamlead' | 'Reviewer' | 'SupportEngineer';
 export type Role = Developer | Teamlead | Reviewer | SupportEngineer;
 export type Roles = Record<RoleKey, Role | undefined>;
-export type RoleClass = typeof RoleClasses[0];
+export type RoleClass = typeof roleClasses[0];
 
 export function getRoles(character: Character, classesData: IntegerDataProperty[]): Roles {
   return getInstances<Record<RoleKey, Role>>(character, classesData, roleClassesWithKeys);

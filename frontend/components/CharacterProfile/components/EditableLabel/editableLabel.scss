@@ -1,0 +1,58 @@
+.editable-label {
+  display: inline-block;
+  position: relative;
+
+  &_editing {
+    width: 100%;
+  }
+
+  &_editable:not(&_editing) {
+    .editable-label__icon {
+      right: 1.85em;
+    }
+  }
+}
+
+.editable-label__value {
+  min-height: 2.2em;
+  line-height: 1.3em;
+  display: inline-block;
+  color: $text;
+  background: $background;
+  padding: 0.25em 1.65em 0.25em 0.5em;
+  border: 0.2em solid transparent;
+  white-space: pre-wrap;
+}
+
+.editable-label__input {
+  width: 100%;
+  display: inline-block;
+  text-align: center;
+  height: 2.2em;
+  line-height: 2.2em;
+  border: 0.2em solid $input;
+  font: inherit;
+  color: $text;
+  background: $background;
+  padding: 0.25em 1.65em 0.25em 0.5em;
+  outline: none;
+
+  &:focus {
+    transition: border-color 0s;
+    border-color: $select;
+  }
+
+  @include flashBorderOnHover($select);
+}
+
+.editable-label__icon {
+  position: absolute;
+  top: 0.55em;
+  right: 1.85em;
+  text-align: center;
+  cursor: pointer;
+  transform: translateX(100%) translateX(0.4em);
+  color: $action;
+
+  @include flashColorOnHover($select);
+}

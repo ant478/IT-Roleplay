@@ -5,14 +5,18 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const LocalStrategy = require('passport-local').Strategy;
 const cookieParser = require('cookie-parser');
+const cloudinary = require('cloudinary');
 const responses = require('./src/responses');
 const models = require('./src/models');
 const apiConfig = require('./config/api');
+const cloudinaryConfig = require('./config/cloudinary');
 const routes = require('./src/routes/routes');
 const errorsHandler = require('./src/middleware/errorsHandler');
 const stubAuth = require('./src/middleware/stubAuth');
 
 const app = express();
+
+cloudinary.v2.config(cloudinaryConfig.credentials);
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');

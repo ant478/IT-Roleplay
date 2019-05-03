@@ -1,7 +1,9 @@
 import * as React from 'react';
-import classNames from 'classnames';
-import { Character, RoleClass, roleClassesWithKeys } from '../../../../services/RolePlayingSystem';
+import { Character, RoleClass, roleClasses } from '../../../../services/RolePlayingSystem';
 import locale from '../../../../services/LocalisationService';
+import PropertyDescription from '../../components/PropertyDescription';
+import RoleControl from '../../components/RoleControl';
+import OrangeScrollbar from '../../../OrangeScrollbar';
 
 interface RolesProps {
   character: Character;
@@ -17,24 +19,20 @@ export default class RolesTab extends React.Component<RolesProps, RolesState> {
     super(props);
 
     this.state = {
-      selectedRole: Object.values(roleClassesWithKeys)[0],
+      selectedRole: roleClasses[0],
     };
-
-    this.onRoleSelect = this.onRoleSelect.bind(this);
-    this.onRoleUp = this.onRoleUp.bind(this);
-    this.onRoleDown = this.onRoleDown.bind(this);
   }
 
-  public onRoleSelect(roleClass: RoleClass): void {
+  public onRoleSelect = (roleClass: RoleClass): void => {
     this.setState({ selectedRole: roleClass });
   }
 
-  public onRoleUp(roleClass: RoleClass): void {
+  public onRoleUp = (roleClass: RoleClass): void => {
     this.props.character.levelUpInRole(roleClass);
     this.props.onAvailablePointsUpdate();
   }
 
-  public onRoleDown(): void {
+  public onRoleDown = (): void => {
     this.props.character.cancelLevelUp();
     this.props.character.startLevelUp();
     this.props.onAvailablePointsUpdate();
@@ -45,52 +43,37 @@ export default class RolesTab extends React.Component<RolesProps, RolesState> {
     const role = character.roles[roleClass.key];
     const canBeUpped = character.isLevelUpAvailable() && !!role && role.canBeUpped();
     const canBeAdded = character.isLevelUpAvailable() && !role && roleClass.canBeAddedToCharacter(character);
-    const canBeDowned = character.isLevelUpInProgress() && character.currentLevelUpRole.key === roleClass.key;
+    const canBeDowned = character.isLevelUpRoleSelected() && character.currentLevelUpRole.key === roleClass.key;
 
-    const controlClasses = classNames('roles-tab__control', {
-      'roles-tab__control_is-just-added': canBeDowned,
-      'roles-tab__control_can-be-upped': canBeUpped || canBeAdded,
-      'roles-tab__control_can-be-downed': canBeDowned,
-      'roles-tab__control_not-available': character.isLevelUpAvailable() && !(canBeUpped || canBeAdded || canBeDowned),
-      'roles-tab__control_selected': roleClass.key === this.state.selectedRole.key,
-    });
-
-    const controlLabel = locale.getMessage(`rolePlayingSystem.roles.${roleClass.key}.name`);
+    const flags = {
+      canBeDowned,
+      isJustAdded: canBeDowned,
+      canBeUpped: canBeUpped || canBeAdded,
+      isNotAvailable: (character.isLevelUpInProgress()) && !(canBeUpped || canBeAdded || canBeDowned),
+    };
 
     return (
-      <li key={roleClass.key} className={controlClasses} onMouseEnter={this.onRoleSelect.bind(this, roleClass)}>
-        <span className="roles-tab__control-label">{controlLabel}</span>
-        <div className="roles-tab__control-value-area">
-          <div className="roles-tab__control-down" onClick={this.onRoleDown}/>
-          <span className="roles-tab__control-value">{role ? role.level : 0}</span>
-          <div className="roles-tab__control-up" onClick={this.onRoleUp.bind(this, roleClass)}/>
-        </div>
+      <li key={roleClass.key} className="roles-tab__control">
+        <RoleControl
+          label={locale.getMessage(`rolePlayingSystem.roles.${roleClass.key}.name`)}
+          value={role ? role.level : 0}
+          onMouseEnter={this.onRoleSelect.bind(this, roleClass)}
+          onDown={this.onRoleDown}
+          onUp={this.onRoleUp.bind(this, roleClass)}
+          flags={flags}
+        />
       </li>
     );
   }
 
   public renderControlsSection(): React.ReactNode {
-    const controls = Object.values(roleClassesWithKeys).map(roleClass =>
-      this.renderControl(roleClass),
-    );
-
     return (
       <div className="roles-tab__controls">
-        <ul className="roles-tab__controls-list">
-          {controls}
-        </ul>
-      </div>
-    );
-  }
-
-  public renderDescriptionSection(): React.ReactNode {
-    return (
-      <div className="roles-tab__description">
-        <div className="roles-tab__description-text-container">
-          <div className="roles-tab__description-text">
-            {locale.getMessage(`rolePlayingSystem.roles.${this.state.selectedRole.key}.description`)}
-          </div>
-        </div>
+        <OrangeScrollbar>
+          <ul className="roles-tab__controls-list">
+            {roleClasses.map(roleClass => this.renderControl(roleClass))}
+          </ul>
+        </OrangeScrollbar>
       </div>
     );
   }
@@ -99,7 +82,7 @@ export default class RolesTab extends React.Component<RolesProps, RolesState> {
     return (
       <div className="roles-tab">
         {this.renderControlsSection()}
-        {this.renderDescriptionSection()}
+        <PropertyDescription messageKey={`rolePlayingSystem.roles.${this.state.selectedRole.key}.description`}/>
       </div>
     );
   }

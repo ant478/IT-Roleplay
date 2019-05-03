@@ -1,0 +1,41 @@
+$margin: 0.23em;
+$blockWidth: 0.5em;
+$height: 1em;
+$duration: 0.9s;
+$delay: 0.09s;
+$block-indexes: (0, 1, 2);
+$blocks-count: length($block-indexes);
+
+.simple-loader {
+  display: inline-block;
+  position: relative;
+  width: $blockWidth * 3 + $margin * 2;
+  height: $height;
+}
+
+.simple-loader__block {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: $blockWidth;
+  height: $height;
+  background: $select;
+  animation: simple-loader $duration cubic-bezier(0, 0.5, 0.5, 1) infinite;
+}
+
+@each $block-index in $block-indexes {
+  .simple-loader__block:nth-child(#{$block-index + 1}) {
+    left: calc(#{$block-index} * #{$blockWidth + $margin});
+    animation-delay: #{-($blocks-count - $block-index - 1) * $delay};
+  }
+}
+
+@keyframes simple-loader {
+  0% {
+    height: $height * 2;
+  }
+  50%, 100% {
+    height: $height;
+  }
+}

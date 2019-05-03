@@ -1,6 +1,7 @@
 import * as React from 'react';
 import locale from '../../../services/LocalisationService';
 import BaseCommonForm from '../BaseCommonForm';
+import CommonFormCheckbox from '../components/CommonFormCheckbox';
 
 export interface RegistrationFormData {
   areTermsAccepted: boolean;
@@ -89,9 +90,7 @@ export default class RegistrationForm extends BaseCommonForm<RegistrationFormPro
 
         <label className="common-form__label common-form__label_single-checkbox">
           {locale.getMessage('registration.formLabel.areTermsAccepted')}
-          <input
-            className="common-form__single-checkbox"
-            type="checkbox"
+          <CommonFormCheckbox
             name="areTermsAccepted"
             checked={this.state.areTermsAccepted}
             onChange={this.onInputChange}

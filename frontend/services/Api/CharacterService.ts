@@ -1,8 +1,15 @@
+import * as _ from 'lodash';
 import { User } from './AuthService';
 import BaseAPIService from './BaseAPIService';
 import { DeepPartial } from 'ts-essentials';
 
 const CHARACTERS_API_LOCATION = '/api/characters';
+
+// for testing
+// const delay = (timeout) =>
+//   (...args) =>
+//     new Promise((resolve) => { setTimeout(() => resolve(...args), timeout)},
+//     );
 
 export interface AvailablePoints {
   roles: number;
@@ -31,7 +38,7 @@ export interface CharacterRoleplayData {
 export interface CharacterData {
   id: number;
   name: string;
-  avatarUrl?: string | null;
+  avatarId?: string | null;
   author: User;
   data: CharacterRoleplayData;
   createdAt: string;
@@ -41,19 +48,28 @@ export interface CharacterData {
 export interface ShortCharacterData {
   id: number;
   name: string;
-  avatarUrl?: string | null;
+  avatarId?: string | null;
   author: User;
   data: Pick<CharacterRoleplayData, 'attributes' | 'roles'>;
   createdAt: string;
   updatedAt: string;
 }
 
-export type CreateCharacterData = Pick<CharacterData, 'name' | 'avatarUrl' | 'data'>;
+export type CreateCharacterData = Pick<CharacterData, 'name' | 'avatarId' | 'data'>;
 export type UpdateCharacterData = DeepPartial<CreateCharacterData>;
 
+interface GetCharactersParams {
+  limit?: number;
+  offset?: number;
+}
+
 export class CharacterService extends BaseAPIService {
-  public getCharacters(): Promise<ShortCharacterData[]> {
-    return this.makeRequest<ShortCharacterData[]>(CHARACTERS_API_LOCATION);
+  public getCharacters(params?: GetCharactersParams): Promise<ShortCharacterData[]> {
+    const url = !!params && !_.isEmpty(params) ?
+      `${CHARACTERS_API_LOCATION}?${this.getQueryString(params)}` :
+      CHARACTERS_API_LOCATION;
+
+    return this.makeRequest<ShortCharacterData[]>(url);
   }
 
   public getCharacter(characterId: number): Promise<CharacterData> {

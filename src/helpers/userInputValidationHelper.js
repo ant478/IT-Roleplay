@@ -18,10 +18,23 @@ module.exports.isCharacterNameValid = function isCharacterNameValid(name) {
   return _.isString(name) && name.length > 1;
 };
 
-module.exports.isAvatarUrlValid = function isAvatarUrlValid(url) {
-  return _.isString(url) || (url === null);
+module.exports.isAvatarValid = function isAvatarValid(avatarId) {
+  return _.isString(avatarId) || (avatarId === null);
 };
 
 module.exports.isCharacterDataValid = function isCharacterDataValid(data) {
   return !!data && DATA_PROPERTIES.reduce((acc, property) => acc && !!data[property], true);
+};
+
+const MIN_LIMIT = 0;
+const MAX_LIMIT = 100;
+
+module.exports.isLimitValid = function isLimitValid(limit) {
+  return !!limit && !Number.isNaN(limit) && (MIN_LIMIT <= limit) && (limit <= MAX_LIMIT);
+};
+
+const MIN_OFFSET = 0;
+
+module.exports.isOffsetValid = function isOffsetValid(offset) {
+  return !!offset && !Number.isNaN(offset) && (MIN_OFFSET <= offset);
 };

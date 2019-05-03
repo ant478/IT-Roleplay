@@ -89,3 +89,15 @@ hooks.before('Users > /user/logout > Logging user out. > 200', (transaction) => 
 hooks.before('Users > /user/isLoggedIn > Checking if user session exists. > 200 > application/json; charset=utf-8', (transaction) => {
   logIn(transaction, 1);
 });
+
+hooks.before('Avatars > /avatars > Uploads an avatar. > 201 > application/json; charset=utf-8', (transaction) => {
+  transaction.skip = true;
+});
+
+hooks.before('Avatars > /avatars > Uploads an avatar. > 400 > application/json; charset=utf-8', (transaction) => {
+  transaction.skip = true;
+});
+
+hooks.before('Avatars > /avatars > Uploads an avatar. > 401 > application/json; charset=utf-8', (transaction) => {
+  transaction.skip = true;
+});

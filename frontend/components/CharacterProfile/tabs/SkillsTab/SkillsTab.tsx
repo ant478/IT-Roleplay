@@ -1,7 +1,10 @@
 import * as React from 'react';
-import classNames from 'classnames';
 import locale from '../../../../services/LocalisationService';
-import { SkillClass, Skill, Character, skillClassesWithKeys } from '../../../../services/RolePlayingSystem';
+import { SkillClass, Skill, Character, skillClasses } from '../../../../services/RolePlayingSystem';
+import PropertyDescription from '../../components/PropertyDescription';
+import IntegerPropertyControl from '../../components/IntegerPropertyControl';
+import TabInfoSection from '../../components/TabInfoSection';
+import OrangeScrollbar from '../../../OrangeScrollbar';
 
 interface SkillsProps {
   character: Character;
@@ -17,126 +20,74 @@ export default class SkillsTab extends React.Component<SkillsProps, SkillsState>
     super(props);
 
     this.state = {
-      selectedSkill: Object.values(skillClassesWithKeys)[0],
+      selectedSkill: skillClasses[0],
     };
-
-    this.onSkillSelect = this.onSkillSelect.bind(this);
-    this.onSkillUp = this.onSkillUp.bind(this);
-    this.onSkillDown = this.onSkillDown.bind(this);
   }
 
-  public onSkillSelect(skillClass: SkillClass): void {
+  public onSkillSelect = (skillClass: SkillClass): void => {
     this.setState({ selectedSkill: skillClass });
   }
 
-  public onSkillUp(skill: Skill): void {
+  public onSkillUp = (skill: Skill): void => {
     skill.up();
     this.props.onAvailablePointsUpdate();
   }
 
-  public onSkillDown(skill: Skill): void {
+  public onSkillDown = (skill: Skill): void => {
     skill.down();
     this.props.onAvailablePointsUpdate();
   }
 
-  public renderAvailablePointsSection(): React.ReactNode {
+  public renderInfoSection(): React.ReactNode {
     const character = this.props.character;
-    const availablePointsLabel = locale.getMessage('characterProfile.tabs.skills.availablePointsLabel');
-    const availablePoints = character.isLevelUpInProgress() ? Math.floor(character.availablePoints.skills) : '-';
-
-    return (
-      <div className="skills-tab__available-points">
-        <span className="skills-tab__available-points-label">{availablePointsLabel}</span>
-        <span className="skills-tab__available-points-value">{availablePoints}</span>
-      </div>
-    );
-  }
-
-  public renderPriceSection(): React.ReactNode {
-    const character = this.props.character;
-    const priceLabel = locale.getMessage('characterProfile.tabs.skills.priceLabel');
-    const price = character.isLevelUpInProgress() ?
-      character.skills[this.state.selectedSkill.key].getPrice() :
-      '-';
-
-    return (
-      <div className="skills-tab__price">
-        <span className="skills-tab__price-value">{price}</span>
-        <span className="skills-tab__price-label">{priceLabel}</span>
-      </div>
-    );
-  }
-
-  public renderRoleAttachmentSection(): React.ReactNode {
-    const character = this.props.character;
+    const isLevelUpInProgress = character.isLevelUpRoleSelected();
     const baseRoles = this.state.selectedSkill.baseRoles;
-    const isRoleSkill = character.isLevelUpInProgress() ? baseRoles.some(({ key }) => key === character.currentLevelUpRole.key) : false;
+    const isRoleSkill = character.isLevelUpRoleSelected() ? baseRoles.some(({ key }) => key === character.currentLevelUpRole.key) : false;
+
     const roleAttachmentLabel = isRoleSkill ?
       locale.getMessage('rolePlayingSystem.skills.roleAttachedLabel') :
       locale.getMessage('rolePlayingSystem.skills.roleNotAttachedLabel');
 
-    return (
-      <div className="skills-tab__role-attachment">
-        {character.isLevelUpInProgress() ? roleAttachmentLabel : '-'}
-      </div>
-    );
-  }
+    const props = {
+      leftSectionLabel: locale.getMessage('characterProfile.tabs.skills.availablePointsLabel'),
+      topRightSectionLabel: locale.getMessage('characterProfile.tabs.skills.priceLabel'),
+      leftSectionValue: isLevelUpInProgress ? Math.floor(this.props.character.availablePoints.skills) : '-',
+      topRightSectionValue: isLevelUpInProgress ? character.skills[this.state.selectedSkill.key].getPrice() : '-',
+      bottomRightSectionValue: isLevelUpInProgress ? roleAttachmentLabel : '-',
+    };
 
-  public renderInfoSection(): React.ReactNode {
-    return (
-      <div className="skills-tab__info">
-        {this.renderAvailablePointsSection()}
-        <div className="skills-tab__price-and-role-attachment-wrapper">
-          {this.renderPriceSection()}
-          {this.renderRoleAttachmentSection()}
-        </div>
-      </div>
-    );
+    return <TabInfoSection {...props}/>;
   }
 
   public renderControl(skillClass: SkillClass): React.ReactNode {
     const skill = this.props.character.skills[skillClass.key];
-    const controlLabel = locale.getMessage(`rolePlayingSystem.skills.${skill.getKey()}.name`);
-    const controlClasses = classNames('skills-tab__control', {
-      'skills-tab__control_can-be-upped': skill.canBeUpped(),
-      'skills-tab__control_can-be-downed': skill.canBeDowned(),
-      'skills-tab__control_selected': skill.getKey() === this.state.selectedSkill.key,
-    });
+    const flags = {
+      canBeUpped: skill.canBeUpped(),
+      canBeDowned: skill.canBeDowned(),
+    };
 
     return (
-      <li key={skill.getKey()} className={controlClasses} onMouseEnter={this.onSkillSelect.bind(this, skillClass)}>
-        <span className="skills-tab__control-label">{controlLabel}</span>
-        <div className="skills-tab__control-value-area">
-          <div className="skills-tab__control-down" onClick={this.onSkillDown.bind(this, skill)}/>
-          <span className="skills-tab__control-value">{skill.getCleanValue()}</span>
-          <div className="skills-tab__control-up" onClick={this.onSkillUp.bind(this, skill)}/>
-        </div>
+      <li key={skill.getKey()}  className="skills-tab__control">
+        <IntegerPropertyControl
+          label={locale.getMessage(`rolePlayingSystem.skills.${skill.getKey()}.name`)}
+          value={skill.getCleanValue()}
+          onMouseEnter={this.onSkillSelect.bind(this, skillClass)}
+          onDown={this.onSkillDown.bind(this, skill)}
+          onUp={this.onSkillUp.bind(this, skill)}
+          flags={flags}
+        />
       </li>
     );
   }
 
   public renderControlsSection(): React.ReactNode {
-    const controls = Object.values(skillClassesWithKeys).map(skillClass =>
-      this.renderControl(skillClass),
-    );
-
     return (
       <div className="skills-tab__controls">
-        <ul className="skills-tab__controls-list">
-          {controls}
-        </ul>
-      </div>
-    );
-  }
-
-  public renderDescriptionSection(): React.ReactNode {
-    return (
-      <div className="skills-tab__description">
-        <div className="skills-tab__description-text-container">
-          <div className="skills-tab__description-text">
-            {locale.getMessage(`rolePlayingSystem.skills.${this.state.selectedSkill.key}.description`)}
-          </div>
-        </div>
+        <OrangeScrollbar>
+          <ul className="skills-tab__controls-list">
+            {skillClasses.map(skillClass => this.renderControl(skillClass))}
+          </ul>
+        </OrangeScrollbar>
       </div>
     );
   }
@@ -145,8 +96,10 @@ export default class SkillsTab extends React.Component<SkillsProps, SkillsState>
     return (
       <div className="skills-tab">
         {this.renderInfoSection()}
-        {this.renderControlsSection()}
-        {this.renderDescriptionSection()}
+        <div className="skills-tab__controls-and-description-wrapper">
+          {this.renderControlsSection()}
+          <PropertyDescription messageKey={`rolePlayingSystem.skills.${this.state.selectedSkill.key}.description`}/>
+        </div>
       </div>
     );
   }

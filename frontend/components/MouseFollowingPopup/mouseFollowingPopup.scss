@@ -1,5 +1,7 @@
 .mouse-following-popup {
+  display: none;
   position: absolute;
+  z-index: $mouseFollowingPopup;
 
   &_top {
     transform: translateY(-100%);
@@ -7,6 +9,10 @@
 
   &_left {
     transform: translateX(-100%);
+  }
+
+  &_has-content {
+    display: block;
   }
 }
 

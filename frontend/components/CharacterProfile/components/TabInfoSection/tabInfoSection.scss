@@ -1,0 +1,71 @@
+.tab-info-section {
+  height: $info-section-height;
+  text-align: center;
+  border-bottom: 0.2em solid $borders;
+}
+
+.tab-info-section__left, .tab-info-section__right {
+  display: inline-block;
+  width: 50%;
+  height: 100%;
+  vertical-align: top;
+}
+
+.tab-info-section__left {
+  line-height: $info-section-height - 0.2em;
+  border-right: 0.2em solid $borders;
+}
+
+.tab-info-section__right {
+  line-height: $info-section-height / 2 - 0.2em;
+}
+
+.tab-info-section__left-label, .tab-info-section__left-value {
+  display: inline-block;
+  height: 100%;
+  vertical-align: top;
+}
+
+.tab-info-section__left-label {
+  width: 80%;
+  border-right: 0.2em solid $borders;
+}
+
+.tab-info-section__left-value {
+  width: 20%;
+}
+
+.tab-info-section__top-right {
+  display: block;
+  height: calc(50% + 0.1em);
+  border-bottom: 0.2em solid $borders;
+}
+
+.tab-info-section__bottom-right {
+  display: block;
+  height: calc(50% - 0.1em);
+}
+
+.tab-info-section__top-right-value, .tab-info-section__bottom-right-value,
+.tab-info-section__top-right-label, .tab-info-section__bottom-right-label {
+  display: inline-block;
+  height: 100%;
+  vertical-align: top;
+}
+
+.tab-info-section__top-right-value, .tab-info-section__bottom-right-value {
+  width: 20%;
+
+  &:only-child {
+    width: 100%;
+    padding-left: 1.25em;
+    text-align: left;
+  }
+}
+
+.tab-info-section__top-right-label, .tab-info-section__bottom-right-label {
+  width: 80%;
+  text-align: left;
+  padding-left: 1.25em;
+  border-left: 0.2em solid $borders;
+}

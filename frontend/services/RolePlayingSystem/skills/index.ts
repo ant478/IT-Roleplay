@@ -8,7 +8,7 @@ import Programming from './classes/Programming';
 import { getInstances, getIntegerData, IntegerDataProperty } from '../helpers/characterIntegerDataConverter';
 import getDefaultInstances from '../helpers/defaultInstancesHelper';
 
-const skillClasses = [Communication, Debugging, Discipline, Documenting, Planning, Programming];
+export const skillClasses = [Communication, Debugging, Discipline, Documenting, Planning, Programming];
 type SkillKeyName = 'communication' | 'debugging' | 'discipline' | 'documenting' | 'planning' | 'programming';
 
 export const skillKeys: Record<SkillKeyName, SkillKey> = {

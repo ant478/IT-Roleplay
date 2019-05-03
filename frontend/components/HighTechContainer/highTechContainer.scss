@@ -1,0 +1,28 @@
+.high-tech-container {
+  @include absoluteCenterPositioning;
+  height: 85vh;
+  width: 60em;
+  color: $text;
+  user-select: none;
+  transform-style: preserve-3d;
+  perspective: 100em;
+
+  @media screen and (max-aspect-ratio: 3/2) {
+    max-width: none;
+    margin: auto 2em;
+    width: calc(100% - 4em);
+  }
+}
+
+.high-tech-container__front, .high-tech-container__back {
+  @include absoluteCenterPositioning;
+  background: $background;
+  border: 0.25em solid $borders;
+  backface-visibility: hidden;
+  opacity: 0.95;
+  overflow: hidden;
+
+  &_hidden {
+    opacity: 0;
+  }
+}

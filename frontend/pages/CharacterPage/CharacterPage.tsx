@@ -1,91 +1,94 @@
+import * as _ from 'lodash';
 import * as React from 'react';
 import CharacterProfile from '../../components/CharacterProfile';
 import characterService from '../../services/Api/CharacterService';
 import locale from '../../services/LocalisationService';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, match } from 'react-router-dom';
 import { Character, ExistingCharacter } from '../../services/RolePlayingSystem';
+import authService from '../../services/Api/AuthService';
+import MainLoader from '../../components/MainLoader';
+import imagePreloader from '../../utils/ImagePreloader';
+import { getCharacterProfileAvatarUrl } from '../../services/CharacterAvatarService';
+import PageHeader from '../../components/PageHeader';
 
 interface MatchParams {
   characterId: string;
 }
 
-interface CharacterProps extends RouteComponentProps<MatchParams> {}
+interface CharacterProps extends RouteComponentProps<MatchParams> {
+  character: ExistingCharacter;
+}
 
 interface CharacterState {
   isLevelUpInProgress: boolean;
-  character: ExistingCharacter | null;
-  isLoading: boolean;
 }
 
 export default class CharacterPage extends React.Component<CharacterProps, CharacterState> {
+  public static async preload(matchParams: match<MatchParams>): Promise<Partial<CharacterProps>> {
+    const characterId = Number(matchParams.params.characterId);
+
+    const character = await MainLoader.withLoader(async () => {
+      const characterData = await characterService.getCharacter(characterId);
+      const existingCharacter = Character.fromExisting(characterData);
+
+      if (existingCharacter.avatarId) {
+        await imagePreloader.preloadImage(getCharacterProfileAvatarUrl(existingCharacter.avatarId), true);
+      }
+
+      return existingCharacter;
+    });
+
+    return { character };
+  }
+
   constructor(props: CharacterProps) {
     super(props);
 
     this.state = {
       isLevelUpInProgress: false,
-      character: null,
-      isLoading: true,
     };
-
-    this.onCharacterLevelUpStateUpdate = this.onCharacterLevelUpStateUpdate.bind(this);
-    this.onCharacterSave = this.onCharacterSave.bind(this);
-    this.onCharacterDelete = this.onCharacterDelete.bind(this);
   }
 
-  public onCharacterLevelUpStateUpdate(): void {
+  public componentDidMount(): void {
+    document.title = locale.getMessage('pageTitle.character', { characterName: this.props.character.name });
+  }
+
+  public onCharacterLevelUpStateUpdate = (): void => {
     this.setState({
-      isLevelUpInProgress: this.getCharacterLevelUpState(this.state.character!),
+      isLevelUpInProgress: this.props.character.isLevelUpInProgress(),
     });
   }
 
-  public async onCharacterSave(): Promise<void> {
-    this.setState({ isLoading: true });
+  public onCharacterSave = async (): Promise<void> => {
+    const updateCharacterData = this.props.character.toUpdateCharacterData();
 
-    const updateCharacterData = this.state.character!.toUpdateCharacterData();
-    const characterData = await characterService.updateCharacter(this.state.character!.id, updateCharacterData);
-    const updatedCharacter = Character.fromExisting(characterData);
+    if (this.props.character.avatarId) {
+      imagePreloader.preloadImage(getCharacterProfileAvatarUrl(this.props.character.avatarId), true);
+    }
 
-    this.setState({
-      character: updatedCharacter,
-      isLevelUpInProgress: this.getCharacterLevelUpState(updatedCharacter),
-      isLoading: false,
-    });
+    await MainLoader.withLoader(() =>
+      characterService.updateCharacter(this.props.character.id, updateCharacterData),
+    );
   }
 
-  public async onCharacterDelete(): Promise<void> {
-    this.setState({ isLoading: true });
+  public onCharacterDelete = async (): Promise<void> => {
+    await MainLoader.withLoader(() =>
+      characterService.deleteCharacter(this.props.character.id),
+    );
 
-    await characterService.deleteCharacter(this.state.character!.id);
     this.props.history.push('/characters/');
   }
 
-  public async componentDidMount(): Promise<void> {
-    document.title = locale.getMessage('pageTitle.home');
-
-    const characterId = Number(this.props.match.params.characterId);
-    const characterData = await characterService.getCharacter(characterId);
-    const character = Character.fromExisting(characterData);
-
-    this.setState({
-      character,
-      isLevelUpInProgress: this.getCharacterLevelUpState(character),
-      isLoading: false,
-    });
-
-    document.title = locale.getMessage('pageTitle.character', { characterName: characterData.name });
-  }
-
   public renderContent(): React.ReactNode {
-    if (!this.state.character) {
-      return null;
-    }
-
     return (
       <CharacterProfile
-        character={this.state.character}
+        key={this.props.character.id}
+        character={this.props.character}
+        isBelongToCurrentUser={this.isCharacterBelongToCurrentUser()}
         onLevelUpStateUpdate={this.onCharacterLevelUpStateUpdate}
         onSave={this.onCharacterSave}
         onDelete={this.onCharacterDelete}
+        onCancel={_.noop}
       />
     );
   }
@@ -93,7 +96,7 @@ export default class CharacterPage extends React.Component<CharacterProps, Chara
   public render(): React.ReactNode {
     return (
       <div className="page character-page">
-        <h1 className="character-page__header">{this.getHeaderMessage()}</h1>
+        <PageHeader message={this.getHeaderMessage()}/>
         <div className="character-page__content-wrapper">
           {this.renderContent()}
         </div>
@@ -103,11 +106,19 @@ export default class CharacterPage extends React.Component<CharacterProps, Chara
 
   private getHeaderMessage(): string {
     return this.state.isLevelUpInProgress ?
-      locale.getMessage('characterPage.levelUpHeader') :
+      locale.getMessage('characterPage.levelUpHeader', { level: this.getNewLevelNumber() }) :
       locale.getMessage('characterPage.header');
   }
 
-  private getCharacterLevelUpState(character: Character): boolean {
-    return character.isLevelUpAvailable() || character.isLevelUpInProgress();
+  private getNewLevelNumber(): number {
+    if (this.props.character.isLevelUpRoleSelected()) {
+      return this.props.character.getLevel();
+    }
+
+    return this.props.character.getLevel() + 1;
+  }
+
+  private isCharacterBelongToCurrentUser(): boolean {
+    return authService.isAuthenticated() && authService.getCurrentUser().id === this.props.character.author.id;
   }
 }
