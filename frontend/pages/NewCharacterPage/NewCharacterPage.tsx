@@ -7,7 +7,7 @@ import { RouteComponentProps, match } from 'react-router-dom';
 import { Character, NewCharacter } from '../../services/RolePlayingSystem';
 import MainLoader from '../../components/MainLoader';
 import imagePreloader from '../../utils/ImagePreloader';
-import { getCharacterProfileAvatarUrl } from '../../services/CharacterAvatarService';
+import { getCharacterProfileAvatarUrl, DEFAULT_AVATAR } from '../../services/CharacterAvatarService';
 import PageHeader from '../../components/PageHeader';
 
 interface CharacterState {
@@ -16,6 +16,10 @@ interface CharacterState {
 
 export default class NewCharacterPage extends React.PureComponent<RouteComponentProps, CharacterState> {
   public static async preload(_matchParams: match): Promise<{}> {
+    await MainLoader.withLoader(() =>
+      imagePreloader.preloadImage(DEFAULT_AVATAR),
+    );
+
     return {};
   }
 

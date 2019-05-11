@@ -62,6 +62,7 @@ export default class HighTechContainer extends React.PureComponent<HighTechConta
   private back = React.createRef<HTMLDivElement>();
   private readonly throttledOnMouseMove: (event: MouseEvent) => void;
 
+  private isInFocus: boolean = true;
   private previousFrameTimeMark: number = new Date().getTime();
   private previousMouseMoveTimeMark: number = new Date().getTime();
   private frameRate: number = PROBABLE_FRAMERATE; // 1/s
@@ -88,6 +89,8 @@ export default class HighTechContainer extends React.PureComponent<HighTechConta
     document.addEventListener('mousedown', this.handleMouseDown, true);
     document.addEventListener('mouseup', this.handleMouseUp, true);
     document.addEventListener('mousemove', this.throttledOnMouseMove, true);
+    window.addEventListener('focus', this.onWindowFocus);
+    window.addEventListener('blur', this.onWindowBlur);
 
     requestAnimationFrame(this.handleFrame);
   }
@@ -96,6 +99,8 @@ export default class HighTechContainer extends React.PureComponent<HighTechConta
     document.removeEventListener('mousedown', this.handleMouseDown, true);
     document.removeEventListener('mouseup', this.handleMouseUp, true);
     document.removeEventListener('mousemove', this.throttledOnMouseMove, true);
+    window.removeEventListener('focus', this.onWindowFocus);
+    window.removeEventListener('blur', this.onWindowBlur);
   }
 
   public render(): React.ReactNode {
@@ -125,8 +130,21 @@ export default class HighTechContainer extends React.PureComponent<HighTechConta
     );
   }
 
+  public onWindowFocus = (): void => {
+    this.isInFocus = true;
+  }
+
+  public onWindowBlur = (): void => {
+    this.isInFocus = false;
+  }
+
   public handleFrame = (): void => {
     this.updateFrameRate();
+
+    if (!this.isInFocus) {
+      requestAnimationFrame(this.handleFrame);
+      return;
+    }
 
     if (this.state.mode === ContainerMode.grabbing) {
       this.transformGrabbed();

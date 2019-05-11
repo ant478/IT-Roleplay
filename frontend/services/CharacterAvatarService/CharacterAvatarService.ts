@@ -3,6 +3,8 @@ import * as cloudinary from 'cloudinary-core';
 
 const cl = new cloudinary.Cloudinary({ cloud_name: 'ants', secure: true });
 
+export const DEFAULT_AVATAR = defaultAvatar;
+
 interface AvatarTransformOptions {
   width: number;
   height: number;
