@@ -8,9 +8,10 @@ interface AvatarTransformOptions {
   height: number;
   gravity: string;
   crop: string;
+  quality: string;
 }
 
-const defaultOptions = { gravity: 'center', crop: 'fill' };
+const defaultOptions = { gravity: 'center', crop: 'fill', quality: 'auto:good' };
 const charactersListAvatarOptions = { height: 220, width: 220 }; // TODO optimize
 const characterProfileAvatarOptions = { height: 350, width: 350 };
 

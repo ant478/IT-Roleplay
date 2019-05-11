@@ -3,5 +3,5 @@ import { AttributeKey } from '../index';
 
 export default class Dexterity extends Attribute {
   public static id = 2;
-  public static key = 'Dexterity' as AttributeKey;
+  public static key: AttributeKey = 'Dexterity';
 }

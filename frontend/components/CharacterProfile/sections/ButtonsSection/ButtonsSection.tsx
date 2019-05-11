@@ -32,6 +32,10 @@ export default class NameSection extends React.Component<ButtonsSectionProps, Bu
 
   public toggleCannotSavePopup(): void {
     if (this.state.isCannotSavePopupDisplayed) {
+      if (MouseFollowingPopup.isDisplayed()) {
+        return;
+      }
+
       const popup = (
         <div className="character-profile__cannot-save-popup">
           {locale.getMessage('characterProfile.cannotSaveText')}
@@ -44,7 +48,7 @@ export default class NameSection extends React.Component<ButtonsSectionProps, Bu
     }
   }
 
-  public onMouseEnterSaveButton = (): void => {
+  public onMouseOverSaveButton = (): void => {
     this.setState({ isCannotSavePopupDisplayed: this.props.isSaveButtonDisabled }, () => this.toggleCannotSavePopup());
   }
 
@@ -80,7 +84,7 @@ export default class NameSection extends React.Component<ButtonsSectionProps, Bu
         key="save"
         className={saveButtonClasses}
         onClick={this.onSaveClick}
-        onMouseEnter={this.onMouseEnterSaveButton}
+        onMouseOver={this.onMouseOverSaveButton}
         onMouseLeave={this.onMouseLeaveSaveButton}
       >
         {locale.getMessage('characterProfile.saveButtonText')}

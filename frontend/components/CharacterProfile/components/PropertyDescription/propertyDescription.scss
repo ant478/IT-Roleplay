@@ -8,5 +8,7 @@
 
 .property-description__text {
   padding: 1em;
-  text-align: justify;
+  white-space: pre-wrap;
+  text-align: left;
+  line-height: 1.1em;
 }

@@ -5,12 +5,26 @@
   color: $text;
   user-select: none;
   transform-style: preserve-3d;
-  perspective: 100em;
+  perspective: 120em;
 
   @media screen and (max-aspect-ratio: 3/2) {
     max-width: none;
     margin: auto 2em;
     width: calc(100% - 4em);
+  }
+
+  &:not(&_spinning) {
+    .high-tech-container__front, .high-tech-container__back {
+      transition-delay: 1s;
+    }
+  }
+
+  &:not(&_spinning):hover {
+    .high-tech-container__front, .high-tech-container__back {
+      transition-delay: 0s;
+      transition-duration: 0.2s;
+      opacity: 0.94;
+    }
   }
 }
 
@@ -19,10 +33,21 @@
   background: $background;
   border: 0.25em solid $borders;
   backface-visibility: hidden;
-  opacity: 0.95;
+  opacity: 0.6;
+  transition: opacity 0.5s ease;
   overflow: hidden;
+  cursor: default;
+  z-index: $highTechContainerVisibleSideZIndex;
 
   &_hidden {
-    opacity: 0;
+    z-index: $highTechContainerHiddenSideZIndex;
   }
+}
+
+.high-tech-container__front {
+  transform: translateX(0) translateY(0) rotateX(0) rotateY(0);
+}
+
+.high-tech-container__back {
+  transform: translateX(0) translateY(0) rotateX(0) rotateY(180deg);
 }

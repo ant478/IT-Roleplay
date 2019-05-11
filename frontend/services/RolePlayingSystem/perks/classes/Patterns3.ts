@@ -6,7 +6,7 @@ import expect from '../../helpers/requirementsHelper';
 
 export default class Patterns3 extends PassivePerk {
   public static id = 6;
-  public static key = 'Patterns3' as PerkKey;
+  public static key: PerkKey = 'Patterns3';
   public static complexityLevel = 2;
   public static parent = Patterns2;
 

@@ -1,18 +1,13 @@
 import * as _ from 'lodash';
 import * as React from 'react';
-import classNames from 'classnames';
 import locale from '../../../../services/LocalisationService';
 import { Character, TechnologyClass, technologyClasses, TechnologyGroup } from '../../../../services/RolePlayingSystem';
 import MouseFollowingPopup from '../../../../components/MouseFollowingPopup';
 import TabInfoSection from '../../components/TabInfoSection';
 import TechnologySummary from '../../components/TechnologySummary';
-import romanNumbers from '../../config/romanNumbers';
-import technologyIcons from '../../config/technologyIcons';
 import OrangeScrollbar from '../../../OrangeScrollbar';
 import buildRows from '../../helpers/buildRows';
-
-const COMPLEXITY_LEVELS = [0, 1, 2, 3, 4];
-type TechnologyLevel = 1 | 2 | 3 | 4 | 5;
+import TechnologiesRow from './sections/TechnologiesRow';
 
 interface TechnologiesProps {
   character: Character;
@@ -51,6 +46,10 @@ export default class TechnologiesTab extends React.Component<TechnologiesProps, 
 
   public onTechnologySelect = (technologyClass: TechnologyClass | null): void => {
     if (technologyClass) {
+      if (MouseFollowingPopup.isDisplayed()) {
+        return;
+      }
+
       MouseFollowingPopup.render((
         <TechnologySummary messageKey={`rolePlayingSystem.technologies.${technologyClass.key}.summary`} />
       ));
@@ -84,54 +83,15 @@ export default class TechnologiesTab extends React.Component<TechnologiesProps, 
     return <TabInfoSection {...props}/>;
   }
 
-  public renderTechnologiesRow(technologyRow: TechnologyClass[]): React.ReactNode {
-    const character = this.props.character;
-    const technologies = COMPLEXITY_LEVELS.map((complexityLevel) => {
-      const technologyClassIndex = _.findIndex(technologyRow, technologyClassInRow => technologyClassInRow.complexityLevel === complexityLevel);
-
-      if (technologyClassIndex < 0) {
-        return (<div key={`placeholder${complexityLevel}`} className="technologies-tab__technology-wrapper"/>);
-      }
-
-      const technologyClass = technologyRow[technologyClassIndex];
-      const isAdded = !!character.technologies[technologyClass.key];
-      const isNotLastInRow = technologyClassIndex !== technologyRow.length - 1;
-
-      const technologyClassNames = classNames('technologies-tab__technology', `technologies-tab__technology_complexity-${complexityLevel}`, {
-        'technologies-tab__technology_is-added': isAdded,
-        'technologies-tab__technology_can-be-added': !isAdded && technologyClass.canBeAddedToCharacter(character),
-        'technologies-tab__technology_can-be-removed': isAdded && technologyClass.canBeRemovedFromCharacter(character),
-        'technologies-tab__technology_not-available': !isAdded && !technologyClass.canBeAddedToCharacter(character),
-      });
-
-      const nextInRow = isNotLastInRow ? technologyRow[technologyClassIndex + 1] : null;
-      const isArrowHighLighted = nextInRow ? !!character.technologies[nextInRow.key] || nextInRow.canBeAddedToCharacter(character) : false;
-
-      const arrowClasses = classNames('technologies-tab__technology-arrow', `technologies-tab__technology-arrow_complexity-${complexityLevel}`, {
-        'technologies-tab__technology-arrow_not-available': !isArrowHighLighted,
-      });
-
-      const TechnologyIcon = technologyIcons[technologyClass.key];
-      const level = (technologyClassIndex + 1) as TechnologyLevel;
-
-      return (
-        <div key={technologyClass.key} className="technologies-tab__technology-wrapper">
-          <div
-            className={technologyClassNames}
-            data-level={romanNumbers[level]}
-            onMouseEnter={this.onTechnologySelect.bind(this, technologyClass)}
-            onMouseLeave={this.onTechnologySelect.bind(this, null)}
-            onClick={this.onTechnologyToggle.bind(this, technologyClass)}
-          >
-            <div className="technologies-tab__icon"><TechnologyIcon/></div>
-          </div>
-          {isNotLastInRow ? <div className={arrowClasses}/> : null}
-        </div>
-      );
-    });
-
+  public renderTechnologiesRow(technologiesRow: TechnologyClass[]): React.ReactNode {
     return (
-      <div key={`${technologyRow[0].key}-row`} className="technologies-tab__technologies-row">{technologies}</div>
+      <TechnologiesRow
+        key={`${technologiesRow[0].key}-row`}
+        character={this.props.character}
+        technologiesRow={technologiesRow}
+        onTechnologySelect={this.onTechnologySelect}
+        onTechnologyToggle={this.onTechnologyToggle}
+      />
     );
   }
 

@@ -13,7 +13,6 @@
 
   &_is-just-added {
     background-color: #{$select}d1;
-    box-shadow: 0 1px 0 0 $select, 0 -1px 0 0 $select, -1px 0 0 0 $select, 1px 0 0 0 $select;
   }
 
   &_can-be-upped {
