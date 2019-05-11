@@ -144,10 +144,6 @@ export default class Character {
     return _.sumBy(Object.values(this.roles), 'level') || 0;
   }
 
-  public getMultiSkillCoefficient(_technologies: Technologies = this.technologies): number {
-    return 1;
-  }
-
   public startLevelUp(): void {
     if (this.isLevelUpInProgress()) {
       throw new Error('Level up is already in progress.');

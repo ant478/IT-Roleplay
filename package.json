@@ -7,13 +7,12 @@
   "description": "Application to create your IT alter ego character.",
   "main": "app.js",
   "scripts": {
-    "build": "grunt build",
+    "build": "node_modules/.bin/cross-env NODE_ENV=production grunt build",
     "node": "node app.js",
-    "start": "cross-env NODE_ENV=production npm-run-all build node",
-    "start-test": "cross-env NODE_ENV=test npm-run-all build node",
+    "start": "node_modules/.bin/cross-env NODE_ENV=production npm run node",
     "watch-backend": "grunt nodemon:dev",
-    "watch-frontend": "grunt build --watch",
-    "develop": "cross-env NODE_ENV=development npm-run-all --parallel watch-backend watch-frontend"
+    "watch-frontend": "grunt build-for-dev --watch",
+    "develop": "node_modules/.bin/cross-env NODE_ENV=development node_modules/.bin/npm-run-all --parallel watch-backend watch-frontend"
   },
   "repository": {
     "type": "git",
@@ -63,7 +62,9 @@
     "react-dom": "^16.8.3",
     "react-router-dom": "^4.3.1",
     "reset-css": "^4.0.1",
-    "sequelize": "^4.43.0"
+    "sequelize": "^4.43.0",
+    "npm-run-all": "^4.1.5",
+    "cross-env": "^5.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
@@ -81,7 +82,6 @@
     "babel-loader": "^8.0.5",
     "clean-webpack-plugin": "^2.0.1",
     "copy-webpack-plugin": "^5.0.0",
-    "cross-env": "^5.2.0",
     "css-loader": "^2.1.0",
     "cssnano": "^4.1.10",
     "dredd": "^8.0.4",
@@ -104,7 +104,6 @@
     "mini-css-extract-plugin": "^0.5.0",
     "node-sass": "^4.11.0",
     "nodemon": "^1.18.10",
-    "npm-run-all": "^4.1.5",
     "postcss-loader": "^3.0.0",
     "sass-loader": "^7.1.0",
     "ts-essentials": "^2.0.3",

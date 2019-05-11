@@ -16,11 +16,12 @@
     "operatorsAliases": false
   },
   "production": {
-    "host": "127.0.0.1",
+    "host": "r6ze0q02l4me77k3.chr7pe7iynqr.eu-west-1.rds.amazonaws.com",
+    "port": 3306,
     "dialect": "mysql",
-    "database": "it_roleplay",
-    "username": "root",
-    "password": "",
+    "database": "azgzcvlzreosyoc3",
+    "username": "emyqnz5r75eldh17",
+    "password": "ngneipz8tbkiz4gi",
     "operatorsAliases": false
   }
 }
