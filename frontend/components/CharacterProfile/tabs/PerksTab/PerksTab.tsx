@@ -6,7 +6,7 @@ import locale from '../../../../services/LocalisationService';
 import PropertyDescription from '../../components/PropertyDescription';
 import TabInfoSection from '../../components/TabInfoSection';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import perkIcons from '../../config/perkIcons';
+import perkIcons from './config/perkIcons';
 import romanNumbers from '../../config/romanNumbers';
 import OrangeScrollbar from '../../../OrangeScrollbar';
 import buildRows from '../../helpers/buildRows';

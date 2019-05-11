@@ -29,12 +29,43 @@ const tsLoaderOptions = {
   configFile: 'config/tsconfig.json',
 };
 
+function recursiveIssuer(m) {
+  if (m.issuer) {
+    return recursiveIssuer(m.issuer);
+  } if (m.name) {
+    return m.name;
+  }
+
+  return false;
+}
+
 const config = {
-  entry: './frontend/app.js',
+  entry: {
+    main: './frontend/app.js',
+    initial: './frontend/initial/initial.js',
+  },
   mode: devMode ? 'development' : 'production',
   output: {
-    filename: 'bundle.js',
+    filename: '[name].js',
     path: path.resolve(__dirname, '../frontend/build'),
+  },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        mainStyles: {
+          name: 'main',
+          test: (m, c, entry = 'main') => m.constructor.name === 'CssModule' && recursiveIssuer(m) === entry,
+          chunks: 'all',
+          enforce: true,
+        },
+        initialStyles: {
+          name: 'initial',
+          test: (m, c, entry = 'initial') => m.constructor.name === 'CssModule' && recursiveIssuer(m) === entry,
+          chunks: 'all',
+          enforce: true,
+        },
+      },
+    },
   },
   module: {
     rules: [{
@@ -74,7 +105,7 @@ const config = {
     }, {
       test: /\.(sa|sc|c)ss$/,
       use: [
-        devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+        MiniCssExtractPlugin.loader,
         'css-loader',
         {
           loader: 'postcss-loader',
@@ -129,7 +160,7 @@ const config = {
       cleanStaleWebpackAssets: false,
     }),
     new MiniCssExtractPlugin({
-      filename: 'style.css',
+      filename: '[name].css',
     }),
     new CopyPlugin([
       { from: 'frontend/index.html', to: 'index.html' },

@@ -17,15 +17,24 @@
   border-radius: 0.5rem;
   position: relative;
 
+  &:not(:last-child) {
+    margin-bottom: 1.5em;
+  }
+
   $group-colors-map: (
     frontend: #a33eee,
     backend: #aa2e25,
-    // somethingElse: #066ab5,
+    frontend-framework: #066ab5,
+    dbms: #c5006d,
+    vcs: #d5d646,
   );
 
   $group-colors-highlighted-map: (
     frontend: #daa7ff,
     backend: #ff8394,
+    frontend-framework: #0696ea,
+    dbms: #ee388d,
+    vcs: #f3eb24,
   );
 
   @each $group-name, $group-color in $group-colors-map {

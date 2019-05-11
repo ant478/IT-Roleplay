@@ -6,11 +6,11 @@ import expect from '../../helpers/requirementsHelper';
 
 export default class CSS2 extends Technology {
   public static id = 10;
-  public static key = 'CSS2' as TechnologyKey;
-  public static tags = ['CSS', 'Frontend'] as TechnologyTag[];
+  public static key: TechnologyKey = 'CSS2';
+  public static tags: TechnologyTag[] = ['CSS', 'Frontend'];
   public static basePrice = 2;
   public static complexityLevel = 1;
-  public static group = 'Frontend' as TechnologyGroup;
+  public static group: TechnologyGroup = 'Frontend';
   public static parent = CSS1;
 
   public static isCharacterMatchRequirements(character: Character): boolean {

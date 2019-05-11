@@ -3,5 +3,5 @@ import { AttributeKey } from '../index';
 
 export default class Strength extends Attribute {
   public static id = 1;
-  public static key = 'Strength' as AttributeKey;
+  public static key: AttributeKey = 'Strength';
 }

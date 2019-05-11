@@ -46,7 +46,6 @@ export default class CharactersPage extends React.Component<CharactersPageProps,
   private static async preloadAvatars(shortCharacterData: ShortCharacterData[]): Promise<void> {
     await Promise.all(
       shortCharacterData
-        .filter(character => !!character.avatarId)
         .map(character => imagePreloader.preloadImage(getCharactersListAvatarUrl(character.avatarId!), true)),
     );
   }

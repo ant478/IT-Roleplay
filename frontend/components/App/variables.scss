@@ -5,13 +5,15 @@ $info-section-height: 3.2em;
 /* colors */
 $background: #050d15;
 $borders: #5ad1ff;
-$select: #ff5f22;
+$select: #ff3f00;
 $action: #861dff;
 $error: #9d0000;
 $input: #066ab5;
 $text: #e2e2e2;
 
 /* z-indexes */
+$highTechContainerHiddenSideZIndex: 0;
+$highTechContainerVisibleSideZIndex: 1;
 $mainLoaderZIndex: 5;
 $loginFormZIndex: 6;
 $mouseFollowingPopup: 7;

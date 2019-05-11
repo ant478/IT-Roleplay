@@ -10,17 +10,26 @@ html, body, .content {
 
 html {
   font-size: 2.34vh;
-  font-family: Bicubik, sans-serif;
-  font-variant: small-caps;
 }
 
 .app {
+  cursor: grab;
   height: 100%;
-  background: url('./resources/images/App__Background.jpg');
+  background: url('./resources/images/App__Background.gif');
   background-size: cover;
   background-position: center;
   position: relative;
   overflow: hidden;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.content {
+  letter-spacing: 0.1em;
+  font-family: Bicubik, sans-serif;
+  font-variant: small-caps;
 }
 
 .main {

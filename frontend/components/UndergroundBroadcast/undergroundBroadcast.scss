@@ -69,31 +69,32 @@
   background-image: url('./resources/images/UndergroundBroadcast__NoSignal.gif');
   background-repeat: no-repeat;
   background-position: center;
-  animation-name: signal2;
+  animation-name: signal1;
+
+  &_red-window, &_blood-from-the-eyes, &_help-me {
+    animation-name: signal2;
+  }
 
   &_red-window {
-    animation-name: signal1;
     background-size: contain;
     background-image: url('./resources/images/UndergroundBroadcast__RedWindow.gif');
     background-color: #0c0b07;
   }
 
   &_blood-from-the-eyes {
-    animation-name: signal1;
     background-size: contain;
     background-image: url('./resources/images/UndergroundBroadcast__BloodFromTheEyes.gif');
     background-color: #010e0f;
   }
 
   &_help-me {
-    animation-name: signal1;
     background-size: contain;
     background-image: url('./resources/images/UndergroundBroadcast__HelpMe.gif');
     background-color: #010000;
   }
 
   &_disabled {
-    animation-name: signal1;
+    animation-name: signal3;
     background-image: none;
   }
 
@@ -108,6 +109,12 @@
   }
 
   @keyframes signal2 {
+    50% {
+      background-image: url("./resources/images/UndergroundBroadcast__WeakSignal.gif");
+    }
+  }
+
+  @keyframes signal3 {
     50% {
       background-image: url("./resources/images/UndergroundBroadcast__WeakSignal.gif");
     }

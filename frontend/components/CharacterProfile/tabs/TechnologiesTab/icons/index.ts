@@ -1,6 +1,40 @@
-// import './svgIcon.scss';
+import './svgIcon.scss';
+import './pngIcon.scss';
 import JavaScript from './JavaScript';
+import Dart from './Dart';
+import TypeScript from './TypeScript';
+import ScalaJS from './ScalaJS';
 import HTML from './HTML';
 import CSS from './CSS';
+import CoffeeScript from './CoffeeScript';
+import Handlebars from './Handlebars';
+import SASS from './SASS';
+import LESS from './LESS';
+import Stylus from './Stylus';
+import PostCSS from './PostCSS';
+import HAML from './HAML';
+import VueJS from './VueJS';
+import AngularJS from './AngularJS';
+import React from './React';
+import EmberJS from './EmberJS';
+import BackboneJS from './BackboneJS';
+import KnockoutJS from './KnockoutJS';
+import Rails from './Rails';
+import NodeJS from './NodeJS';
+import Java from './Java';
+import Python from './Python';
+import CPlusPlus from './CPlusPlus';
+import PHP from './PHP';
+import CSharp from './CSharp';
+import MySQL from './MySQL';
+import PostgreSQL from './PostgreSQL';
+import MongoDB from './MongoDB';
+import SQLite from './SQLite';
+import OracleDatabase from './OracleDatabase';
+import Git from './Git';
+import SVN from './SVN';
+import Mercurial from './Mercurial';
 
-export { JavaScript, HTML, CSS };
+export { JavaScript, Dart, ScalaJS, TypeScript, HTML, CSS, CoffeeScript, Handlebars, SASS, LESS, Stylus,
+  PostCSS, HAML, VueJS, AngularJS, React, EmberJS, BackboneJS, KnockoutJS, Rails, NodeJS, Java, Python,
+  CPlusPlus, PHP, CSharp, MySQL, PostgreSQL, MongoDB, SQLite, OracleDatabase, Git, SVN, Mercurial };

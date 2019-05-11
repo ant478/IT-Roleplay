@@ -1,7 +1,7 @@
 import * as React from 'react';
 import SVGIcon from './SVGIcon';
 
-export default class HTML extends SVGIcon {
+export default class CSS extends SVGIcon {
   public render(): React.ReactNode {
     return (
       <svg className="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 362.73401 511.99998">

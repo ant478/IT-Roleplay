@@ -2,7 +2,7 @@ import * as React from 'react';
 import Scrollbars, { ScrollbarProps } from 'react-custom-scrollbars';
 
 const thumbStyle = {
-  backgroundColor: '#ff5f22',
+  backgroundColor: '#ff3f00',
   borderRadius: '5rem',
   width: '0.28rem',
   boxShadow: ' 0 0.7rem 1.4rem rgba(0,0,0,0.25), 0 0.5em 0.5em rgba(0,0,0,0.22)',

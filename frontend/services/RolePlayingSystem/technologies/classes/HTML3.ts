@@ -6,11 +6,11 @@ import expect from '../../helpers/requirementsHelper';
 
 export default class HTML3 extends Technology {
   public static id = 8;
-  public static key = 'HTML3' as TechnologyKey;
-  public static tags = ['HTML', 'Frontend'] as TechnologyTag[];
+  public static key: TechnologyKey = 'HTML3';
+  public static tags: TechnologyTag[] = ['HTML', 'Frontend'];
   public static basePrice = 3;
   public static complexityLevel = 2;
-  public static group = 'Frontend' as TechnologyGroup;
+  public static group: TechnologyGroup = 'Frontend';
   public static parent = HTML2;
 
   public static isCharacterMatchRequirements(character: Character): boolean {

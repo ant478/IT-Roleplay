@@ -7,18 +7,18 @@ const DISTANCE_EPS = 0.2;
 const PROBABLE_FRAMERATE = 60;
 const ADDITIONAL_TRANSLATE_OFFSET = 1;
 const ADDITIONAL_ROTATE_OFFSET = 1;
-const THROTTLE_DELAY = MILLISECONDS_IN_SECOND / 100;
+const THROTTLE_DELAY = MILLISECONDS_IN_SECOND / 50;
 const MIN_SPEED_TO_START_SPINNING = 2;
-const MIN_END_SPINNING_SPEED = 2;
-const ROTATE_X_DEG_REP_SCREEN = 300;
+// const MIN_END_SPINNING_SPEED = 2;
+const ROTATE_X_DEG_REP_SCREEN = 250;
 const ROTATE_Y_DEG_REP_SCREEN = 40;
 const MIN_ROTATE_Y = -10;
 const MAX_ROTATE_Y = 10;
 const GRAVITY_COEF_X = 1 / 300;
 const GRAVITY_COEF_Y = 1 / 60;
 const SPEED_DROP_COEF = 0.8;
-const SPINNING_SPEED_DROP_COEF = 0.99;
-const MIN_DRAG_DELTA_TO_START_FULL_SPIN = 90;
+const SPINNING_SPEED_DROP_COEF = 0.992;
+const MIN_DRAG_DELTA_TO_START_FULL_SPIN = 80;
 const MIN_POSSIBLE_SPEED = 0.01;
 const MAX_POSSIBLE_SPEED = 10;
 const MIN_POSSIBLE_SPINNING_SPEED = 1.5;
@@ -63,6 +63,7 @@ export default class HighTechContainer extends React.PureComponent<HighTechConta
   private readonly throttledOnMouseMove: (event: MouseEvent) => void;
 
   private previousFrameTimeMark: number = new Date().getTime();
+  private previousMouseMoveTimeMark: number = new Date().getTime();
   private frameRate: number = PROBABLE_FRAMERATE; // 1/s
   private dragDelta: number = 0; // deg
   private mouseDownPosition: { x: number, y: number } = { x: 0, y: 0 };
@@ -81,14 +82,14 @@ export default class HighTechContainer extends React.PureComponent<HighTechConta
     };
 
     this.throttledOnMouseMove = _.throttle(this.handleMouseMove, THROTTLE_DELAY);
-
-    requestAnimationFrame(this.handleFrame);
   }
 
   public componentDidMount(): void {
     document.addEventListener('mousedown', this.handleMouseDown, true);
     document.addEventListener('mouseup', this.handleMouseUp, true);
     document.addEventListener('mousemove', this.throttledOnMouseMove, true);
+
+    requestAnimationFrame(this.handleFrame);
   }
 
   public componentWillUnmount(): void {
@@ -102,20 +103,22 @@ export default class HighTechContainer extends React.PureComponent<HighTechConta
     const isBackSideDisplayed = this.state.visibleSide === ContainerSide.back &&
       (this.state.mode === ContainerMode.stopping || this.state.mode === ContainerMode.standing);
 
-    const frontStyles = classNames('high-tech-container__front', {
+    const containerClasses = classNames('high-tech-container', `high-tech-container_${_.kebabCase(this.state.mode)}`);
+
+    const frontClasses = classNames('high-tech-container__front', {
       'high-tech-container__front_hidden': this.state.visibleSide === ContainerSide.back,
     });
 
-    const backStyles = classNames('high-tech-container__back', {
+    const backClasses = classNames('high-tech-container__back', {
       'high-tech-container__back_hidden': this.state.visibleSide === ContainerSide.front,
     });
 
     return (
-      <div className="high-tech-container">
-        <div className={frontStyles} ref={this.front}>
+      <div className={containerClasses}>
+        <div className={frontClasses} ref={this.front}>
           {this.props.children}
         </div>
-        <div className={backStyles} ref={this.back}>
+        <div className={backClasses} ref={this.back}>
           <BackSide isDisplayed={isBackSideDisplayed}/>
         </div>
       </div>
@@ -174,25 +177,25 @@ export default class HighTechContainer extends React.PureComponent<HighTechConta
       return;
     }
 
+    const frameRateDrop = PROBABLE_FRAMERATE / this.frameRate;
+
     if (this.state.mode === ContainerMode.spinning) {
       const multiplierX = this.mouseSpeed.x > 0 ? 1 : -1;
-      const multiplierY = this.mouseSpeed.y > 0 ? 1 : -1;
 
       const newSpeedX = Math.abs(this.mouseSpeed.x) > MIN_POSSIBLE_SPINNING_SPEED ?
-        this.mouseSpeed.x * SPINNING_SPEED_DROP_COEF :
+        this.mouseSpeed.x * Math.pow(SPINNING_SPEED_DROP_COEF, frameRateDrop) :
         multiplierX * MIN_POSSIBLE_SPINNING_SPEED;
 
-      const newSpeedY = Math.abs(this.mouseSpeed.y) > MIN_POSSIBLE_SPINNING_SPEED ?
-        this.mouseSpeed.y * SPINNING_SPEED_DROP_COEF :
-        multiplierY * MIN_POSSIBLE_SPINNING_SPEED;
+      const forcedToZeroSpeed = this.mouseSpeed.y + this.transform.rotateX * GRAVITY_COEF_Y * frameRateDrop;
+      const newSpeedY = forcedToZeroSpeed * Math.pow(SPEED_DROP_COEF, frameRateDrop);
 
       this.mouseSpeed = { x: newSpeedX, y: newSpeedY };
       return;
     }
 
     this.mouseSpeed = {
-      x: isMoving ? this.mouseSpeed.x * SPEED_DROP_COEF : 0,
-      y: isMoving ? this.mouseSpeed.y * SPEED_DROP_COEF : 0,
+      x: this.mouseSpeed.x * Math.pow(SPEED_DROP_COEF, frameRateDrop),
+      y: this.mouseSpeed.y * Math.pow(SPEED_DROP_COEF, frameRateDrop),
     };
   }
 
@@ -231,9 +234,9 @@ export default class HighTechContainer extends React.PureComponent<HighTechConta
     const speedDirection = this.mouseSpeed.x > 0 ? 1 : -1;
 
     const rotateAngleRelativeToFront = Math.abs(this.transform.rotateY) % 360;
-    const isRotatedBeforeFrontSide = rotateDirection === speedDirection ?
-      (270 <= rotateAngleRelativeToFront && rotateAngleRelativeToFront <= 360) :
-      (0 <= rotateAngleRelativeToFront && rotateAngleRelativeToFront <= 90);
+    // const isRotatedBeforeFrontSide = rotateDirection === speedDirection ?
+    //   (270 <= rotateAngleRelativeToFront && rotateAngleRelativeToFront <= 360) :
+    //   (0 <= rotateAngleRelativeToFront && rotateAngleRelativeToFront <= 90);
 
     const isRotatedBeforeAnySide = rotateDirection === speedDirection ?
       (90 <= rotateAngleRelativeToFront && rotateAngleRelativeToFront <= 180) || (270 <= rotateAngleRelativeToFront && rotateAngleRelativeToFront <= 360) :
@@ -241,10 +244,10 @@ export default class HighTechContainer extends React.PureComponent<HighTechConta
 
     const isFullSpin = Math.abs(this.dragDelta) >= MIN_DRAG_DELTA_TO_START_FULL_SPIN;
 
-    if (Math.abs(this.mouseSpeed.x) < MIN_END_SPINNING_SPEED && isFullSpin && isRotatedBeforeFrontSide) {
-      this.stop(this.getNextClosestFrontSideStopTransform());
-      return;
-    }
+    // if (Math.abs(this.mouseSpeed.x) < MIN_END_SPINNING_SPEED && isFullSpin && isRotatedBeforeFrontSide) {
+    //   this.stop(this.getNextClosestFrontSideStopTransform());
+    //   return;
+    // }
 
     if (!isFullSpin && isRotatedBeforeAnySide) {
       this.stop(this.getNextClosestSideStopTransform());
@@ -263,12 +266,13 @@ export default class HighTechContainer extends React.PureComponent<HighTechConta
       return;
     }
 
+    const frameRateDrop = PROBABLE_FRAMERATE / this.frameRate;
     const gravityY = -(distance.x) * GRAVITY_COEF_Y;
     const gravityX = (distance.y) * GRAVITY_COEF_X;
 
     this.mouseSpeed = {
-      x: this.mouseSpeed.x + gravityX,
-      y: this.mouseSpeed.y + gravityY,
+      x: this.mouseSpeed.x + gravityX * frameRateDrop,
+      y: this.mouseSpeed.y + gravityY * frameRateDrop,
     };
 
     this.transformGrabbed();
@@ -284,8 +288,8 @@ export default class HighTechContainer extends React.PureComponent<HighTechConta
   }
 
   private handleMouseDown = (event: MouseEvent): void => {
-    const isClickedOnFront = this.front.current!.contains(event.target as Element);
-    const isClickedOnBack = this.back.current!.contains(event.target as Element);
+    const isClickedOnFront = this.front.current && this.front.current.contains(event.target as Element);
+    const isClickedOnBack = this.back.current && this.back.current.contains(event.target as Element);
 
     if (!isClickedOnFront && !isClickedOnBack) {
       this.mouseDownPosition = { ...this.mousePosition };
@@ -308,20 +312,20 @@ export default class HighTechContainer extends React.PureComponent<HighTechConta
   }
 
   /****** helpers ******/
-  private getNextClosestFrontSideStopTransform(): Transform {
-    const rotateY = this.transform.rotateY;
-    const absRotateY = Math.abs(rotateY);
-    const rotateDirection = rotateY > 0 ? 1 : -1;
-    const speedDirection = this.mouseSpeed.x > 0 ? 1 : -1;
-    const round = rotateDirection === speedDirection ? Math.ceil : Math.floor;
-    const closest = rotateDirection * round(absRotateY / 360) * 360;
-
-    return {
-      ...this.transform,
-      rotateX: 0,
-      rotateY: closest,
-    };
-  }
+  // private getNextClosestFrontSideStopTransform(): Transform {
+  //   const rotateY = this.transform.rotateY;
+  //   const absRotateY = Math.abs(rotateY);
+  //   const rotateDirection = rotateY > 0 ? 1 : -1;
+  //   const speedDirection = this.mouseSpeed.x > 0 ? 1 : -1;
+  //   const round = rotateDirection === speedDirection ? Math.ceil : Math.floor;
+  //   const closest = rotateDirection * round(absRotateY / 360) * 360;
+  //
+  //   return {
+  //     ...this.transform,
+  //     rotateX: 0,
+  //     rotateY: closest,
+  //   };
+  // }
 
   private getNextClosestSideStopTransform(): Transform {
     const rotateY = this.transform.rotateY;
@@ -352,8 +356,13 @@ export default class HighTechContainer extends React.PureComponent<HighTechConta
   }
 
   private applyTransform(): void {
-    this.front.current!.style.transform = this.getFrontTransformString();
-    this.back.current!.style.transform = this.getBackTransformString();
+    if (this.front.current) {
+      this.front.current.style.transform = this.getFrontTransformString();
+    }
+
+    if (this.back.current) {
+      this.back.current.style.transform = this.getBackTransformString();
+    }
   }
 
   private getFrontTransformString(): string {
@@ -384,10 +393,15 @@ export default class HighTechContainer extends React.PureComponent<HighTechConta
   }
 
   private updateMouseSpeed(event: MouseEvent): void {
+    const newTimeMark = new Date().getTime();
+    const timePassed = newTimeMark - this.previousMouseMoveTimeMark;
+
     this.mouseSpeed = {
-      x: this.truncateToBounds((event.pageX - this.mousePosition.x) / THROTTLE_DELAY, -MAX_POSSIBLE_SPEED, MAX_POSSIBLE_SPEED),
-      y: this.truncateToBounds((event.pageY - this.mousePosition.y) / THROTTLE_DELAY, -MAX_POSSIBLE_SPEED, MAX_POSSIBLE_SPEED),
+      x: this.truncateToBounds((event.pageX - this.mousePosition.x) / timePassed, -MAX_POSSIBLE_SPEED, MAX_POSSIBLE_SPEED),
+      y: this.truncateToBounds((event.pageY - this.mousePosition.y) / timePassed, -MAX_POSSIBLE_SPEED, MAX_POSSIBLE_SPEED),
     };
+
+    this.previousMouseMoveTimeMark = newTimeMark;
   }
 
   private updateVisibleSide(): void {

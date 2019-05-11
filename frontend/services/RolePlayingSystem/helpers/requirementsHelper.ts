@@ -1,6 +1,8 @@
 import Character from '../Character';
 import { TechnologyKey } from '../technologies';
 import { PerkKey } from '../perks';
+import { RoleKey } from '../roles';
+import { AttributeKey } from '../attributes';
 
 class RequirementsChainableObject {
   private _isMatch: boolean = true;
@@ -9,6 +11,18 @@ class RequirementsChainableObject {
 
   public toHaveMinLevel(minLevel: number): RequirementsChainableObject {
     this._isMatch = this._isMatch && (this.character.getLevel() >= minLevel);
+    return this;
+  }
+
+  public toHaveMinLevelInRole(roleKey: RoleKey, minLevel: number): RequirementsChainableObject {
+    const levelInRole = this.character.roles[roleKey] ? this.character.roles[roleKey]!.level : 0;
+
+    this._isMatch = this._isMatch && (levelInRole >= minLevel);
+    return this;
+  }
+
+  public toHaveMinValueOfAttribute(attributeKey: AttributeKey, minLevel: number): RequirementsChainableObject {
+    this._isMatch = this._isMatch && (this.character.attributes[attributeKey].value >= minLevel);
     return this;
   }
 

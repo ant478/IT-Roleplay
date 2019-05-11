@@ -1,0 +1,68 @@
+import { PerkKey } from '../../../../../services/RolePlayingSystem';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { faGlasses, faSitemap, faUserGraduate, faBalanceScale, faCalculator, faHatWizard, faUsers, faDrum,
+  faFireExtinguisher, faCheckDouble, faSearch, faShieldAlt, faListOl, faFistRaised, faCrown, faTachometerAlt,
+  faHandshake, faLightbulb } from '@fortawesome/free-solid-svg-icons';
+
+type PerkIconsConfig = {
+  [key in PerkKey]: IconProp;
+};
+
+const perkIcons: PerkIconsConfig = {
+  LiveIssue1: faFireExtinguisher,
+  LiveIssue2: faFireExtinguisher,
+  LiveIssue3: faFireExtinguisher,
+  Review1: faSearch,
+  Review2: faSearch,
+  Review3: faSearch,
+  Leadership1: faUsers,
+  Leadership2: faUsers,
+  Leadership3: faUsers,
+  Algorithms1: faCalculator,
+  Algorithms2: faCalculator,
+  Algorithms3: faCalculator,
+  Patterns1: faSitemap,
+  Patterns2: faSitemap,
+  Patterns3: faSitemap,
+  Experience1: faGlasses,
+  Experience2: faGlasses,
+  Experience3: faGlasses,
+  Boldness1: faTachometerAlt,
+  Boldness2: faTachometerAlt,
+  Boldness3: faTachometerAlt,
+  Concentration1: faFistRaised,
+  Concentration2: faFistRaised,
+  Concentration3: faFistRaised,
+  Multitasking1: faListOl,
+  Multitasking2: faListOl,
+  Multitasking3: faListOl,
+  Experiment1: faLightbulb,
+  Experiment2: faLightbulb,
+  Experiment3: faLightbulb,
+  Quality1: faCheckDouble,
+  Quality2: faCheckDouble,
+  Quality3: faCheckDouble,
+  Persistence1: faShieldAlt,
+  Persistence2: faShieldAlt,
+  Persistence3: faShieldAlt,
+  BasicKnowledge1: faUserGraduate,
+  BasicKnowledge2: faUserGraduate,
+  BasicKnowledge3: faUserGraduate,
+  ExactCalculation1: faBalanceScale,
+  ExactCalculation2: faBalanceScale,
+  ExactCalculation3: faBalanceScale,
+  Rethinking1: faHatWizard,
+  Rethinking2: faHatWizard,
+  Rethinking3: faHatWizard,
+  Guesswork1: faDrum,
+  Guesswork2: faDrum,
+  Guesswork3: faDrum,
+  ExperienceExchange1: faHandshake,
+  ExperienceExchange2: faHandshake,
+  ExperienceExchange3: faHandshake,
+  Pride1: faCrown,
+  Pride2: faCrown,
+  Pride3: faCrown,
+};
+
+export default perkIcons;

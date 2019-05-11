@@ -1,9 +1,9 @@
 import Character, { ExistingCharacter, NewCharacter } from './Character';
-import { attributeClassesWithKeys, attributeClasses, attributeKeys, AttributeClass, Attribute, AttributeKey, Attributes } from './attributes';
-import { skillClassesWithKeys, skillClasses, skillKeys, SkillClass, Skill, SkillKey, Skills } from './skills';
-import { roleClassesWithKeys, roleClasses, roleKeys, RoleClass, Role, RoleKey, Roles } from './roles';
-import { technologyClassesWithKeys, technologyClasses, technologyKeys, TechnologyClass, Technology, TechnologyKey, technologyGroups, TechnologyGroup, Technologies } from './technologies';
-import { perkClassesWithKeys, perkClasses, perkKeys, PerkClass, Perk, PerkKey, Perks, PerkUsageTypeKey } from './perks';
+import { attributeClassesWithKeys, attributeClasses, AttributeClass, Attribute, AttributeKey, Attributes } from './attributes';
+import { skillClassesWithKeys, skillClasses, SkillClass, Skill, SkillKey, Skills } from './skills';
+import { roleClassesWithKeys, roleClasses, RoleClass, Role, RoleKey, Roles } from './roles';
+import { technologyClassesWithKeys, technologyClasses, TechnologyClass, Technology, TechnologyKey, technologyGroups, TechnologyGroup, Technologies } from './technologies';
+import { perkClassesWithKeys, perkClasses, PerkClass, Perk, PerkKey, Perks, PerkUsageTypeKey } from './perks';
 
 export type AttributeClass = AttributeClass;
 export type SkillClass = SkillClass;
@@ -39,18 +39,13 @@ export {
   Character,
   attributeClassesWithKeys,
   attributeClasses,
-  attributeKeys,
   skillClassesWithKeys,
   skillClasses,
-  skillKeys,
   roleClassesWithKeys,
   roleClasses,
-  roleKeys,
   technologyClassesWithKeys,
   technologyClasses,
-  technologyKeys,
   technologyGroups,
   perkClassesWithKeys,
   perkClasses,
-  perkKeys,
 };
