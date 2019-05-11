@@ -31,9 +31,7 @@ export default class CharacterPage extends React.Component<CharacterProps, Chara
       const characterData = await characterService.getCharacter(characterId);
       const existingCharacter = Character.fromExisting(characterData);
 
-      if (existingCharacter.avatarId) {
-        await imagePreloader.preloadImage(getCharacterProfileAvatarUrl(existingCharacter.avatarId), true);
-      }
+      await imagePreloader.preloadImage(getCharacterProfileAvatarUrl(existingCharacter.avatarId), true);
 
       return existingCharacter;
     });
