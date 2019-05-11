@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import Character from '../../Character';
 import { TechnologyKey, TechnologyTag, TechnologyGroup, TechnologyClass } from '../index';
 
@@ -15,14 +14,12 @@ export default abstract class Technology {
     return false;
   }
 
-  public static getPrice(character: Character): number {
-    return this.basePrice * character.getMultiSkillCoefficient();
+  public static getPrice(_character: Character): number {
+    return this.basePrice;
   }
 
-  public static getReversePrice(character: Character): number {
-    const omittedTechnologies = _.omit(character.technologies, this.key);
-
-    return this.basePrice * character.getMultiSkillCoefficient(omittedTechnologies);
+  public static getReversePrice(_character: Character): number {
+    return this.basePrice;
   }
 
   public static canBeAddedToCharacter(character: Character): boolean {

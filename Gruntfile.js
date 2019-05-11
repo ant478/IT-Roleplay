@@ -80,6 +80,8 @@ module.exports = function init(grunt) {
         },
       },
 
+      migrateDb: 'grunt db --cmd=migrate',
+
       populateTestDb: {
         cmd: () => `cross-env NODE_ENV=test grunt db --cmd=seed:undo:all
           && cross-env NODE_ENV=test grunt db --cmd=seed:all`,
@@ -105,7 +107,12 @@ module.exports = function init(grunt) {
     'eslint',
     'continue:off',
   ]);
-  grunt.registerTask('build', ['webpack']);
+  grunt.registerTask('build-for-dev', ['webpack']);
+  grunt.registerTask('build', [
+    'exec:migrateDb',
+    'lint',
+    'webpack',
+  ]);
   grunt.registerTask('db', ['exec:db']);
   grunt.registerTask('test-api', [
     'exec:populateTestDb',
