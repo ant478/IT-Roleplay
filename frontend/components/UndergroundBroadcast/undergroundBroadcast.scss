@@ -74,6 +74,7 @@
   &_broadcasting {
     background-size: contain;
     animation-name: signal2;
+    animation-duration: 2s;
   }
 
   &_biker-girl {
@@ -173,7 +174,8 @@
 
   @keyframes signal2 {
     50% {
-      background-image: url("./resources/images/UndergroundBroadcast__WeakSignal.gif");
+      background-size: cover;
+      background-image: url("./resources/images/UndergroundBroadcast__Play.gif");
     }
   }
 

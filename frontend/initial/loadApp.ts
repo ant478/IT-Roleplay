@@ -6,6 +6,7 @@ const imagesToLoad = [
   '/resources/images/MainLoader__Background.gif',
   '/resources/images/UndergroundBroadcast__NoSignal.gif',
   '/resources/images/UndergroundBroadcast__WeakSignal.gif',
+  '/resources/images/UndergroundBroadcast__Play.gif',
 ];
 
 function showLoadingScreen(): void {
