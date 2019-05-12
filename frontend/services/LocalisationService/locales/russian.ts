@@ -77,7 +77,7 @@ export default {
     cancelButtonText: 'Отменить',
     nextButtonText: 'Далее',
     saveButtonText: 'Сохранить',
-    cannotSaveText: 'У персонажа остались непотраченные очки классов, аттрибутов или способностей',
+    cannotSaveText: 'Нужно выбрать класс персонажа',
     tabs: {
       nameAndAvatar: {
         levelUpButtonText: 'Повысить уровень',

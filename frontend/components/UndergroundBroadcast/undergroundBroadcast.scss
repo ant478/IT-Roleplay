@@ -71,26 +71,89 @@
   background-position: center;
   animation-name: signal1;
 
-  &_red-window, &_blood-from-the-eyes, &_help-me {
+  &_broadcasting {
+    background-size: contain;
     animation-name: signal2;
   }
 
-  &_red-window {
-    background-size: contain;
-    background-image: url('./resources/images/UndergroundBroadcast__RedWindow.gif');
-    background-color: #0c0b07;
+  &_biker-girl {
+    background-image: url('./resources/images/UndergroundBroadcast__BikerGirl.gif');
   }
 
-  &_blood-from-the-eyes {
-    background-size: contain;
-    background-image: url('./resources/images/UndergroundBroadcast__BloodFromTheEyes.gif');
-    background-color: #010e0f;
+  &_biker-in-the-rain {
+    background-image: url('./resources/images/UndergroundBroadcast__BikerInTheRain.gif');
   }
 
-  &_help-me {
-    background-size: contain;
-    background-image: url('./resources/images/UndergroundBroadcast__HelpMe.gif');
-    background-color: #010000;
+  &_bionic-limp {
+    background-image: url('./resources/images/UndergroundBroadcast__BionicLimp.gif');
+ }
+
+  &_cam {
+    background-image: url('./resources/images/UndergroundBroadcast__Cam.gif');
+  }
+
+  &_circuit {
+    background-image: url('./resources/images/UndergroundBroadcast__Circuit.gif');
+  }
+
+  &_control-panels {
+    background-image: url('./resources/images/UndergroundBroadcast__ControlPanels.gif');
+  }
+
+  &_cyborg-girl {
+    background-image: url('./resources/images/UndergroundBroadcast__CyborgGirl.gif');
+  }
+
+  &_data {
+    background-image: url('./resources/images/UndergroundBroadcast__Data.gif');
+  }
+
+  &_delivery {
+    background-image: url('./resources/images/UndergroundBroadcast__Delivery.gif');
+  }
+
+  &_de-lorean {
+    background-image: url('./resources/images/UndergroundBroadcast__DeLorean.gif');
+  }
+
+  &_dendy {
+    background-image: url('./resources/images/UndergroundBroadcast__Dendy.gif');
+  }
+
+  &_head-scheme {
+    background-image: url('./resources/images/UndergroundBroadcast__HeadScheme.gif');
+  }
+
+  &_mallplex {
+    background-image: url('./resources/images/UndergroundBroadcast__Mallplex.gif');
+  }
+
+  &_night-city {
+    background-image: url('./resources/images/UndergroundBroadcast__NightCity.gif');
+  }
+
+  &_piramid-in-space {
+    background-image: url('./resources/images/UndergroundBroadcast__PiramidInSpace.gif');
+  }
+
+  &_purple-window {
+    background-image: url('./resources/images/UndergroundBroadcast__PurpleWindow.gif');
+  }
+
+  &_replicant-red {
+    background-image: url('./resources/images/UndergroundBroadcast__ReplicantRed.gif');
+  }
+
+  &_sunset-ride {
+    background-image: url('./resources/images/UndergroundBroadcast__SunsetRide.gif');
+  }
+
+  &_underground-rebel {
+    background-image: url('./resources/images/UndergroundBroadcast__UndergroundRebel.gif');
+  }
+
+  &_virtual-girl {
+    background-image: url('./resources/images/UndergroundBroadcast__VirtualGirl.gif');
   }
 
   &_disabled {

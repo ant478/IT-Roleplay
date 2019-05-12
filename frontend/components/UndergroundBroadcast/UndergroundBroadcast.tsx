@@ -4,15 +4,32 @@ import classNames from 'classnames';
 import locale from '../../services/LocalisationService';
 import imagePreloader from '../../utils/ImagePreloader';
 import CancelablePromise from '../../utils/CancelablePromise';
-import RedWindow from './resources/images/UndergroundBroadcast__RedWindow.gif';
-import BloodFromTheEyes from './resources/images/UndergroundBroadcast__BloodFromTheEyes.gif';
-import HelpMe from './resources/images/UndergroundBroadcast__HelpMe.gif';
+import BikerGirl from './resources/images/UndergroundBroadcast__BikerGirl.gif';
+import BikerInTheRain from './resources/images/UndergroundBroadcast__BikerInTheRain.gif';
+import BionicLimp from './resources/images/UndergroundBroadcast__BionicLimp.gif';
+import Cam from './resources/images/UndergroundBroadcast__Cam.gif';
+import Circuit from './resources/images/UndergroundBroadcast__Circuit.gif';
+import ControlPanels from './resources/images/UndergroundBroadcast__ControlPanels.gif';
+import CyborgGirl from './resources/images/UndergroundBroadcast__CyborgGirl.gif';
+import Data from './resources/images/UndergroundBroadcast__Data.gif';
+import Delivery from './resources/images/UndergroundBroadcast__Delivery.gif';
+import DeLorean from './resources/images/UndergroundBroadcast__DeLorean.gif';
+import Dendy from './resources/images/UndergroundBroadcast__Dendy.gif';
+import HeadScheme from './resources/images/UndergroundBroadcast__HeadScheme.gif';
+import Mallplex from './resources/images/UndergroundBroadcast__Mallplex.gif';
+import NightCity from './resources/images/UndergroundBroadcast__NightCity.gif';
+import PiramidInSpace from './resources/images/UndergroundBroadcast__PiramidInSpace.gif';
+import PurpleWindow from './resources/images/UndergroundBroadcast__PurpleWindow.gif';
+import ReplicantRed from './resources/images/UndergroundBroadcast__ReplicantRed.gif';
+import SunsetRide from './resources/images/UndergroundBroadcast__SunsetRide.gif';
+import UndergroundRebel from './resources/images/UndergroundBroadcast__UndergroundRebel.gif';
+import VirtualGirl from './resources/images/UndergroundBroadcast__VirtualGirl.gif';
 
 const delay = (timeout: number) => new Promise(resolve => setTimeout(resolve, timeout)) as Promise<void>;
 
 const ENABLING_DELAY = 1000;
-const CONNECTION_LOST_DELAY = 2000;
-const ESTABLISHING_CONNECTION_DELAY = 3000;
+const CONNECTION_LOST_DELAY = 1000;
+const ESTABLISHING_CONNECTION_DELAY = 1000;
 
 interface Broadcast {
   readonly name: string;
@@ -21,16 +38,84 @@ interface Broadcast {
 }
 
 const broadcasts: Broadcast[] = [{
-  name: 'RedWindow',
-  url: RedWindow,
-  duration: 3930,
+  name: 'BikerGirl',
+  url: BikerGirl,
+  duration: 4000,
 }, {
-  name: 'BloodFromTheEyes',
-  url: BloodFromTheEyes,
-  duration: 2240,
+  name: 'BikerInTheRain',
+  url: BikerInTheRain,
+  duration: 4000,
 }, {
-  name: 'HelpMe',
-  url: HelpMe,
+  name: 'BionicLimp',
+  url: BionicLimp,
+  duration: 4000,
+}, {
+  name: 'Cam',
+  url: Cam,
+  duration: 3000,
+}, {
+  name: 'Circuit',
+  url: Circuit,
+  duration: 4000,
+}, {
+  name: 'ControlPanels',
+  url: ControlPanels,
+  duration: 3000,
+}, {
+  name: 'CyborgGirl',
+  url: CyborgGirl,
+  duration: 5000,
+}, {
+  name: 'Data',
+  url: Data,
+  duration: 3000,
+}, {
+  name: 'Delivery',
+  url: Delivery,
+  duration: 5000,
+}, {
+  name: 'DeLorean',
+  url: DeLorean,
+  duration: 5000,
+}, {
+  name: 'Dendy',
+  url: Dendy,
+  duration: 5000,
+}, {
+  name: 'HeadScheme',
+  url: HeadScheme,
+  duration: 5000,
+}, {
+  name: 'Mallplex',
+  url: Mallplex,
+  duration: 7000,
+}, {
+  name: 'NightCity',
+  url: NightCity,
+  duration: 5000,
+}, {
+  name: 'PiramidInSpace',
+  url: PiramidInSpace,
+  duration: 4000,
+}, {
+  name: 'PurpleWindow',
+  url: PurpleWindow,
+  duration: 3000,
+}, {
+  name: 'ReplicantRed',
+  url: ReplicantRed,
+  duration: 3000,
+}, {
+  name: 'SunsetRide',
+  url: SunsetRide,
+  duration: 5000,
+}, {
+  name: 'UndergroundRebel',
+  url: UndergroundRebel,
+  duration: 5000,
+}, {
+  name: 'VirtualGirl',
+  url: VirtualGirl,
   duration: 3000,
 }];
 
@@ -97,6 +182,7 @@ export default class UndergroundBroadcast extends React.Component<UndergroundBro
     const statusClasses = classNames('underground-broadcast__status', `underground-broadcast__status_${connectionStatus}`);
     const screenClasses = classNames('underground-broadcast__screen', {
       'underground-broadcast__screen_disabled': !this.isEnabled(),
+      'underground-broadcast__screen_broadcasting': !!currentBroadcast,
       [`underground-broadcast__screen_${_.kebabCase(currentBroadcastName)}`]: !!currentBroadcast,
     });
 
