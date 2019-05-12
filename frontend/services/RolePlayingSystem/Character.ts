@@ -201,11 +201,7 @@ export default class Character {
   }
 
   public areAllPointsSpent(): boolean {
-    const areRolePointsSpent = this.availablePoints.roles === 0;
-    const areAttributesPointsSpent = Math.floor(this.availablePoints.attributes) === 0;
-    const arePerksPointsSpent = Math.floor(this.availablePoints.perks) === 0;
-
-    return areRolePointsSpent && areAttributesPointsSpent && arePerksPointsSpent;
+    return this.availablePoints.roles === 0;
   }
 
   public toCreateCharacterData(): CreateCharacterData {
