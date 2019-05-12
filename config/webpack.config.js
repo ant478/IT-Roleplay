@@ -164,6 +164,7 @@ const config = {
     }),
     new CopyPlugin([
       { from: 'frontend/index.html', to: 'index.html' },
+      { from: 'frontend/icons', to: 'icons' },
     ]),
     new BundleAnalyzerPlugin({
       analyzerHost: '127.0.0.1',

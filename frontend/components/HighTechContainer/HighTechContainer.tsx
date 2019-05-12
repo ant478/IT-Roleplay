@@ -89,8 +89,8 @@ export default class HighTechContainer extends React.PureComponent<HighTechConta
     document.addEventListener('mousedown', this.handleMouseDown, true);
     document.addEventListener('mouseup', this.handleMouseUp, true);
     document.addEventListener('mousemove', this.throttledOnMouseMove, true);
-    window.addEventListener('focus', this.onWindowFocus);
-    window.addEventListener('blur', this.onWindowBlur);
+    window.addEventListener('focus', this.onWindowFocus, true);
+    window.addEventListener('blur', this.onWindowBlur, true);
 
     requestAnimationFrame(this.handleFrame);
   }
@@ -99,8 +99,8 @@ export default class HighTechContainer extends React.PureComponent<HighTechConta
     document.removeEventListener('mousedown', this.handleMouseDown, true);
     document.removeEventListener('mouseup', this.handleMouseUp, true);
     document.removeEventListener('mousemove', this.throttledOnMouseMove, true);
-    window.removeEventListener('focus', this.onWindowFocus);
-    window.removeEventListener('blur', this.onWindowBlur);
+    window.removeEventListener('focus', this.onWindowFocus, true);
+    window.removeEventListener('blur', this.onWindowBlur, true);
   }
 
   public render(): React.ReactNode {
@@ -298,6 +298,7 @@ export default class HighTechContainer extends React.PureComponent<HighTechConta
 
   /****** event handlers ******/
   private handleMouseMove = (event: MouseEvent): void => {
+    this.isInFocus = true;
     if (this.state.mode === ContainerMode.grabbing) {
       this.updateMouseSpeed(event);
     }

@@ -46,6 +46,7 @@ export default class RegistrationForm extends BaseCommonForm<RegistrationFormPro
             onChange={this.onInputChange}
             autoComplete="email"
             required={true}
+            spellCheck={false}
           />
         </label>
 
@@ -59,6 +60,7 @@ export default class RegistrationForm extends BaseCommonForm<RegistrationFormPro
             onChange={this.onInputChange}
             autoComplete="username"
             required={true}
+            spellCheck={false}
           />
         </label>
 
@@ -72,6 +74,7 @@ export default class RegistrationForm extends BaseCommonForm<RegistrationFormPro
             onChange={this.onInputChange}
             autoComplete="new-password"
             required={true}
+            spellCheck={false}
           />
         </label>
 
@@ -85,6 +88,7 @@ export default class RegistrationForm extends BaseCommonForm<RegistrationFormPro
             onChange={this.onInputChange}
             autoComplete="new-password"
             required={true}
+            spellCheck={false}
           />
         </label>
 
