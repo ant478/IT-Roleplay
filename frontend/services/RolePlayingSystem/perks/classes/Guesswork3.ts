@@ -1,11 +1,11 @@
 import Character from '../../Character';
-import ActivePerk from './ActivePerk';
+import PassivePerk from './PassivePerk';
 import { PerkKey } from '../index';
 import expect from '../../helpers/requirementsHelper';
 import Guesswork2 from './Guesswork2';
 import { attributeKeys } from '../../attributes';
 
-export default class Guesswork3 extends ActivePerk {
+export default class Guesswork3 extends PassivePerk {
   public static id = 51;
   public static key: PerkKey = 'Guesswork3';
   public static complexityLevel = 2;

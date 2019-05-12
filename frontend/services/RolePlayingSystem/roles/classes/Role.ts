@@ -75,7 +75,7 @@ export default abstract class Role {
     this.owner.availablePoints.roles -= 1;
     this.owner.availablePoints.attributes += isCreatingCharacter ? NEW_CHARACTER_ATTRIBUTES_POINTS_COUNT : Class.attributesPointsCountForLevel;
     this.owner.availablePoints.skills += coefficient * Class.skillsPointsCountForLevel;
-    this.owner.availablePoints.technologies += isCreatingCharacter ? 3 : Class.technologiesPointsCountForLevel;
+    this.owner.availablePoints.technologies += isCreatingCharacter ? 3 : this.getTechnologiesPointsCountForLevel(this.owner);
     this.owner.availablePoints.perks += isCreatingCharacter ? NEW_CHARACTER_PERKS_POINTS_COUNT : Class.perksPointsCountForLevel;
 
     this.level += 1;
@@ -83,5 +83,23 @@ export default abstract class Role {
 
   public getDataValue(): number {
     return this.level;
+  }
+
+  private getTechnologiesPointsCountForLevel(character: Character): number {
+    const Class = this.constructor as RoleClass;
+
+    if (character.perks.BasicKnowledge3) {
+      return Class.technologiesPointsCountForLevel + 1;
+    }
+
+    if (character.perks.BasicKnowledge2) {
+      return Class.technologiesPointsCountForLevel + 0.5;
+    }
+
+    if (character.perks.BasicKnowledge1) {
+      return Class.technologiesPointsCountForLevel + 0.25;
+    }
+
+    return Class.technologiesPointsCountForLevel;
   }
 }

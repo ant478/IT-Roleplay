@@ -1,11 +1,11 @@
 import Character from '../../Character';
-import ActivePerk from './ActivePerk';
+import PassivePerk from './PassivePerk';
 import Leadership1 from './Leadership1';
 import { PerkKey } from '../index';
 import expect from '../../helpers/requirementsHelper';
 import { roleKeys } from '../../roles';
 
-export default class Leadership2 extends ActivePerk {
+export default class Leadership2 extends PassivePerk {
   public static id = 44;
   public static key: PerkKey = 'Leadership2';
   public static complexityLevel = 1;
