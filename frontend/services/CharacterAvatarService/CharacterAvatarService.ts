@@ -14,8 +14,8 @@ interface AvatarTransformOptions {
 }
 
 const defaultOptions = { gravity: 'center', crop: 'fill', quality: 'auto:good' };
-const charactersListAvatarOptions = { height: 220, width: 220 }; // TODO optimize
-const characterProfileAvatarOptions = { height: 350, width: 350 };
+const charactersListAvatarOptions = { height: 210, width: 210 };
+const characterProfileAvatarOptions = { height: 360, width: 360 };
 
 export function getCharacterProfileAvatarUrl(avatarId: string | null | undefined): string {
   return getTransformedAvatarUrl(avatarId, { ...defaultOptions, ...characterProfileAvatarOptions });

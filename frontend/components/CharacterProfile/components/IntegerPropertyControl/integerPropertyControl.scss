@@ -52,12 +52,12 @@
 .integer-property-control__down {
   display: none;
   @include controlArrow();
-  right: calc(50% + 0.9em);
+  right: calc(50% + 1em);
 }
 
 .integer-property-control__up {
   display: none;
   @include controlArrow();
   transform: rotate(180deg);
-  left: calc(50% + 0.9em);
+  left: calc(50% + 1em);
 }

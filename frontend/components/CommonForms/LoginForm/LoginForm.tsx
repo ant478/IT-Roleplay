@@ -39,6 +39,7 @@ export default class LoginForm extends BaseCommonForm<LoginFormProps, LoginFormD
             onChange={this.onInputChange}
             autoComplete="username"
             required={true}
+            spellCheck={false}
           />
         </label>
 
@@ -52,6 +53,7 @@ export default class LoginForm extends BaseCommonForm<LoginFormProps, LoginFormD
             onChange={this.onInputChange}
             autoComplete="current-password"
             required={true}
+            spellCheck={false}
           />
         </label>
 
