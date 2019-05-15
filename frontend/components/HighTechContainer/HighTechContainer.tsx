@@ -418,8 +418,12 @@ export default class HighTechContainer extends React.PureComponent<HighTechConta
 
   private updateFrameRate(): void {
     const newTimeMark = new Date().getTime();
+    const newFrameRate = MILLISECONDS_IN_SECOND / (newTimeMark - this.previousFrameTimeMark);
 
-    this.frameRate = MILLISECONDS_IN_SECOND / (newTimeMark - this.previousFrameTimeMark);
+    if (newFrameRate > 1) { // if frameRate < 1 then probably page was hidden for some time
+      this.frameRate = newFrameRate;
+    }
+
     this.previousFrameTimeMark = newTimeMark;
   }
 }
