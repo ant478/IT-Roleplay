@@ -2,8 +2,7 @@
   "name": "it-roleplay",
   "version": "0.1.0",
   "engines": {
-    "node": "12.13.0",
-    "npm": "6.12.0"
+    "node": "10.15.1"
   },
   "description": "Application to create your IT alter ego character.",
   "main": "app.js",
