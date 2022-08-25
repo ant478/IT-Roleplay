@@ -288,6 +288,10 @@ export default class HighTechContainer extends React.PureComponent<HighTechConta
   }
 
   private handleMouseDown = (event: MouseEvent): void => {
+    if (event.composedPath().some((element: Element) => element.hasAttribute && element.hasAttribute('data-htc-no-draggable'))) {
+      return;
+    }
+
     const isClickedOnFront = this.front.current && this.front.current.contains(event.target as Element);
     const isClickedOnBack = this.back.current && this.back.current.contains(event.target as Element);
 

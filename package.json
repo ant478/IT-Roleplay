@@ -2,7 +2,8 @@
   "name": "it-roleplay",
   "version": "0.1.0",
   "engines": {
-    "node": "10.15.1"
+    "node": "12.13.0",
+    "npm": "6.12.0"
   },
   "description": "Application to create your IT alter ego character.",
   "main": "app.js",
@@ -28,13 +29,13 @@
     "url": "https://github.com/ant478/IT-Roleplay/issues"
   },
   "browserslist": [
-    "last 2 versions",
-    "not < 1%"
+    "last 10 versions, not < 1%, not dead"
   ],
   "homepage": "https://github.com/ant478/IT-Roleplay#readme",
   "dependencies": {
+    "@ant478/web-components": "1.0.14",
     "@babel/polyfill": "^7.4.0",
-    "@babel/runtime": "^7.4.2",
+    "@babel/runtime": "7.18.9",
     "@fortawesome/fontawesome-svg-core": "^1.2.17",
     "@fortawesome/free-solid-svg-icons": "^5.8.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
@@ -44,6 +45,7 @@
     "cloudinary-core": "^2.6.3",
     "cookie-parser": "^1.4.4",
     "core-js": "^3.0.1",
+    "cross-env": "^5.2.0",
     "datauri": "^2.0.0",
     "email-validator": "^2.0.4",
     "express": "^4.16.4",
@@ -53,6 +55,7 @@
     "lodash": "^4.17.11",
     "multer": "^1.4.1",
     "mysql2": "^1.6.5",
+    "npm-run-all": "^4.1.5",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "postcss-preset-env": "^6.6.0",
@@ -62,9 +65,7 @@
     "react-dom": "^16.8.3",
     "react-router-dom": "^4.3.1",
     "reset-css": "^4.0.1",
-    "sequelize": "^4.43.0",
-    "npm-run-all": "^4.1.5",
-    "cross-env": "^5.2.0"
+    "sequelize": "^4.43.0"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
@@ -111,7 +112,7 @@
     "tslint": "^5.14.0",
     "tslint-config-airbnb": "^5.11.1",
     "tslint-react": "^3.6.0",
-    "typescript": "^3.3.4000",
+    "typescript": "3.6.4",
     "webpack": "^4.29.6",
     "webpack-bundle-analyzer": "^3.1.0",
     "webpack-cli": "^3.2.3",

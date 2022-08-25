@@ -2,6 +2,7 @@ import * as React from 'react';
 import authService, { User } from '../../services/Api/AuthService';
 import { Redirect, Route, Switch, withRouter, RouteComponentProps, matchPath } from 'react-router-dom';
 import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 import MouseFollowingPopup from '../../components/MouseFollowingPopup';
 import MainLoader from '../../components/MainLoader';
 import HighTechContainer from '../../components/HighTechContainer';
@@ -90,6 +91,7 @@ const AppClass = class App extends React.Component<RouteComponentProps, AppState
             {this.renderMain()}
           </ErrorsHandler>
         </HighTechContainer>
+        <Footer />
         <MouseFollowingPopup />
       </div>
     );

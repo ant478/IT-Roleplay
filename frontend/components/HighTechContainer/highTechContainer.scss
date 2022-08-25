@@ -1,6 +1,7 @@
 .high-tech-container {
   @include absoluteCenterPositioning;
-  height: 85vh;
+  bottom: 2rem;
+  height: 84vh;
   width: 60em;
   color: $text;
   user-select: none;

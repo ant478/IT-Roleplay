@@ -1,0 +1,33 @@
+.footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.94;
+}
+
+ant478-footer {
+  &::part(root) {
+    --wc-text-color: #{darken($text, 15%)};
+    --wc-nickname-text-color: #{darken($borders, 10%)};
+    --wc-background-color: #{$background};
+    --wc-icon-fill-color: #444;
+    --wc-icon-fill-color-hover: #777;
+
+    border-top: 0.25em solid $borders;
+    font-size: 0.8rem;
+    cursor: initial;
+    letter-spacing: 0.1em;
+    font-family: Bicubik, sans-serif;
+    font-variant: small-caps;
+  }
+  &::part(link),
+  &::part(link_icon) {
+    transition-duration: 0.15s;
+    transition-timing-function: ease-out;
+
+    &:hover {
+      transition-duration: 0s;
+    }
+  }
+}
