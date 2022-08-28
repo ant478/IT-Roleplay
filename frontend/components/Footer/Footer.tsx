@@ -10,7 +10,7 @@ export default class Header extends React.Component {
         {/* tslint:disable-next-line:jsx-no-multiline-js */}
         {/*
           // @ts-ignore */}
-        <ant478-footer />
+        <ant478-footer></ant478-footer>{/* tslint:disable-line:jsx-self-close */}
       </footer>
     );
   }
