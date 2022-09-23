@@ -11,6 +11,7 @@
     "es6": true
   },
   "rules": {
+    "import/extensions": "off",
     "import/prefer-default-export": "off",
     "node/no-unpublished-require": "off",
     "implicit-arrow-linebreak": "off",

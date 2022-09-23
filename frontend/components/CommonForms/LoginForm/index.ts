@@ -1,4 +1,1 @@
-import LoginForm, { LoginFormData } from './LoginForm';
-
-export type LoginFormData = LoginFormData;
-export default LoginForm;
+export { default as LoginForm, LoginFormData } from './LoginForm';

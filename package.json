@@ -2,7 +2,8 @@
   "name": "it-roleplay",
   "version": "0.1.0",
   "engines": {
-    "node": "10.15.1"
+    "node": "12.13.0",
+    "npm": "6.12.0"
   },
   "description": "Application to create your IT alter ego character.",
   "main": "app.js",
@@ -68,11 +69,12 @@
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
+    "@babel/plugin-transform-runtime": "^7.4.0",
     "@babel/preset-env": "^7.3.4",
     "@babel/preset-react": "^7.0.0",
-    "@babel/plugin-transform-runtime": "^7.4.0",
     "@types/classnames": "^2.2.7",
     "@types/lodash": "^4.14.123",
+    "@types/node": "12.20.55",
     "@types/react": "^16.8.8",
     "@types/react-custom-scrollbars": "^4.0.5",
     "@types/react-dom": "^16.8.3",
@@ -106,15 +108,15 @@
     "nodemon": "^1.18.10",
     "postcss-loader": "^3.0.0",
     "sass-loader": "^7.1.0",
+    "sequelize-cli": "^5.4.0",
     "ts-essentials": "^2.0.3",
     "ts-loader": "^5.3.3",
     "tslint": "^5.14.0",
     "tslint-config-airbnb": "^5.11.1",
     "tslint-react": "^3.6.0",
-    "typescript": "3.6.4",
+    "typescript": "3.7.7",
     "webpack": "^4.29.6",
     "webpack-bundle-analyzer": "^3.1.0",
-    "webpack-cli": "^3.2.3",
-    "sequelize-cli": "^5.4.0"
+    "webpack-cli": "^3.2.3"
   }
 }

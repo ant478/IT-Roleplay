@@ -2,7 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "isolatedModules": true,
+    "isolatedModules": false,
     "moduleResolution": "Node",
     "jsx": "preserve",
     "target": "ESNext",
