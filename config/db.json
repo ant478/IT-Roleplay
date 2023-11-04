@@ -16,12 +16,12 @@
     "operatorsAliases": false
   },
   "production": {
-    "host": "r6ze0q02l4me77k3.chr7pe7iynqr.eu-west-1.rds.amazonaws.com",
+    "host": "oliadkuxrl9xdugh.chr7pe7iynqr.eu-west-1.rds.amazonaws.com",
     "port": 3306,
     "dialect": "mysql",
-    "database": "azgzcvlzreosyoc3",
-    "username": "emyqnz5r75eldh17",
-    "password": "ngneipz8tbkiz4gi",
+    "database": "zbjq0h3j1m665b8r",
+    "username": "rcw9v6oj603k4s7d",
+    "password": "hqvecmzz8usg6aik",
     "operatorsAliases": false
   }
 }
