@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
@@ -165,11 +166,15 @@ const config = {
     new CopyPlugin([
       { from: 'frontend/index.html', to: 'index.html' },
       { from: 'frontend/icons', to: 'icons' },
-    ]),
+      devMode && { from: 'node_modules/@ant478/fps-meter/dist', to: 'fps-meter' },
+    ].filter(Boolean)),
     new BundleAnalyzerPlugin({
       analyzerHost: '127.0.0.1',
       analyzerPort: 8888,
       openAnalyzer: false,
+    }),
+    new webpack.DefinePlugin({
+      IS_DEVELOPMENT: devMode,
     }),
   ],
 };

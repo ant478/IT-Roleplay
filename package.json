@@ -68,6 +68,7 @@
     "sequelize": "^4.43.0"
   },
   "devDependencies": {
+    "@ant478/fps-meter": "1.0.2",
     "@babel/core": "^7.3.4",
     "@babel/plugin-transform-runtime": "^7.4.0",
     "@babel/preset-env": "^7.3.4",

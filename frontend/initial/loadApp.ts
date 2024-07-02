@@ -84,6 +84,13 @@ function delay(timeout: number): Promise<void> {
 export default function loadApp(): void {
   showLoadingScreen();
 
+  // @ts-ignore
+  if (IS_DEVELOPMENT) {
+    const script = document.createElement('script');
+    script.src = '/fps-meter/index.js';
+    document.head.appendChild(script);
+  }
+
   Promise.all([
     loadImages(),
     loadStyles(),
